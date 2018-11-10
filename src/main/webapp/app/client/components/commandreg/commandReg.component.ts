@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import { Doctor } from '../../../core/models/doctor';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material';
+import { REGIONS } from './regions';
 
 export class Command {
     public region: string;
@@ -54,7 +55,7 @@ export class CommandRegistrationComponent implements OnInit {
     private currentCoach: CommandCoach;
     private currentMember: CommandMember;
 
-    private regions = ['Свердловская область', 'Пермская область', 'Московская область', 'Магаданская область'];
+    private regions = REGIONS;
     private categories = ['6—8', '9—11', '12—14', '15—17', '18+'];
     private nominations = ['Индивидуальные', 'Смешанные пары', 'Трио', 'Группы'];
     private qualities = [
