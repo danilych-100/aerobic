@@ -170,8 +170,37 @@ export class CommandRegistrationComponent implements OnInit {
         this.currentMember = new CommandMember();
     }
 
-    addCoach(coachForm: FormGroupDirective) {
-        console.log(coachForm.form);
+    resetMainForm() {
+        this.inpRegionTeam = new FormControl('', [Validators.required]);
+        this.inpNameTeam = new FormControl('', [Validators.required]);
+        this.inpCategoryTeam = new FormControl('', [Validators.required]);
+        this.inpNominationTeam = new FormControl('', [Validators.required]);
+        this.inpMemberCountTeam = new FormControl('', [Validators.required]);
+        this.phone = new FormControl('', [Validators.required]);
+        this.email = new FormControl('', [Validators.required, Validators.email]);
+        this.resetCoachForm();
+        this.resetMemberForm();
+    }
+    resetCoachForm() {
+        this.inpDateCoach = new FormControl('', [Validators.required]);
+        this.inpNameCoach = new FormControl('', [Validators.required]);
+        this.passSeries = new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]);
+        this.passNumber = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
+        this.inpPassDescCoach = new FormControl('', [Validators.required]);
+    }
+
+    resetMemberForm() {
+        this.inpDateMember = new FormControl('', [Validators.required]);
+        this.inpNameMember = new FormControl('', [Validators.required]);
+        this.passSeriesMember = new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]);
+        this.passNumberMember = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
+        this.quality = new FormControl('', [Validators.required]);
+        this.inpPassDescMember = new FormControl('', [Validators.required]);
+    }
+
+    addCoach() {
+        this.resetCoachForm();
+
         const newCoach = new CommandCoach();
         newCoach.name = this.currentCoach.name;
         newCoach.birthDate = this.currentCoach.birthDate;
@@ -191,6 +220,8 @@ export class CommandRegistrationComponent implements OnInit {
     }
 
     addMember() {
+        this.resetMemberForm();
+
         const newMember = new CommandMember();
         newMember.name = this.currentMember.name;
         newMember.birthDate = this.currentMember.birthDate;

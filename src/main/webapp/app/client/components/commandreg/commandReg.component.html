@@ -109,13 +109,13 @@
                 </tr>
             </table>
             <mat-form-field [color]="optionsCoach.value.color">
-                <input matInput placeholder="Выдан" [(ngModel)]="currentCoach.passportDesc" required name="passportDesc" [formControl]="inpPassDescCoach"
+                    <input matInput placeholder="Выдан" [(ngModel)]="currentCoach.passportDesc" required name="passportDesc" [formControl]="inpPassDescCoach"
                        >
                 <mat-error *ngIf="inpPassDescCoach.invalid">{{getInpPassDescCoachErrorMessage()}}</mat-error>
             </mat-form-field>
             <button mat-stroked-button color="primary"
                     [disabled]="inpNameCoach.invalid || inpDateCoach.invalid || passSeries.invalid || passNumber.invalid || inpPassDescCoach.invalid"
-                    (click)="addCoach(coachForm)">Добавить тренера</button>
+                    (click)="addCoach()">Добавить тренера</button>
         </form>
 
 
@@ -132,6 +132,15 @@
                 <mat-datepicker-toggle matSuffix [for]="pickerMember"></mat-datepicker-toggle>
                 <mat-datepicker #pickerMember></mat-datepicker>
                 <mat-error *ngIf="inpDateMember.invalid">{{getInpDateMemberErrorMessage()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field [color]="optionsMember.value.color">
+                <mat-select placeholder="Разряд" [(ngModel)]="currentMember.quality" required name="quality" [formControl]="quality"
+                >
+                    <mat-option *ngFor="let quality of qualities" [value]="quality">
+                        {{quality}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="quality.invalid">{{getQualityErrorMessage()}}</mat-error>
             </mat-form-field>
             <h5>Паспорт</h5>
             <table class="example-full-width" cellspacing="0">
@@ -156,15 +165,6 @@
                 <input matInput placeholder="Выдан" [(ngModel)]="currentMember.passportDesc" required name="passportDesc" [formControl]="inpPassDescMember"
                        >
                 <mat-error *ngIf="inpPassDescMember.invalid">{{getInpPassDescMemberErrorMessage()}}</mat-error>
-            </mat-form-field>
-            <mat-form-field [color]="optionsMember.value.color">
-                <mat-select placeholder="Разряд" [(ngModel)]="currentMember.quality" required name="quality" [formControl]="quality"
-                            >
-                    <mat-option *ngFor="let quality of qualities" [value]="quality">
-                        {{quality}}
-                    </mat-option>
-                </mat-select>
-                <mat-error *ngIf="quality.invalid">{{getQualityErrorMessage()}}</mat-error>
             </mat-form-field>
             <button mat-stroked-button color="primary" type="submit"
                     [disabled]="inpNameMember.invalid || inpDateMember.invalid || passSeriesMember.invalid || passNumberMember.invalid || inpPassDescMember.invalid"
