@@ -13,41 +13,27 @@ public class CommandCoach {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "region", nullable = false)
-    private String region;
-
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "ageCategory")
-    private String ageCategory;
+    @Column(name = "birth_date")
+    private Instant birthDate;
 
-    @Column(name = "nomination")
-    private String nomination;
+    @Column(name = "passport_series")
+    private Long passportSeries;
 
-    @Column(name = "memberCount")
-    private Long memberCount;
+    @Column(name = "passport_number")
+    private Long passportNumber;
 
-    @Column(name = "phoneNumber")
-    private String phoneNumber;
+    @Column(name = "passport_desc")
+    private String passportDesc;
 
-    @Column(name = "email")
-    private String email;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "command_id")
-    private CommandCoach post;;
-
-
-    private String region;
-    private String name;
-    private String ageCategory;
-    private String nomination;
-    private Long memberCount;
-    private String phoneNumber;
-    private String email;
-    private members;
-    private  coaches;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "coaches_join_table",
+        joinColumns = @JoinColumn(name = "command_coach_id"),
+        inverseJoinColumns = @JoinColumn(name = "command_id")
+    )
+    private List<Command> commands = new ArrayList<>();
 
 
     public Long getId() {
@@ -58,22 +44,6 @@ public class CommandCoach {
         this.id = id;
     }
 
-    public Instant getTime() {
-        return time;
-    }
-
-    public void setTime(Instant time) {
-        this.time = time;
-    }
-
-    public String getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(String doctor) {
-        this.doctor = doctor;
-    }
-
     public String getName() {
         return name;
     }
@@ -82,43 +52,43 @@ public class CommandCoach {
         this.name = name;
     }
 
-    public Instant getBirthDay() {
-        return birthDay;
+    public Instant getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthDay(Instant birthDay) {
-        this.birthDay = birthDay;
+    public void setBirthDate(Instant birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public String getAddress() {
-        return address;
+    public Long getPassportSeries() {
+        return passportSeries;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setPassportSeries(Long passportSeries) {
+        this.passportSeries = passportSeries;
     }
 
-    public Long getPolice() {
-        return police;
+    public Long getPassportNumber() {
+        return passportNumber;
     }
 
-    public void setPolice(Long police) {
-        this.police = police;
+    public void setPassportNumber(Long passportNumber) {
+        this.passportNumber = passportNumber;
     }
 
-    public String getNumberTicket() {
-        return numberTicket;
+    public String getPassportDesc() {
+        return passportDesc;
     }
 
-    public void setNumberTicket(String numberTicket) {
-        this.numberTicket = numberTicket;
+    public void setPassportDesc(String passportDesc) {
+        this.passportDesc = passportDesc;
     }
 
-    public String getCost() {
-        return cost;
+    public List<Command> getCommands() {
+        return commands;
     }
 
-    public void setCost(String cost) {
-        this.cost = cost;
+    public void setCommands(List<Command> commands) {
+        this.commands = commands;
     }
 }

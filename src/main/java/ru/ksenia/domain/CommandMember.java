@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "command_member")
@@ -13,42 +14,30 @@ public class CommandMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "region", nullable = false)
-    private String region;
-
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "ageCategory")
-    private String ageCategory;
+    @Column(name = "birth_date")
+    private Instant birthDate;
 
-    @Column(name = "nomination")
-    private String nomination;
+    @Column(name = "passport_series")
+    private Long passportSeries;
 
-    @Column(name = "memberCount")
-    private Long memberCount;
+    @Column(name = "passport_number")
+    private Long passportNumber;
 
-    @Column(name = "phoneNumber")
-    private String phoneNumber;
+    @Column(name = "passport_desc")
+    private String passportDesc;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "quality")
+    private String quality;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "post_id")
-    private List<PostComment> comments = new ArrayList<>();
-
-
-    private String region;
-    private String name;
-    private String ageCategory;
-    private String nomination;
-    private Long memberCount;
-    private String phoneNumber;
-    private String email;
-    private members;
-    private  coaches;
-
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "members_join_table",
+        joinColumns = @JoinColumn(name = "command_member_id"),
+        inverseJoinColumns = @JoinColumn(name = "command_id")
+    )
+    private List<Command> commands = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -56,22 +45,6 @@ public class CommandMember {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Instant getTime() {
-        return time;
-    }
-
-    public void setTime(Instant time) {
-        this.time = time;
-    }
-
-    public String getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(String doctor) {
-        this.doctor = doctor;
     }
 
     public String getName() {
@@ -82,43 +55,51 @@ public class CommandMember {
         this.name = name;
     }
 
-    public Instant getBirthDay() {
-        return birthDay;
+    public Instant getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthDay(Instant birthDay) {
-        this.birthDay = birthDay;
+    public void setBirthDate(Instant birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public String getAddress() {
-        return address;
+    public Long getPassportSeries() {
+        return passportSeries;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setPassportSeries(Long passportSeries) {
+        this.passportSeries = passportSeries;
     }
 
-    public Long getPolice() {
-        return police;
+    public Long getPassportNumber() {
+        return passportNumber;
     }
 
-    public void setPolice(Long police) {
-        this.police = police;
+    public void setPassportNumber(Long passportNumber) {
+        this.passportNumber = passportNumber;
     }
 
-    public String getNumberTicket() {
-        return numberTicket;
+    public String getPassportDesc() {
+        return passportDesc;
     }
 
-    public void setNumberTicket(String numberTicket) {
-        this.numberTicket = numberTicket;
+    public void setPassportDesc(String passportDesc) {
+        this.passportDesc = passportDesc;
     }
 
-    public String getCost() {
-        return cost;
+    public String getQuality() {
+        return quality;
     }
 
-    public void setCost(String cost) {
-        this.cost = cost;
+    public void setQuality(String quality) {
+        this.quality = quality;
+    }
+
+    public List<Command> getCommands() {
+        return commands;
+    }
+
+    public void setCommands(List<Command> commands) {
+        this.commands = commands;
     }
 }

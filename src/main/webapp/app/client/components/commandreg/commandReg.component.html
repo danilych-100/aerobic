@@ -77,7 +77,7 @@
                      phone.invalid ||
                      email.invalid ||
                     !command.coaches.length || !command.members.length || command.memberCount !== command.members.length"
-                    color="primary" style="max-width: 250px">
+                    color="primary" style="max-width: 250px" (click)="addCommand()">
                 Зарегистрировать команду
             </button>
             <mat-hint *ngIf="!command.coaches.length">Должен быть добавлен хотя бы 1 тренер</mat-hint>
@@ -239,5 +239,5 @@
             </div>
         </div>
     </div>
-
+    <button (click)="getCommands()">asdsds</button>
 </div>

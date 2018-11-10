@@ -106,33 +106,58 @@
 
 
 
-        <createTable tableName="client">
+        <createTable tableName="command">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="time" type="timestamp"/>
-            <column name="doctor" type="varchar(250)"/>
-            <column name="name" type="varchar(255)"/>
-            <column name="birthDay" type="timestamp"/>
-            <column name="address" type="varchar(255)"/>
-            <column name="police" type="bigint"/>
-            <column name="numberTicket" type="varchar(255)"/>
+            <column name="region" type="varchar(100)"/>
+            <column name="name" type="varchar(100)"/>
+            <column name="age_category" type="varchar(50)"/>
+            <column name="nomination" type="varchar(50)"/>
+            <column name="member_count" type="bigint"/>
             <column name="cost" type="bigint"/>
+            <column name="phone_number" type="varchar(20)"/>
+            <column name="email" type="varchar(50)"/>
         </createTable>
-
-        <createTable tableName="doctor">
+        <createTable tableName="command_coach">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="time" type="timestamp"/>
-            <column name="position" type="varchar(250)"/>
-            <column name="name" type="varchar(255)"/>
-            <column name="description" type="varchar(255)"/>
-            <column name="avatar" type="varchar(1255)"/>
-            <column name="image" type="varchar(1255)"/>
+            <column name="name" type="varchar(100)"/>
+            <column name="birth_date" type="timestamp"/>
+            <column name="passport_series" type="bigint"/>
+            <column name="passport_number" type="bigint"/>
+            <column name="passport_desc" type="varchar(255)"/>
+        </createTable>
+        <createTable tableName="command_member">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)"/>
+            <column name="birth_date" type="timestamp"/>
+            <column name="passport_series" type="bigint"/>
+            <column name="passport_number" type="bigint"/>
+            <column name="passport_desc" type="varchar(255)"/>
+            <column name="quality" type="varchar(100)"/>
         </createTable>
 
+        <createTable tableName="coaches_join_table">
+            <column name="command_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="command_coach_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
 
+        <createTable tableName="members_join_table">
+            <column name="command_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="command_member_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
 
         <createTable tableName="jhi_persistent_audit_evt_data">
             <column name="event_id" type="bigint">

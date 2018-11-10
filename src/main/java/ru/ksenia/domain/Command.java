@@ -19,27 +19,33 @@ public class Command {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "ageCategory")
+    @Column(name = "age_category")
     private String ageCategory;
 
     @Column(name = "nomination")
     private String nomination;
 
-    @Column(name = "memberCount")
+    @Column(name = "member_count")
     private Long memberCount;
 
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "email")
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "command_id")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "coaches_join_table",
+        joinColumns = @JoinColumn(name = "command_id"),
+        inverseJoinColumns = @JoinColumn(name = "command_coach_id")
+    )
     private List<CommandCoach> coaches = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "command_id")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "members_join_table",
+        joinColumns = @JoinColumn(name = "command_id"),
+        inverseJoinColumns = @JoinColumn(name = "command_member_id")
+    )
     private List<CommandMember> members = new ArrayList<>();
 
     public Long getId() {

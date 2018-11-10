@@ -1,5 +1,6 @@
 package ru.ksenia.web.rest.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandDTO {
@@ -10,8 +11,8 @@ public class CommandDTO {
     private Long memberCount;
     private String phoneNumber;
     private String email;
-    private List<CommandMemberDTO> members;
-    private List<CommandCoachDTO> coaches;
+    private List<CommandMemberDTO> members = new ArrayList<>();
+    private List<CommandCoachDTO> coaches = new ArrayList<>();
 
     public String getRegion() {
         return region;

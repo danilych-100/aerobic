@@ -1,10 +1,12 @@
 package ru.ksenia.web.rest.dto;
 
+
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class CommandMemberDTO {
     private String name;
-    private LocalDateTime birthDate;
+    private Date birthDate;
     private Long passportSeries;
     private Long passportNumber;
     private String passportDesc;
@@ -18,11 +20,11 @@ public class CommandMemberDTO {
         this.name = name;
     }
 
-    public LocalDateTime getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDateTime birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 

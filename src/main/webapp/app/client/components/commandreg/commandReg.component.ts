@@ -5,6 +5,7 @@ import { Doctor } from '../../../core/models/doctor';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material';
 import { REGIONS } from './regions';
+import { RegisterCommandService } from './register.service';
 
 export class Command {
     public region: string;
@@ -197,7 +198,7 @@ export class CommandRegistrationComponent implements OnInit {
         return this.inpCategoryTeam.hasError('required') ? 'Поле не должно быть пустым' : '';
     }
 
-    constructor(private fb: FormBuilder, private dateAdapter: DateAdapter<Date>) {
+    constructor(private fb: FormBuilder, private dateAdapter: DateAdapter<Date>, private registerCommandService: RegisterCommandService) {
         this.optionsMain = this.fb.group({
             color: 'primary',
             fontSize: [16, Validators.min(10)]
@@ -311,6 +312,30 @@ export class CommandRegistrationComponent implements OnInit {
         newMember.quality = this.currentMember.quality;
         this.command.members.push(newMember);
         this.currentMember = new CommandMember();
+    }
+
+    isOk: boolean;
+
+    addCommand() {
+        this.registerCommandService.register(this.command).subscribe(
+            () => {
+                this.isOk = true;
+            },
+            () => {
+                this.isOk = false;
+            }
+        );
+    }
+
+    getCommands() {
+        this.registerCommandService.getCommands().subscribe(
+            res => {
+                console.log(res);
+            },
+            () => {
+                this.isOk = false;
+            }
+        );
     }
 
     getFontSize() {
