@@ -21,7 +21,7 @@ import { ClientModule } from './client/client.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
-import {NgxPermissionsModule, NgxPermissionsService} from "ngx-permissions";
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -37,7 +37,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         // jhipster-needle-angular-add-module JHipster will add new module here
         MedicEntityModule,
         ClientModule,
-        NgxPermissionsModule.forRoot(),
+        NgxPermissionsModule.forRoot()
     ],
     declarations: [NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, AppComponent],
     providers: [

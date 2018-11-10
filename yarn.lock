@@ -559,6 +559,11 @@ amdefine@>=0.0.4:
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
+angular-bootstrap-md@^6.2.6:
+  version "6.2.6"
+  resolved "https://registry.yarnpkg.com/angular-bootstrap-md/-/angular-bootstrap-md-6.2.6.tgz#3de2b6662b4660af3347a855dbd1a274b9e6d991"
+  integrity sha512-w3kxXXFhW60E2F5LHF1ogX7OVq/x/bGXicCtp8CxH6i9oilVLwOjOT2QedF4sbYw32UWk3EUgveI08zE72NCRQ==
+
 angular-router-loader@0.8.5:
   version "0.8.5"
   resolved "https://registry.yarnpkg.com/angular-router-loader/-/angular-router-loader-0.8.5.tgz#42b378d0914c1ce412b851c1d92b80dbbe4f2fc5"

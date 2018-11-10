@@ -1,19 +1,10 @@
 package ru.ksenia.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.audit.AuditEvent;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.ksenia.config.audit.AuditEventConverter;
-import ru.ksenia.domain.Doctor;
-import ru.ksenia.repository.DoctorRepository;
-import ru.ksenia.repository.PersistenceAuditEventRepository;
+import ru.ksenia.web.rest.dto.CommandDTO;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service for managing audit events.
@@ -24,10 +15,12 @@ import java.util.Optional;
 @Transactional
 public class ClientService {
 
-    @Autowired
-    private DoctorRepository doctorRepository;
+    public List<CommandDTO> getCommands(){
+        return null;
+    }
 
-    public List<Doctor> getDoctors(){
-        return doctorRepository.findAll();
+    @Transactional
+    public void registerCommand(CommandDTO command) {
+
     }
 }

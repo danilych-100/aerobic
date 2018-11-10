@@ -5,9 +5,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.ksenia.domain.Doctor;
 import ru.ksenia.service.ClientService;
-import ru.ksenia.web.rest.dto.FullClientData;
+import ru.ksenia.web.rest.dto.CommandDTO;
 import ru.ksenia.web.rest.errors.InternalServerErrorException;
 
 import javax.servlet.ServletOutputStream;
@@ -24,21 +23,22 @@ public class ClientResource {
     @Autowired
     private ClientService clientService;
 
-    @GetMapping("/doctors")
-    public List<Doctor> getDoctors() {
-        return clientService.getDoctors();
+    @GetMapping("/getCommands")
+    public List<CommandDTO> getCommands() {
+        return clientService.getCommands();
     }
 
-    @PostMapping("/registerClient")
-    public ResponseEntity<Void> registerClient(@RequestBody FullClientData fullClientData) {
+    @PostMapping("/registerCommand")
+    public ResponseEntity<Void> registerCommand(@RequestBody CommandDTO command) {
         try {
+            clientService.registerCommand(command);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.noContent().build();
         }
     }
 
-    @GetMapping("/downloadReport")
+    /*@GetMapping("/downloadReport")
     public void downloadReport(final @RequestParam(required = true) String reportId, final HttpServletResponse httpServletResponse){
 
         Map<String, String> headers = new HashMap<String, String>();
@@ -77,6 +77,6 @@ public class ClientResource {
             outputStream.close();
         }
     }
-
+*/
 
 }

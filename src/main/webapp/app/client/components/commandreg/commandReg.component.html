@@ -1,3 +1,10 @@
+<script>
+    function phoneMask() {
+        var num = $(this).val().replace(/\D/g,'');
+        $(this).val(num.substring(0,1) + '(' + num.substring(1,4) + ')' + num.substring(4,7) + '-' + num.substring(7,11));
+    }
+    $('[type="tel"]').keyup(phoneMask);
+</script>
 <div class="container command-registration-container" style="margin-top: 15px; margin-left: 30px">
     <h1>Регистрация команды</h1>
 
@@ -46,14 +53,15 @@
                 <tr>
                     <td>
                         <mat-form-field [color]="optionsMain.value.color">
-                            <input matInput placeholder="Номер телефона" [(ngModel)]="command.phoneNumber" required name="phoneNumber" [formControl]="phone"
+                            <span matPrefix>+7 &nbsp;</span>
+                            <input matInput placeholder="Номер телефона" [(ngModel)]="command.phoneNumber" required name="phoneNumber" [formControl]="phone" type="tel"
                                    >
                         </mat-form-field>
                         <mat-error *ngIf="phone.invalid">{{getPhoneErrorMessage()}}</mat-error>
                     </td>
                     <td>
                         <mat-form-field [color]="optionsMain.value.color">
-                            <input matInput placeholder="Электронная почта" [(ngModel)]="command.email" required name="email" [formControl]="email"
+                            <input matInput placeholder="Электронная почта" [(ngModel)]="command.email" name="email" [formControl]="email"
                                     type="email">
                         </mat-form-field>
                         <mat-error *ngIf="email.invalid">{{getMailErrorMessage()}}</mat-error>
@@ -68,12 +76,14 @@
                      inpMemberCountTeam.invalid ||
                      phone.invalid ||
                      email.invalid ||
-                    !command.coaches.length || !command.members.length"
+                    !command.coaches.length || !command.members.length || command.memberCount !== command.members.length"
                     color="primary" style="max-width: 250px">
                 Зарегистрировать команду
             </button>
             <mat-hint *ngIf="!command.coaches.length">Должен быть добавлен хотя бы 1 тренер</mat-hint>
-            <mat-hint *ngIf="!command.members.length">Должен быть добавлен хотя бы 1 участник</mat-hint>
+            <mat-hint *ngIf="!command.members.length">
+                {{command.memberCount ? 'Должно быть добавлено ' + command.memberCount + getNormilizedName(command.memberCount) : 'Должен быть добавлен хотя бы 1 участник'}}
+            </mat-hint>
         </form>
 
         <form class="example-container" [formGroup]="optionsCoach" [style.fontSize.px]="getFontSize()" #coachForm="ngForm">
@@ -83,10 +93,10 @@
                 <mat-error *ngIf="inpNameCoach.invalid">{{getInpNameCoachErrorMessage()}}</mat-error>
             </mat-form-field>
             <mat-form-field [color]="optionsCoach.value.color">
-                <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="currentCoach.birthDate" [formControl]="inpDateCoach"
+                <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly placeholder="Дата рождения"  [max]="maxDate" [(ngModel)]="currentCoach.birthDate" [formControl]="inpDateCoach"
                        required >
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+                <mat-datepicker #picker startView="multi-year"></mat-datepicker>
                 <mat-error *ngIf="inpDateCoach.invalid">{{getInpDateCoachErrorMessage()}}</mat-error>
             </mat-form-field>
             <h5>Паспорт</h5>
@@ -127,10 +137,10 @@
                 <mat-error *ngIf="inpNameMember.invalid">{{getInpNameMemberErrorMessage()}}</mat-error>
             </mat-form-field>
             <mat-form-field [color]="optionsMember.value.color">
-                <input matInput [matDatepicker]="pickerMember" placeholder="Дата рождения" [(ngModel)]="currentMember.birthDate" [formControl]="inpDateMember"
+                <input matInput [matDatepicker]="pickerMember" (focus)="pickerMember.open()"  readonly placeholder="Дата рождения" [(ngModel)]="currentMember.birthDate" [max]="maxDate" [formControl]="inpDateMember"
                        required >
                 <mat-datepicker-toggle matSuffix [for]="pickerMember"></mat-datepicker-toggle>
-                <mat-datepicker #pickerMember></mat-datepicker>
+                <mat-datepicker #pickerMember startView="multi-year" ></mat-datepicker>
                 <mat-error *ngIf="inpDateMember.invalid">{{getInpDateMemberErrorMessage()}}</mat-error>
             </mat-form-field>
             <mat-form-field [color]="optionsMember.value.color">
