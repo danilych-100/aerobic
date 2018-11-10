@@ -49,6 +49,14 @@ mat-card:not(:last-of-type) {
     max-width: 200px;
 }
 
+.coach-card {
+    vertical-align: top;
+    min-width: 290px;
+    max-width: 290px;
+    display: inline-block;
+    margin: 10px;
+}
+
 @media (min-width: 1400px) {
     .container {
         max-width: 1370px;

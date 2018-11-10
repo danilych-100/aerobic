@@ -2,9 +2,9 @@
     <h1>Регистрация команды</h1>
 
     <div class="row">
-        <form class="example-container" [formGroup]="options" [style.fontSize.px]="getFontSize()">
+        <form class="example-container" [formGroup]="optionsMain" [style.fontSize.px]="getFontSize()">
             <h3>Общая информация</h3>
-            <mat-form-field [color]="options.value.color">
+            <mat-form-field [color]="optionsMain.value.color">
                 <mat-select placeholder="Субъект РФ" [(ngModel)]="command.region" required name="region"
                             [ngModelOptions]="{standalone: true}">
                     <mat-option *ngFor="let reg of regions" [value]="reg">
@@ -12,11 +12,11 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field [color]="options.value.color">
+            <mat-form-field [color]="optionsMain.value.color">
                 <input matInput placeholder="Название команды" [(ngModel)]="command.name" name="name" required
                        [ngModelOptions]="{standalone: true}">
             </mat-form-field>
-            <mat-form-field [color]="options.value.color">
+            <mat-form-field [color]="optionsMain.value.color">
                 <mat-select placeholder="Категория" [(ngModel)]="command.ageCategory" name="ageCategory" required
                             [ngModelOptions]="{standalone: true}">
                     <mat-option *ngFor="let cat of categories" [value]="cat">
@@ -24,7 +24,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field [color]="options.value.color">
+            <mat-form-field [color]="optionsMain.value.color">
                 <mat-select placeholder="Номинация" [(ngModel)]="command.nomination" name="nomination" required
                             [ngModelOptions]="{standalone: true}">
                     <mat-option *ngFor="let nom of nominations" [value]="nom">
@@ -32,7 +32,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field [color]="options.value.color">
+            <mat-form-field [color]="optionsMain.value.color">
                 <input matInput placeholder="Количество участников" [(ngModel)]="command.memberCount" name="memberCount"
                        required [ngModelOptions]="{standalone: true}" type="number" min="1">
             </mat-form-field>
@@ -40,13 +40,13 @@
             <table class="example-full-width" cellspacing="0">
                 <tr>
                     <td>
-                        <mat-form-field [color]="options.value.color">
+                        <mat-form-field [color]="optionsMain.value.color">
                             <input matInput placeholder="Номер телефона" [(ngModel)]="command.phoneNumber" required name="phoneNumber"
                                    [ngModelOptions]="{standalone: true}">
                         </mat-form-field>
                     </td>
                     <td>
-                        <mat-form-field [color]="options.value.color">
+                        <mat-form-field [color]="optionsMain.value.color">
                             <input matInput placeholder="Электронная почта" [(ngModel)]="command.email" required name="email"
                                    [ngModelOptions]="{standalone: true}" type="email">
                         </mat-form-field>
@@ -55,13 +55,13 @@
             </table>
         </form>
 
-        <form class="example-container" [formGroup]="options" [style.fontSize.px]="getFontSize()" #coachForm="ngForm">
+        <form class="example-container" [formGroup]="optionsCoach" [style.fontSize.px]="getFontSize()" #coachForm="ngForm">
             <h3>Добавьте тренера</h3>
-            <mat-form-field [color]="options.value.color">
-                <input matInput placeholder="Имя тренера" [(ngModel)]="currentCoach.name" name="name" required
-                       [ngModelOptions]="{standalone: true}">
+            <mat-form-field [color]="optionsCoach.value.color">
+                <input matInput placeholder="ФИО тренера" [(ngModel)]="currentCoach.name" name="name" required [formControl]="inp">
+                <mat-error *ngIf="inp.invalid">{{getInpErrorMessage()}}</mat-error>
             </mat-form-field>
-            <mat-form-field [color]="options.value.color">
+            <mat-form-field [color]="optionsCoach.value.color">
                 <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="currentCoach.birthDate"
                        required [ngModelOptions]="{standalone: true}">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -71,34 +71,35 @@
             <table class="example-full-width" cellspacing="0">
                 <tr>
                     <td>
-                        <mat-form-field [color]="options.value.color">
+                        <mat-form-field [color]="optionsCoach.value.color">
                             <input matInput placeholder="Серия" [(ngModel)]="currentCoach.passportSeries"
                                    name="passportSeries" required [ngModelOptions]="{standalone: true}" type="number">
                         </mat-form-field>
                     </td>
                     <td>
-                        <mat-form-field [color]="options.value.color">
+                        <mat-form-field [color]="optionsCoach.value.color">
                             <input matInput placeholder="Номер" [(ngModel)]="currentCoach.passportNumber" required
                                    name="passportNumber" [ngModelOptions]="{standalone: true}" type="number">
                         </mat-form-field>
                     </td>
                 </tr>
             </table>
-            <mat-form-field [color]="options.value.color">
+            <mat-form-field [color]="optionsCoach.value.color">
                 <input matInput placeholder="Выдан" [(ngModel)]="currentCoach.passportDesc" required name="passportDesc"
                        [ngModelOptions]="{standalone: true}">
             </mat-form-field>
-            <button mat-stroked-button color="primary" [disabled]="!coachForm.form.valid" (click)="addCoach()">Добавить тренера</button>
+            {{coachForm}}
+            <button mat-stroked-button color="primary" [disabled]="!coachForm.form.valid" (click)="addCoach(coachForm)">Добавить тренера</button>
         </form>
 
 
-        <form class="example-container" [formGroup]="options" [style.fontSize.px]="getFontSize()" #memberForm="ngForm">
+        <form class="example-container" [formGroup]="optionsMember" [style.fontSize.px]="getFontSize()" #memberForm="ngForm">
             <h3>Добавьте участника</h3>
-            <mat-form-field [color]="options.value.color">
-                <input matInput placeholder="Имя участника" [(ngModel)]="currentMember.name" name="name" required
+            <mat-form-field [color]="optionsMember.value.color">
+                <input matInput placeholder="ФИО участника" [(ngModel)]="currentMember.name" name="name" required
                        [ngModelOptions]="{standalone: true}">
             </mat-form-field>
-            <mat-form-field [color]="options.value.color">
+            <mat-form-field [color]="optionsMember.value.color">
                 <input matInput [matDatepicker]="pickerMember" placeholder="Дата рождения" [(ngModel)]="currentMember.birthDate"
                        required [ngModelOptions]="{standalone: true}">
                 <mat-datepicker-toggle matSuffix [for]="pickerMember"></mat-datepicker-toggle>
@@ -108,24 +109,24 @@
             <table class="example-full-width" cellspacing="0">
                 <tr>
                     <td>
-                        <mat-form-field [color]="options.value.color">
+                        <mat-form-field [color]="optionsMember.value.color">
                             <input matInput placeholder="Серия" [(ngModel)]="currentMember.passportSeries"
                                    name="passportSeries" required [ngModelOptions]="{standalone: true}" type="number">
                         </mat-form-field>
                     </td>
                     <td>
-                        <mat-form-field [color]="options.value.color">
+                        <mat-form-field [color]="optionsMember.value.color">
                             <input matInput placeholder="Номер" [(ngModel)]="currentMember.passportNumber" required
                                    name="passportNumber" [ngModelOptions]="{standalone: true}" type="number">
                         </mat-form-field>
                     </td>
                 </tr>
             </table>
-            <mat-form-field [color]="options.value.color">
+            <mat-form-field [color]="optionsMember.value.color">
                 <input matInput placeholder="Выдан" [(ngModel)]="currentMember.passportDesc" required name="passportDesc"
                        [ngModelOptions]="{standalone: true}">
             </mat-form-field>
-            <mat-form-field [color]="options.value.color">
+            <mat-form-field [color]="optionsMember.value.color">
                 <mat-select placeholder="Разряд" [(ngModel)]="currentMember.quality" required name="quality"
                             [ngModelOptions]="{standalone: true}">
                     <mat-option *ngFor="let quality of qualities" [value]="quality">
@@ -133,8 +134,66 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <button mat-stroked-button color="primary" type="submit" [disabled]="!memberForm.form.valid">Добавить участника</button>
+            <button mat-stroked-button color="primary" type="submit" [disabled]="!memberForm.form.valid" (click)="addMember();">Добавить участника</button>
         </form>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="container" *ngIf="command.coaches.length">
+                    <h3>Тренеры команды</h3>
+                    <div>
+                        <div *ngFor="let coach of command.coaches" class="coach-card">
+                            <mat-card>
+                                <mat-card-header>
+                                    <mat-card-title>Тренер: {{coach.name}}</mat-card-title>
+                                    <mat-card-subtitle>Дата рождения: {{coach.birthDate| date: 'dd.MM.yyyy'}}</mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content style="margin-left: 17px">
+                                    <h5>Паспорт</h5>
+                                    <p>
+                                        Серия: {{coach.passportSeries}} Номер: {{coach.passportNumber}} <br>
+                                        Выдан: <span matTooltip="{{coach.passportDesc}}"> {{coach.passportDesc.length > 20 ? coach.passportDesc.substring(0,20) + '...': coach.passportDesc}}</span>
+                                    </p>
+                                </mat-card-content>
+                                <mat-card-actions style="margin-left: 17px">
+                                    <button mat-stroked-button color="warn">Удалить тренера</button>
+                                </mat-card-actions>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="container" *ngIf="command.members.length">
+                    <h3>Участники команды</h3>
+                    <div>
+                        <div *ngFor="let member of command.members" class="coach-card">
+                            <mat-card>
+                                <mat-card-header>
+                                    <mat-card-title>Участник: {{member.name}}</mat-card-title>
+                                    <mat-card-subtitle>
+                                        Дата рождения: {{member.birthDate| date: 'dd.MM.yyyy'}} <br>
+                                        Разряд: {{member.quality}}
+                                    </mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content style="margin-left: 17px">
+                                    <h5>Паспорт</h5>
+                                    <p>
+                                        Серия: {{member.passportSeries}} Номер: {{member.passportNumber}} <br>
+                                        Выдан: <span matTooltip="{{member.passportDesc}}"> {{member.passportDesc.length > 20 ? member.passportDesc.substring(0,20) + '...': member.passportDesc}}</span>
+                                    </p>
+                                </mat-card-content>
+                                <mat-card-actions style="margin-left: 17px">
+                                    <button mat-stroked-button color="warn">Удалить участника</button>
+                                </mat-card-actions>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>

@@ -21,7 +21,8 @@ import {
     MatSnackBarModule,
     MatSortModule,
     MatStepperModule,
-    MatTableModule
+    MatTableModule,
+    MatTooltipModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -68,7 +69,8 @@ import { SharedService } from 'app/client/components/shared/shared.service';
         MatDialogModule,
         MatSnackBarModule,
         MatIconModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatTooltipModule
     ],
     providers: [{ provide: MatPaginatorIntl, useClass: CarsMatPaginatorIntl }],
 
