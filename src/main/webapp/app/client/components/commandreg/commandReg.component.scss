@@ -45,6 +45,10 @@ mat-card:not(:last-of-type) {
     margin-bottom: 0;
 }
 
+.example-container > button {
+    max-width: 200px;
+}
+
 @media (min-width: 1400px) {
     .container {
         max-width: 1370px;

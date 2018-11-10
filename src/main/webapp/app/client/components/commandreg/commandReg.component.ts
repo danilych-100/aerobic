@@ -58,6 +58,17 @@ export class CommandRegistrationComponent implements OnInit {
 
     private nominations = ['Индивидуальные', 'Смешанные пары', 'Трио', 'Группы'];
 
+    private qualities = [
+        'Мастер спорта',
+        'Кандидат в мастера спорта',
+        'I разряд',
+        'II разряд',
+        'III разряд',
+        'I юношеский разряд',
+        'II юношеский разряд',
+        'III юношеский разряд'
+    ];
+
     constructor(fb: FormBuilder, private dateAdapter: DateAdapter<Date>) {
         this.options = fb.group({
             color: 'primary',
@@ -69,6 +80,16 @@ export class CommandRegistrationComponent implements OnInit {
     ngOnInit() {
         this.command = new Command();
         this.currentCoach = new CommandCoach();
+        this.currentMember = new CommandMember();
+    }
+
+    addCoach() {
+        this.command.coaches.push(this.currentCoach);
+        this.currentCoach = new CommandCoach();
+    }
+
+    addMember() {
+        this.command.members.push(this.currentMember);
         this.currentMember = new CommandMember();
     }
 

@@ -4,7 +4,6 @@
     <div class="row">
         <form class="example-container" [formGroup]="options" [style.fontSize.px]="getFontSize()">
             <h3>Общая информация</h3>
-
             <mat-form-field [color]="options.value.color">
                 <mat-select placeholder="Субъект РФ" [(ngModel)]="command.region" required name="region"
                             [ngModelOptions]="{standalone: true}">
@@ -54,10 +53,9 @@
                     </td>
                 </tr>
             </table>
-
         </form>
 
-        <form class="example-container" [formGroup]="options" [style.fontSize.px]="getFontSize()">
+        <form class="example-container" [formGroup]="options" [style.fontSize.px]="getFontSize()" #coachForm="ngForm">
             <h3>Добавьте тренера</h3>
             <mat-form-field [color]="options.value.color">
                 <input matInput placeholder="Имя тренера" [(ngModel)]="currentCoach.name" name="name" required
@@ -90,9 +88,11 @@
                 <input matInput placeholder="Выдан" [(ngModel)]="currentCoach.passportDesc" required name="passportDesc"
                        [ngModelOptions]="{standalone: true}">
             </mat-form-field>
+            <button mat-stroked-button color="primary" [disabled]="!coachForm.form.valid" (click)="addCoach()">Добавить тренера</button>
         </form>
 
-        <form class="example-container" [formGroup]="options" [style.fontSize.px]="getFontSize()">
+
+        <form class="example-container" [formGroup]="options" [style.fontSize.px]="getFontSize()" #memberForm="ngForm">
             <h3>Добавьте участника</h3>
             <mat-form-field [color]="options.value.color">
                 <input matInput placeholder="Имя участника" [(ngModel)]="currentMember.name" name="name" required
@@ -125,6 +125,15 @@
                 <input matInput placeholder="Выдан" [(ngModel)]="currentMember.passportDesc" required name="passportDesc"
                        [ngModelOptions]="{standalone: true}">
             </mat-form-field>
+            <mat-form-field [color]="options.value.color">
+                <mat-select placeholder="Разряд" [(ngModel)]="currentMember.quality" required name="quality"
+                            [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let quality of qualities" [value]="quality">
+                        {{quality}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-stroked-button color="primary" type="submit" [disabled]="!memberForm.form.valid">Добавить участника</button>
         </form>
     </div>
 

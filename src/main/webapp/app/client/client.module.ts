@@ -7,7 +7,9 @@ import {
     MatCheckboxModule,
     MatDatepickerModule,
     MatDialogModule,
+    MatExpansionModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatListModule,
     MatNativeDateModule,
@@ -64,7 +66,9 @@ import { SharedService } from 'app/client/components/shared/shared.service';
         MatListModule,
         MatSelectModule,
         MatDialogModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatIconModule,
+        MatExpansionModule
     ],
     providers: [{ provide: MatPaginatorIntl, useClass: CarsMatPaginatorIntl }],
 
