@@ -1,0 +1,31 @@
+:host {
+  display: block;
+  padding: 48px;
+  overflow: auto;
+}
+
+mat-card:not(:last-of-type) {
+  margin-bottom: 24px;
+}
+
+.wrapper{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.example-card {
+  width: 300px;
+    display: grid;
+    grid-template-columns: 100% 100% 100%;
+    grid-column-gap: 25px;
+    grid-row-gap: 15px;
+}
+
+.example-card > div {
+    min-width: 300px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}

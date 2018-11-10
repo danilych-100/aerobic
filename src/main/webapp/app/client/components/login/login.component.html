@@ -1,0 +1,16 @@
+<h2>Login</h2>
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+  <mat-form-field>
+    <input matInput class="form-control" placeholder="Email" type="text" name="mail" formControlName="email">
+    <mat-error *ngIf="email.invalid"> {{getErrorMessageEmail()}}</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="password" type="password" name="password" formControlName="password">
+    <mat-error *ngIf="password.invalid"> {{getErrorMessagePassword()}}</mat-error>
+  </mat-form-field>
+  <div class="form-buttons"></div>
+  <button [disabled]="loginForm.invalid" type="submit" mat-raised-button color="primary">Login</button>
+
+</form>
+<mat-error class="error" *ngIf="error"> {{error}}</mat-error>
+<button mat-button (click)="close()">Close</button>

@@ -1,0 +1,76 @@
+<ng-template #loading>
+  <mat-spinner class="spinner"
+               color="primary">
+  </mat-spinner>
+</ng-template>
+<form class="form" (ngSubmit)="onSubmit()" #carForm="ngForm"
+      *ngIf="!error && (makes$| async) && (bodyTypes$| async);else loading ">
+  <mat-form-field>
+    <mat-select [(ngModel)]="car.make.id" name="make" #make="ngModel" (selectionChange)="onChangeMake($event)"
+                required placeholder="Machine manufacturer">
+      <mat-option *ngFor="let make of  makes$| async" [value]="make.id">
+        {{make.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="make.errors &&(make.dirty || make.touched)">
+    <span [hidden]="!make.errors.required">
+      make is required
+    </span>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select [(ngModel)]="car.bodyType.id" #bodyType="ngModel" name="bodyType" required placeholder="body Type">
+      <mat-option *ngFor="let bodyType of  bodyTypes$| async" [value]="bodyType.id">
+        {{bodyType.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="bodyType.errors &&(bodyType.dirty || bodyType.touched)">
+    <span [hidden]="!bodyType.errors.required">
+      body type is required
+    </span>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select name="id" required placeholder="model" #model="ngModel" [(ngModel)]="car.model.id">
+      <mat-option *ngFor="let model of models$| async" [value]="model.id">
+        {{model.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="model.errors &&(model.dirty || model.touched)">
+    <span [hidden]="!model.errors.required">
+      model is required
+    </span>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="car.year" name="year" placeholder="year" #year="ngModel" required type="number"
+           min="1990" max="2018"/>
+    <mat-error *ngIf="year.errors &&(year.dirty || year.touched)">
+    <span [hidden]="!year.errors.required">
+      year is required
+    </span>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="car.mileage" #mileage="ngModel" name="mileage" required placeholder="Mileage number"
+           type="number"
+           min="0"/>
+    <mat-error *ngIf="mileage.errors &&(mileage.dirty || mileage.touched)">
+    <span [hidden]="!mileage.errors.required">
+      mileage is required
+    </span>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <textarea matInput placeholder="Description" [(ngModel)]="car.description" #description="ngModel" required
+              name="description"
+              rows="3"></textarea>
+    <mat-error *ngIf="description.errors &&(description.dirty || description.touched)">
+    <span [hidden]="!description.errors.required">
+      description is required
+    </span>
+    </mat-error>
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit" [disabled]="!carForm.form.valid">Submit</button>
+</form>
+<mat-error class="error" *ngIf="error"> {{error}}</mat-error>

@@ -1,0 +1,92 @@
+<mat-form-field>
+
+  <input matInput placeholder="Search clients" [formControl]="searchField">
+
+</mat-form-field>
+<mat-spinner class="spinner"
+             color="primary"
+             *ngIf="dataSource.loading$| async">
+</mat-spinner>
+
+<mat-table class="cars-table mat-elevation-z8"
+           [dataSource]="dataSource"
+           matSort
+           (matSortChange)="sortTableChange($event)"
+           matSortDisableClear>
+
+  <ng-container matColumnDef="time">
+
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Время</mat-header-cell>
+
+    <mat-cell *matCellDef="let client">{{client.time | date: "yy-mm-dd"}}</mat-cell>
+
+  </ng-container>
+
+  <ng-container matColumnDef="doctor">
+
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Врач</mat-header-cell>
+
+    <mat-cell *matCellDef="let client">
+      {{client.doctor}}
+    </mat-cell>
+
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+
+    <mat-header-cell *matHeaderCellDef mat-sort-header>ФИО пацианта</mat-header-cell>
+
+    <mat-cell *matCellDef="let client">
+      {{client.name}}
+    </mat-cell>
+
+  </ng-container>
+  <ng-container matColumnDef="birthDay">
+
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Дата рождения пациента</mat-header-cell>
+
+    <mat-cell *matCellDef="let client">
+      {{client.birthDay | date: "yy-mm-dd"}}
+    </mat-cell>
+
+  </ng-container>
+  <ng-container matColumnDef="address">
+
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Адрес пациента </mat-header-cell>
+
+    <mat-cell *matCellDef="let client">{{client.address}}</mat-cell>
+
+  </ng-container>
+  <ng-container matColumnDef="police">
+
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Номер полиса</mat-header-cell>
+
+    <mat-cell *matCellDef="let client">{{client.police}}</mat-cell>
+
+  </ng-container>
+  <ng-container matColumnDef="numberTicket">
+
+    <mat-header-cell *matHeaderCellDef mat-sort-header>номер квитанции</mat-header-cell>
+
+    <mat-cell *matCellDef="let client">{{client.numberTicket}}</mat-cell>
+
+  </ng-container>
+  <ng-container matColumnDef="cost">
+
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Сумма платежа</mat-header-cell>
+
+    <mat-cell *matCellDef="let client">{{client.cost}}</mat-cell>
+
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
+<mat-paginator [length]="(dataSource.pagination$ | async)?.total"
+               [hidePageSize]="true"
+               [pageIndex]="(dataSource.pagination$ | async)?.currentPage"
+               [pageSize]="(dataSource.pagination$ | async)?.perPage"
+               (page)="changePage($event)">
+
+</mat-paginator>
+<mat-error>{{dataSource.error$ | async}}</mat-error>
+

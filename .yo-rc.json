@@ -1,0 +1,31 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "ru.ksenia"
+    },
+    "jhipsterVersion": "5.6.0",
+    "applicationType": "monolith",
+    "baseName": "medic",
+    "packageName": "ru.ksenia",
+    "packageFolder": "ru/ksenia",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "gradle",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "MjNiOGY3MDQ2YzRkMTA3NzUxOWIxNzg4Yzc5ODRjMzU4Yjc1YTc5OTRhMTMzZjIzNzkwMGU4YTVjZWFmYWJjMDgzMjJkNjBkZjI4OTNhNjdkNjJhYjJlYWIzMTQ5NjAwZTdmMzFkM2FkYWY5MGZjZGE4MTk2YjU5YmU1NjEyOTc=",
+    "clientFramework": "angularX",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "enableTranslation": false
+  }
+}

@@ -1,0 +1,124 @@
+<div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1>Регистрация</h1>
+
+            <div class="alert alert-success" *ngIf="success">
+                <strong>Регистрация завершена!</strong> Сейчас вы будете перенаправлены на начальную страницу и сможете войти в систему.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="error">
+                <strong>Регистрация не удалась!</strong> Попробуйте позже.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="errorUserExists">
+                <strong>Логин уже занять!</strong> Выберете другой.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="errorEmailExists">
+                <strong>Email уже занят!</strong> Выберете другой.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="doNotMatch">
+                Пароль и подтверждение пароля не совпадают!
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form name="form" role="form" (ngSubmit)="register()" #registerForm="ngForm" *ngIf="!success">
+                <div class="form-group">
+                    <label class="form-control-label" for="login">Логин</label>
+                    <input type="text" class="form-control" [(ngModel)]="registerAccount.login" id="login" name="login" #login="ngModel" placeholder="Ваш логин"
+                            required minlength="1" maxlength="50" pattern="^[_.@A-Za-z0-9-]*$">
+                    <div *ngIf="login.dirty && login.invalid">
+                        <small class="form-text text-danger" *ngIf="login.errors.required">
+                            Поле обязательно
+                        </small>
+                        <small class="form-text text-danger" *ngIf="login.errors.minlength"
+                               >
+                            Должен быть как минимум 1 символ.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="login.errors.maxlength"
+                               >
+                            Должно быть не более 50 символов.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="login.errors.pattern"
+                              >
+                            Поле должно состоять только из латинских букв и цифр.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="email">Почта</label>
+                    <input type="email" class="form-control" id="email" name="email" #email="ngModel" placeholder="Ваша почта"
+                            [(ngModel)]="registerAccount.email" minlength=5 maxlength=254 email required>
+                    <div *ngIf="email.dirty && email.invalid">
+                        <small class="form-text text-danger" *ngIf="email.errors.required"
+                               >
+                            Поле обязательно
+                        </small>
+                        <small class="form-text text-danger" *ngIf="email.errors.invalid"
+                              >
+                            Почта не корректна
+                        </small>
+                        <small class="form-text text-danger" *ngIf="email.errors.minlength"
+                              >
+                            Должен быть как минимум 5 символов.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="email.errors.maxlength"
+                              >
+                            Должно быть не более 100 символов.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="password">Новый пароль</label>
+                    <input type="password" class="form-control" id="password" name="password" #password="ngModel" placeholder="Пароль"
+                            [(ngModel)]="registerAccount.password" minlength=4 maxlength=50 required>
+                    <div *ngIf="password.dirty && password.invalid">
+                        <small class="form-text text-danger" *ngIf="password.errors.required"
+                               >
+                            Поле обязательно
+                        </small>
+                        <small class="form-text text-danger" *ngIf="password.errors.minlength"
+                               >
+                            Должен быть как минимум 4 символа.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="password.errors.maxlength"
+                               >
+                            Должно быть не более 50 символов.
+                        </small>
+                    </div>
+                    <jhi-password-strength-bar [passwordToCheck]="registerAccount.password"></jhi-password-strength-bar>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="confirmPassword">Поддтвердите пароль</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" #confirmPasswordInput="ngModel" placeholder="Поддтвердите пароль"
+                            [(ngModel)]="confirmPassword" minlength=4 maxlength=50 required>
+                    <div *ngIf="confirmPasswordInput.dirty && confirmPasswordInput.invalid">
+                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.required"
+                              >
+                            Поле обязательно
+                        </small>
+                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.minlength"
+                             >
+                            Должен быть как минимум 4 символа.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.maxlength"
+                              >
+                            Должно быть не более 50 символов.
+                        </small>
+                    </div>
+                </div>
+
+                <button type="submit" [disabled]="registerForm.form.invalid" class="btn btn-primary">Зарегистрироваться</button>
+            </form>
+            <p></p>
+            <!--<div class="alert alert-warning">
+                <span>If you want to </span>
+                <a class="alert-link" (click)="openLogin()">sign in</a><span>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>
+            </div>-->
+        </div>
+    </div>
+</div>

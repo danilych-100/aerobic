@@ -1,0 +1,19 @@
+<div>
+  <div *ngFor="let doctor of doctors | async" class="example-card">
+      <div>
+          <figure>
+              <img mat-card-image src="{{doctor.image}}" alt="Photo of a Shiba Inu" class="example-card">
+          </figure>
+      </div>
+      <div>
+          <h4>{{doctor.name}}</h4>
+          <h5 style="text-decoration: underline"> {{doctor.position}}</h5>
+          <button *ngIf="enableActions" (click)="onChoseDoctor(doctor)" mat-raised-button color="primary" style="margin-top: 170px">
+              Записаться
+          </button>
+      </div>
+      <div style="float: right">
+          <p>{{doctor.description}}</p>
+      </div>
+  </div>
+</div>

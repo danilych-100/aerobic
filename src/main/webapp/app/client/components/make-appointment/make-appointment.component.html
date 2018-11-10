@@ -1,0 +1,66 @@
+<div class="wrapper">
+  <ng-template #loading>
+    <mat-spinner class="spinner"
+                 color="primary">
+    </mat-spinner>
+  </ng-template>
+  <h4>Запсь на прием</h4>
+  <form class="form" (ngSubmit)="onSubmit()" #makeForm="ngForm">
+    <div class="field">
+      <label>
+        ФИО пациента:
+      </label>
+      <mat-form-field>
+        <input matInput [(ngModel)]="record.nameClient" #record="ngModel" name="nameClient" required
+               placeholder="ФИО пациента"/>
+        <mat-error *ngIf="record.errors &&(record.dirty || record.touched)">
+    <span [hidden]="!record.errors.required">
+      ФИО обезательно
+    </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="field">
+      <label>
+        Номер полиса:
+      </label>
+      <mat-form-field>
+        <input matInput placeholder="Номер полиса" [(ngModel)]="record.police" #police="ngModel" required
+               name="police">
+        <mat-error *ngIf="police.errors &&(police.dirty || police.touched)">
+    <span [hidden]="!police.errors.required">
+      Номер полиса обезателен
+    </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="field">
+      <label>
+        Дата рождения:
+      </label>
+      <mat-form-field class="date-filter">
+        <input matInput
+               readonly
+               placeholder="Ведите дату рождения"
+               name="birthDay"
+               [matDatepicker]="datePicker"
+               [(ngModel)]="record.birthDay">
+        <mat-datepicker-toggle class="date-filter-icon" matSuffix [for]="datePicker"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="field-checkbox">
+      <label class="example-margin">Пол пациента:</label>
+      <mat-radio-group [(ngModel)]="record.gender" name="gender">
+        <mat-radio-button class="example-margin" value="male">Мужской</mat-radio-button>
+        <mat-radio-button class="example-margin" value="female">Женский</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="wrapper-button">
+      <button class="form-button" mat-raised-button color="primary" type="submit" [disabled]="!makeForm.form.valid">
+        Выбор специалиста
+      </button>
+    </div>
+  </form>
+  <mat-error class="error" *ngIf="error"> {{error}}</mat-error>
+</div>

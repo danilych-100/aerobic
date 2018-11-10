@@ -1,0 +1,35 @@
+<form #bankForm="ngForm" (ngSubmit)="onSubmit()">
+  <div class="cc">
+    <span class="provider mastercard">MasterCard</span>
+    <span class="provider amex">American Express</span>
+    <span class="provider visa">Visa</span>
+
+    <!-- card number -->
+    <div style="width: 100%" class="number">
+      <input
+        [(ngModel)]="payment.bankcardNumber" #bankcardNumber="ngModel" name="bankcardNumber" required
+        placeholder="Mileage number"
+        style="width: 100%"
+        placeholder="Enter your 16-digit card number"
+        appCreditCard>
+    </div>
+
+    <!-- valid / ccv -->
+    <div class="date">
+      <span class="instructions valid">Valid Thru</span>
+      <input type="text" maxlength="5" [(ngModel)]="payment.date" #date="ngModel" name="date" required
+             placeholder="00/00">
+
+      <span class="instructions valid">CCV</span>
+      <input type="text" [(ngModel)]="payment.cvc" #date="ngModel" name="cvc" required maxlength="3" placeholder="123">
+    </div>
+
+    <!-- name on card -->
+    <div class="name">
+      <input class="full-name" [(ngModel)]="payment.holder" #holder="ngModel" name="holder" required type="text"
+             maxlength="" inputmode='numeric' placeholder="John Doe">
+      <span class="instructions">Name on Card</span>
+    </div>
+    <button mat-raised-button color="accent" type="submit" [disabled]="!bankForm.form.valid">Оплатить</button>
+  </div>
+</form>

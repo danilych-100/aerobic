@@ -1,0 +1,36 @@
+@import '~@angular/material/theming';
+@import '~@covalent/core/theming/all-theme';
+
+$typography: mat-typography-config($font-family: 'Roboto, monospace', $headline: mat-typography-level(32px, 48px, 700));
+
+@include mat-core($typography);
+
+$primary: mat-palette($mat-blue, 700);
+$accent: mat-palette($mat-orange, 800, A100, A400);
+
+$warn: mat-palette($mat-red, 600);
+
+$theme: mat-light-theme($primary, $accent, $warn);
+
+@include angular-material-theme($theme);
+@include covalent-theme($theme, $typography);
+
+.blue-orange {
+    $primary2: mat-palette($mat-blue, 700);
+    $accent2: mat-palette($mat-orange, 800);
+    $warn2: mat-palette($mat-red, 600);
+
+    $blue-orange: mat-light-theme($primary2, $accent2, $warn2);
+
+    @include angular-material-theme($blue-orange);
+    @include covalent-theme($blue-orange);
+}
+.dialog-no-padding-panel .mat-dialog-container{
+    width: 70vw;
+    height: 89vh;
+    padding: 0;
+    border-radius: 30px 30px 0 0  ;
+    .mat-horizontal-stepper-header-container{
+        background: mat-color(map-get($theme, primary),500);
+    }
+}

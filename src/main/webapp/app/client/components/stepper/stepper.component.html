@@ -1,0 +1,50 @@
+<mat-horizontal-stepper #stepper [linear]="false" class="StepperContent">
+  <mat-step>
+    <ng-template matStepLabel>Персональные данные</ng-template>
+    <div class="content">
+      <app-make-appointment (submitRecord)="submitRecord($event)"></app-make-appointment>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Выбор врача</ng-template>
+    <app-doctors (choseDoctor)="addDoctor($event)" [enableActions]="true"></app-doctors>
+    <button mat-raised-button class="miniMargin" color="primary" matStepperPrevious>Back</button>
+    <button mat-raised-button class="miniMargin" color="primary" matStepperNext>Next</button>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Выбор времени</ng-template>
+    <div class="date">
+      <h2 style="text-align: center">Выбор времени</h2>
+      <mat-form-field class="date-filter">
+        <input matInput
+               [ngModel]="dateValue | date: 'mediumDate'"
+               autocomplete="off"
+               placeholder="ведите Дату"
+               readonly>
+        <input matInput
+               (dateChange)="onChangeDate($event)"
+               [hidden]="true"
+               [matDatepicker]="datePicker"
+               [(ngModel)]="dateValue">
+        <mat-datepicker-toggle class="date-filter-icon" matSuffix [for]="datePicker"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput
+               type="time"
+               placeholder="ведите время"
+               [(ngModel)]="timeValue">
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" (click)="addDate()">Записаться</button>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Оплата</ng-template>
+    <app-bank-card (onPay)="addPayment($event)"></app-bank-card>
+    <div class="actions">
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+  </mat-step>
+</mat-horizontal-stepper>

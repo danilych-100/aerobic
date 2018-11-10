@@ -1,0 +1,31 @@
+<nav class="mat-tab-nav-bar" mat-tab-nav-bar >
+    <a class="link" *ngFor="let link of navLinks"
+       mat-tab-link
+       routerLinkActive
+       #rla='routerLinkActive'
+       [active]="rla.isActive"
+       [routerLink]="[link.path]">
+        {{link.label}}
+    </a>
+    <a mat-tab-link
+       routerLinkActive
+       [routerLink]="'/table'"
+       *jhiHasAnyAuthority="'ROLE_ADMIN'"
+       #linkAdmin='routerLinkActive'
+       [active]="linkAdmin.isActive">
+        Просмотр записей
+    </a>
+    <a mat-tab-link (click)="logout()" id="logout" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+        <span style="margin-right: 20px; font-size: 16px">Администратор</span>
+        <fa-icon [icon]="'sign-out-alt'" [fixedWidth]="true"></fa-icon>
+        <span>Выйти</span>
+    </a>
+
+    <!--<button mat-raised-button color="primary" (click)="openLogin()">Login</button>-->
+    <!--<button mat-raised-button color="primary" (click)="openMakeAppointment()">Записаться на прием</button>-->
+</nav>
+<mat-progress-bar
+    *ngIf="loading" color="primary" mode="indeterminate">
+</mat-progress-bar>
+<router-outlet>
+</router-outlet>
