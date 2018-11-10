@@ -1,0 +1,131 @@
+<div class="container command-registration-container" style="margin-top: 15px; margin-left: 30px">
+    <h1>Регистрация команды</h1>
+
+    <div class="row">
+        <form class="example-container" [formGroup]="options" [style.fontSize.px]="getFontSize()">
+            <h3>Общая информация</h3>
+
+            <mat-form-field [color]="options.value.color">
+                <mat-select placeholder="Субъект РФ" [(ngModel)]="command.region" required name="region"
+                            [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let reg of regions" [value]="reg">
+                        {{reg}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field [color]="options.value.color">
+                <input matInput placeholder="Название команды" [(ngModel)]="command.name" name="name" required
+                       [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <mat-form-field [color]="options.value.color">
+                <mat-select placeholder="Категория" [(ngModel)]="command.ageCategory" name="ageCategory" required
+                            [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let cat of categories" [value]="cat">
+                        {{cat}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field [color]="options.value.color">
+                <mat-select placeholder="Номинация" [(ngModel)]="command.nomination" name="nomination" required
+                            [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let nom of nominations" [value]="nom">
+                        {{nom}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field [color]="options.value.color">
+                <input matInput placeholder="Количество участников" [(ngModel)]="command.memberCount" name="memberCount"
+                       required [ngModelOptions]="{standalone: true}" type="number" min="1">
+            </mat-form-field>
+            <h5>Контакты</h5>
+            <table class="example-full-width" cellspacing="0">
+                <tr>
+                    <td>
+                        <mat-form-field [color]="options.value.color">
+                            <input matInput placeholder="Номер телефона" [(ngModel)]="command.phoneNumber" required name="phoneNumber"
+                                   [ngModelOptions]="{standalone: true}">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field [color]="options.value.color">
+                            <input matInput placeholder="Электронная почта" [(ngModel)]="command.email" required name="email"
+                                   [ngModelOptions]="{standalone: true}" type="email">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+
+        </form>
+
+        <form class="example-container" [formGroup]="options" [style.fontSize.px]="getFontSize()">
+            <h3>Добавьте тренера</h3>
+            <mat-form-field [color]="options.value.color">
+                <input matInput placeholder="Имя тренера" [(ngModel)]="currentCoach.name" name="name" required
+                       [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <mat-form-field [color]="options.value.color">
+                <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="currentCoach.birthDate"
+                       required [ngModelOptions]="{standalone: true}">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <h5>Паспорт</h5>
+            <table class="example-full-width" cellspacing="0">
+                <tr>
+                    <td>
+                        <mat-form-field [color]="options.value.color">
+                            <input matInput placeholder="Серия" [(ngModel)]="currentCoach.passportSeries"
+                                   name="passportSeries" required [ngModelOptions]="{standalone: true}" type="number">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field [color]="options.value.color">
+                            <input matInput placeholder="Номер" [(ngModel)]="currentCoach.passportNumber" required
+                                   name="passportNumber" [ngModelOptions]="{standalone: true}" type="number">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+            <mat-form-field [color]="options.value.color">
+                <input matInput placeholder="Выдан" [(ngModel)]="currentCoach.passportDesc" required name="passportDesc"
+                       [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+        </form>
+
+        <form class="example-container" [formGroup]="options" [style.fontSize.px]="getFontSize()">
+            <h3>Добавьте участника</h3>
+            <mat-form-field [color]="options.value.color">
+                <input matInput placeholder="Имя участника" [(ngModel)]="currentMember.name" name="name" required
+                       [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <mat-form-field [color]="options.value.color">
+                <input matInput [matDatepicker]="pickerMember" placeholder="Дата рождения" [(ngModel)]="currentMember.birthDate"
+                       required [ngModelOptions]="{standalone: true}">
+                <mat-datepicker-toggle matSuffix [for]="pickerMember"></mat-datepicker-toggle>
+                <mat-datepicker #pickerMember></mat-datepicker>
+            </mat-form-field>
+            <h5>Паспорт</h5>
+            <table class="example-full-width" cellspacing="0">
+                <tr>
+                    <td>
+                        <mat-form-field [color]="options.value.color">
+                            <input matInput placeholder="Серия" [(ngModel)]="currentMember.passportSeries"
+                                   name="passportSeries" required [ngModelOptions]="{standalone: true}" type="number">
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field [color]="options.value.color">
+                            <input matInput placeholder="Номер" [(ngModel)]="currentMember.passportNumber" required
+                                   name="passportNumber" [ngModelOptions]="{standalone: true}" type="number">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+            <mat-form-field [color]="options.value.color">
+                <input matInput placeholder="Выдан" [(ngModel)]="currentMember.passportDesc" required name="passportDesc"
+                       [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+        </form>
+    </div>
+
+</div>
