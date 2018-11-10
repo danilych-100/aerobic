@@ -69,14 +69,85 @@ export class CommandRegistrationComponent implements OnInit {
     ];
 
     email = new FormControl('', [Validators.required, Validators.email]);
-    inp = new FormControl('', [Validators.required]);
+    passSeries = new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]);
+    passNumber = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
+    passSeriesMember = new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]);
+    passNumberMember = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
+    inpNameCoach = new FormControl('', [Validators.required]);
+    inpNameMember = new FormControl('', [Validators.required]);
+    inpDateCoach = new FormControl('', [Validators.required]);
+    inpDateMember = new FormControl('', [Validators.required]);
+    inpPassDescCoach = new FormControl('', [Validators.required]);
+    inpPassDescMember = new FormControl('', [Validators.required]);
+    inpNameTeam = new FormControl('', [Validators.required]);
+    inpMemberCountTeam = new FormControl('', [Validators.required]);
+    inpRegionTeam = new FormControl('', [Validators.required]);
+    inpNominationTeam = new FormControl('', [Validators.required]);
+    inpCategoryTeam = new FormControl('', [Validators.required]);
+    phone = new FormControl('', [Validators.required]);
+    quality = new FormControl('', [Validators.required]);
 
     getMailErrorMessage() {
-        return this.email.hasError('required') ? 'Поле не должно быть пустым' : this.email.hasError('email') ? 'Not a valid email' : '';
+        return this.email.hasError('email') ? 'Не корректный email' : '';
     }
-    getInpErrorMessage() {
-        return this.email.hasError('required') ? 'You must enter a value' : '';
+    getPhoneErrorMessage() {
+        return '';
     }
+    getQualityErrorMessage() {
+        return this.quality.hasError('required') ? 'Поле не должно быть пустым' : '';
+    }
+    getPassSeriesErrorMessage() {
+        return this.passSeries.hasError('minlength') || this.passSeries.hasError('maxlength') ? 'Серия паспорта должна быть 4 символа' : '';
+    }
+    getPassNumberErrorMessage() {
+        return this.passNumber.hasError('minlength') || this.passNumber.hasError('maxlength')
+            ? 'Номер паспорта должен быть 6 символов'
+            : '';
+    }
+    getPassSeriesMemberErrorMessage() {
+        return this.passSeriesMember.hasError('minlength') || this.passSeriesMember.hasError('maxlength')
+            ? 'Серия паспорта должна быть 4 символа'
+            : '';
+    }
+    getPassNumberMemberErrorMessage() {
+        return this.passNumberMember.hasError('minlength') || this.passNumberMember.hasError('maxlength')
+            ? 'Номер паспорта должен быть 6 символов'
+            : '';
+    }
+    getInpDateCoachErrorMessage() {
+        return this.inpDateCoach.hasError('required') ? 'Поле не должно быть пустым' : '';
+    }
+    getInpDateMemberErrorMessage() {
+        return this.inpDateMember.hasError('required') ? 'Поле не должно быть пустым' : '';
+    }
+    getInpNameCoachErrorMessage() {
+        return this.inpNameCoach.hasError('required') ? 'Поле не должно быть пустым' : '';
+    }
+    getInpNameMemberErrorMessage() {
+        return this.inpNameMember.hasError('required') ? 'Поле не должно быть пустым' : '';
+    }
+    getInpPassDescCoachErrorMessage() {
+        return this.inpPassDescCoach.hasError('required') ? 'Поле не должно быть пустым' : '';
+    }
+    getInpPassDescMemberErrorMessage() {
+        return this.inpPassDescMember.hasError('required') ? 'Поле не должно быть пустым' : '';
+    }
+    getInpNameTeamErrorMessage() {
+        return this.inpNameTeam.hasError('required') ? 'Поле не должно быть пустым' : '';
+    }
+    getInpMemberCountTeamErrorMessage() {
+        return this.inpMemberCountTeam.hasError('required') ? 'Поле не должно быть пустым' : '';
+    }
+    getInpRegionTeamErrorMessage() {
+        return this.inpRegionTeam.hasError('required') ? 'Поле не должно быть пустым' : '';
+    }
+    getInpNominationTeamErrorMessage() {
+        return this.inpNominationTeam.hasError('required') ? 'Поле не должно быть пустым' : '';
+    }
+    getInpCategoryTeamErrorMessage() {
+        return this.inpCategoryTeam.hasError('required') ? 'Поле не должно быть пустым' : '';
+    }
+
     constructor(private fb: FormBuilder, private dateAdapter: DateAdapter<Date>) {
         this.optionsMain = this.fb.group({
             color: 'primary',
@@ -109,6 +180,14 @@ export class CommandRegistrationComponent implements OnInit {
         newCoach.passportSeries = this.currentCoach.passportSeries;
         this.command.coaches.push(newCoach);
         this.currentCoach = new CommandCoach();
+    }
+
+    removeCoach(index: number) {
+        this.command.coaches.splice(index, 1);
+    }
+
+    removeMember(index: number) {
+        this.command.members.splice(index, 1);
     }
 
     addMember() {

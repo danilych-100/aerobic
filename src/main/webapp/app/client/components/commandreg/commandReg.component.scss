@@ -56,6 +56,9 @@ mat-card:not(:last-of-type) {
     display: inline-block;
     margin: 10px;
 }
+.example-full-width tr td {
+    vertical-align: top;
+}
 
 @media (min-width: 1400px) {
     .container {

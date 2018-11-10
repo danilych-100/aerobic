@@ -1,140 +1,174 @@
 <div class="container command-registration-container" style="margin-top: 15px; margin-left: 30px">
     <h1>Регистрация команды</h1>
 
-    <div class="row">
+    <div class="row" style="margin-bottom: 20px">
         <form class="example-container" [formGroup]="optionsMain" [style.fontSize.px]="getFontSize()">
             <h3>Общая информация</h3>
             <mat-form-field [color]="optionsMain.value.color">
-                <mat-select placeholder="Субъект РФ" [(ngModel)]="command.region" required name="region"
-                            [ngModelOptions]="{standalone: true}">
+                <mat-select placeholder="Субъект РФ" [(ngModel)]="command.region" required name="region" [formControl]="inpRegionTeam"
+                            >
                     <mat-option *ngFor="let reg of regions" [value]="reg">
                         {{reg}}
                     </mat-option>
                 </mat-select>
+                <mat-error *ngIf="inpRegionTeam.invalid">{{getInpRegionTeamErrorMessage()}}</mat-error>
             </mat-form-field>
             <mat-form-field [color]="optionsMain.value.color">
-                <input matInput placeholder="Название команды" [(ngModel)]="command.name" name="name" required
-                       [ngModelOptions]="{standalone: true}">
+                <input matInput placeholder="Название команды" [(ngModel)]="command.name" name="name" required [formControl]="inpNameTeam"
+                       >
+                <mat-error *ngIf="inpNameTeam.invalid">{{getInpNameTeamErrorMessage()}}</mat-error>
             </mat-form-field>
             <mat-form-field [color]="optionsMain.value.color">
-                <mat-select placeholder="Категория" [(ngModel)]="command.ageCategory" name="ageCategory" required
-                            [ngModelOptions]="{standalone: true}">
+                <mat-select placeholder="Категория" [(ngModel)]="command.ageCategory" name="ageCategory" required [formControl]="inpCategoryTeam"
+                            >
                     <mat-option *ngFor="let cat of categories" [value]="cat">
                         {{cat}}
                     </mat-option>
                 </mat-select>
+                <mat-error *ngIf="inpCategoryTeam.invalid">{{getInpCategoryTeamErrorMessage()}}</mat-error>
             </mat-form-field>
             <mat-form-field [color]="optionsMain.value.color">
-                <mat-select placeholder="Номинация" [(ngModel)]="command.nomination" name="nomination" required
-                            [ngModelOptions]="{standalone: true}">
+                <mat-select placeholder="Номинация" [(ngModel)]="command.nomination" name="nomination" required [formControl]="inpNominationTeam"
+                            >
                     <mat-option *ngFor="let nom of nominations" [value]="nom">
                         {{nom}}
                     </mat-option>
                 </mat-select>
+                <mat-error *ngIf="inpNominationTeam.invalid">{{getInpNominationTeamErrorMessage()}}</mat-error>
             </mat-form-field>
             <mat-form-field [color]="optionsMain.value.color">
-                <input matInput placeholder="Количество участников" [(ngModel)]="command.memberCount" name="memberCount"
-                       required [ngModelOptions]="{standalone: true}" type="number" min="1">
+                <input matInput placeholder="Количество участников" [(ngModel)]="command.memberCount" name="memberCount" [formControl]="inpMemberCountTeam"
+                       required  type="number" min="1">
+                <mat-error *ngIf="inpMemberCountTeam.invalid">{{getInpMemberCountTeamErrorMessage()}}</mat-error>
             </mat-form-field>
             <h5>Контакты</h5>
             <table class="example-full-width" cellspacing="0">
                 <tr>
                     <td>
                         <mat-form-field [color]="optionsMain.value.color">
-                            <input matInput placeholder="Номер телефона" [(ngModel)]="command.phoneNumber" required name="phoneNumber"
-                                   [ngModelOptions]="{standalone: true}">
+                            <input matInput placeholder="Номер телефона" [(ngModel)]="command.phoneNumber" required name="phoneNumber" [formControl]="phone"
+                                   >
                         </mat-form-field>
+                        <mat-error *ngIf="phone.invalid">{{getPhoneErrorMessage()}}</mat-error>
                     </td>
                     <td>
                         <mat-form-field [color]="optionsMain.value.color">
-                            <input matInput placeholder="Электронная почта" [(ngModel)]="command.email" required name="email"
-                                   [ngModelOptions]="{standalone: true}" type="email">
+                            <input matInput placeholder="Электронная почта" [(ngModel)]="command.email" required name="email" [formControl]="email"
+                                    type="email">
                         </mat-form-field>
+                        <mat-error *ngIf="email.invalid">{{getMailErrorMessage()}}</mat-error>
                     </td>
                 </tr>
             </table>
+            <button mat-raised-button
+                    [disabled]="inpRegionTeam.invalid ||
+                     inpNameTeam.invalid ||
+                     inpCategoryTeam.invalid ||
+                     inpNominationTeam.invalid ||
+                     inpMemberCountTeam.invalid ||
+                     phone.invalid ||
+                     email.invalid ||
+                    !command.coaches.length || !command.members.length"
+                    color="primary" style="max-width: 250px">
+                Зарегистрировать команду
+            </button>
+            <mat-hint *ngIf="!command.coaches.length">Должен быть добавлен хотя бы 1 тренер</mat-hint>
+            <mat-hint *ngIf="!command.members.length">Должен быть добавлен хотя бы 1 участник</mat-hint>
         </form>
 
         <form class="example-container" [formGroup]="optionsCoach" [style.fontSize.px]="getFontSize()" #coachForm="ngForm">
             <h3>Добавьте тренера</h3>
             <mat-form-field [color]="optionsCoach.value.color">
-                <input matInput placeholder="ФИО тренера" [(ngModel)]="currentCoach.name" name="name" required [formControl]="inp">
-                <mat-error *ngIf="inp.invalid">{{getInpErrorMessage()}}</mat-error>
+                <input matInput placeholder="ФИО тренера" [(ngModel)]="currentCoach.name" name="name" required [formControl]="inpNameCoach">
+                <mat-error *ngIf="inpNameCoach.invalid">{{getInpNameCoachErrorMessage()}}</mat-error>
             </mat-form-field>
             <mat-form-field [color]="optionsCoach.value.color">
-                <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="currentCoach.birthDate"
-                       required [ngModelOptions]="{standalone: true}">
+                <input matInput [matDatepicker]="picker" placeholder="Дата рождения" [(ngModel)]="currentCoach.birthDate" [formControl]="inpDateCoach"
+                       required >
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="inpDateCoach.invalid">{{getInpDateCoachErrorMessage()}}</mat-error>
             </mat-form-field>
             <h5>Паспорт</h5>
             <table class="example-full-width" cellspacing="0">
                 <tr>
                     <td>
                         <mat-form-field [color]="optionsCoach.value.color">
-                            <input matInput placeholder="Серия" [(ngModel)]="currentCoach.passportSeries"
-                                   name="passportSeries" required [ngModelOptions]="{standalone: true}" type="number">
+                            <input matInput placeholder="Серия" [(ngModel)]="currentCoach.passportSeries" [formControl]="passSeries"
+                                   name="passportSeries" required >
                         </mat-form-field>
+                        <mat-error *ngIf="passSeries.invalid">{{getPassSeriesErrorMessage()}}</mat-error>
                     </td>
                     <td>
                         <mat-form-field [color]="optionsCoach.value.color">
-                            <input matInput placeholder="Номер" [(ngModel)]="currentCoach.passportNumber" required
-                                   name="passportNumber" [ngModelOptions]="{standalone: true}" type="number">
+                            <input matInput placeholder="Номер" [(ngModel)]="currentCoach.passportNumber" required [formControl]="passNumber"
+                                   name="passportNumber">
                         </mat-form-field>
+                        <mat-error *ngIf="passNumber.invalid">{{getPassNumberErrorMessage()}}</mat-error>
                     </td>
                 </tr>
             </table>
             <mat-form-field [color]="optionsCoach.value.color">
-                <input matInput placeholder="Выдан" [(ngModel)]="currentCoach.passportDesc" required name="passportDesc"
-                       [ngModelOptions]="{standalone: true}">
+                <input matInput placeholder="Выдан" [(ngModel)]="currentCoach.passportDesc" required name="passportDesc" [formControl]="inpPassDescCoach"
+                       >
+                <mat-error *ngIf="inpPassDescCoach.invalid">{{getInpPassDescCoachErrorMessage()}}</mat-error>
             </mat-form-field>
-            {{coachForm}}
-            <button mat-stroked-button color="primary" [disabled]="!coachForm.form.valid" (click)="addCoach(coachForm)">Добавить тренера</button>
+            <button mat-stroked-button color="primary"
+                    [disabled]="inpNameCoach.invalid || inpDateCoach.invalid || passSeries.invalid || passNumber.invalid || inpPassDescCoach.invalid"
+                    (click)="addCoach(coachForm)">Добавить тренера</button>
         </form>
 
 
         <form class="example-container" [formGroup]="optionsMember" [style.fontSize.px]="getFontSize()" #memberForm="ngForm">
             <h3>Добавьте участника</h3>
             <mat-form-field [color]="optionsMember.value.color">
-                <input matInput placeholder="ФИО участника" [(ngModel)]="currentMember.name" name="name" required
-                       [ngModelOptions]="{standalone: true}">
+                <input matInput placeholder="ФИО участника" [(ngModel)]="currentMember.name" name="name" required [formControl]="inpNameMember"
+                       >
+                <mat-error *ngIf="inpNameMember.invalid">{{getInpNameMemberErrorMessage()}}</mat-error>
             </mat-form-field>
             <mat-form-field [color]="optionsMember.value.color">
-                <input matInput [matDatepicker]="pickerMember" placeholder="Дата рождения" [(ngModel)]="currentMember.birthDate"
-                       required [ngModelOptions]="{standalone: true}">
+                <input matInput [matDatepicker]="pickerMember" placeholder="Дата рождения" [(ngModel)]="currentMember.birthDate" [formControl]="inpDateMember"
+                       required >
                 <mat-datepicker-toggle matSuffix [for]="pickerMember"></mat-datepicker-toggle>
                 <mat-datepicker #pickerMember></mat-datepicker>
+                <mat-error *ngIf="inpDateMember.invalid">{{getInpDateMemberErrorMessage()}}</mat-error>
             </mat-form-field>
             <h5>Паспорт</h5>
             <table class="example-full-width" cellspacing="0">
                 <tr>
                     <td>
                         <mat-form-field [color]="optionsMember.value.color">
-                            <input matInput placeholder="Серия" [(ngModel)]="currentMember.passportSeries"
-                                   name="passportSeries" required [ngModelOptions]="{standalone: true}" type="number">
+                            <input matInput placeholder="Серия" [(ngModel)]="currentMember.passportSeries" [formControl]="passSeriesMember"
+                                   name="passportSeries" required>
+                            <mat-error *ngIf="passSeriesMember.invalid">{{getPassSeriesMemberErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </td>
                     <td>
                         <mat-form-field [color]="optionsMember.value.color">
-                            <input matInput placeholder="Номер" [(ngModel)]="currentMember.passportNumber" required
-                                   name="passportNumber" [ngModelOptions]="{standalone: true}" type="number">
+                            <input matInput placeholder="Номер" [(ngModel)]="currentMember.passportNumber" required [formControl]="passNumberMember"
+                                   name="passportNumber">
+                            <mat-error *ngIf="passNumberMember.invalid">{{getPassNumberMemberErrorMessage()}}</mat-error>
                         </mat-form-field>
                     </td>
                 </tr>
             </table>
             <mat-form-field [color]="optionsMember.value.color">
-                <input matInput placeholder="Выдан" [(ngModel)]="currentMember.passportDesc" required name="passportDesc"
-                       [ngModelOptions]="{standalone: true}">
+                <input matInput placeholder="Выдан" [(ngModel)]="currentMember.passportDesc" required name="passportDesc" [formControl]="inpPassDescMember"
+                       >
+                <mat-error *ngIf="inpPassDescMember.invalid">{{getInpPassDescMemberErrorMessage()}}</mat-error>
             </mat-form-field>
             <mat-form-field [color]="optionsMember.value.color">
-                <mat-select placeholder="Разряд" [(ngModel)]="currentMember.quality" required name="quality"
-                            [ngModelOptions]="{standalone: true}">
+                <mat-select placeholder="Разряд" [(ngModel)]="currentMember.quality" required name="quality" [formControl]="quality"
+                            >
                     <mat-option *ngFor="let quality of qualities" [value]="quality">
                         {{quality}}
                     </mat-option>
                 </mat-select>
+                <mat-error *ngIf="quality.invalid">{{getQualityErrorMessage()}}</mat-error>
             </mat-form-field>
-            <button mat-stroked-button color="primary" type="submit" [disabled]="!memberForm.form.valid" (click)="addMember();">Добавить участника</button>
+            <button mat-stroked-button color="primary" type="submit"
+                    [disabled]="inpNameMember.invalid || inpDateMember.invalid || passSeriesMember.invalid || passNumberMember.invalid || inpPassDescMember.invalid"
+                    (click)="addMember();">Добавить участника</button>
         </form>
     </div>
 
@@ -144,7 +178,7 @@
                 <div class="container" *ngIf="command.coaches.length">
                     <h3>Тренеры команды</h3>
                     <div>
-                        <div *ngFor="let coach of command.coaches" class="coach-card">
+                        <div *ngFor="let coach of command.coaches; let i = index" class="coach-card">
                             <mat-card>
                                 <mat-card-header>
                                     <mat-card-title>Тренер: {{coach.name}}</mat-card-title>
@@ -158,7 +192,7 @@
                                     </p>
                                 </mat-card-content>
                                 <mat-card-actions style="margin-left: 17px">
-                                    <button mat-stroked-button color="warn">Удалить тренера</button>
+                                    <button mat-stroked-button color="warn" (click)="removeCoach(i)">Удалить тренера</button>
                                 </mat-card-actions>
                             </mat-card>
                         </div>
@@ -186,7 +220,7 @@
                                     </p>
                                 </mat-card-content>
                                 <mat-card-actions style="margin-left: 17px">
-                                    <button mat-stroked-button color="warn">Удалить участника</button>
+                                    <button mat-stroked-button color="warn" (click)="removeMember(i)">Удалить участника</button>
                                 </mat-card-actions>
                             </mat-card>
                         </div>
