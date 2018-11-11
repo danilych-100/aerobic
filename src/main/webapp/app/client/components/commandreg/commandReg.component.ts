@@ -219,6 +219,7 @@ export class CommandRegistrationComponent implements OnInit {
         this.command = new Command();
         this.currentCoach = new CommandCoach();
         this.currentMember = new CommandMember();
+        this.openTab(1);
     }
 
     getNormilizedName(count: number) {
@@ -336,6 +337,50 @@ export class CommandRegistrationComponent implements OnInit {
                 this.isOk = false;
             }
         );
+    }
+
+    openTab(index) {
+        document.getElementById('tabContent_1').style.display = 'none';
+        document.getElementById('tabContent_2').style.display = 'none';
+        document.getElementById('tabContent_3').style.display = 'none';
+        document.getElementById('tabContent_4').style.display = 'none';
+        const tab1 = document.getElementById('tab1');
+        if (tab1.classList.contains('active')) {
+            tab1.classList.remove('active');
+            if (index === 1) {
+                tab1.classList.add('active');
+            }
+        } else if (index === 1) {
+            tab1.classList.add('active');
+        }
+        const tab2 = document.getElementById('tab2');
+        if (tab2.classList.contains('active')) {
+            tab2.classList.remove('active');
+            if (index === 2) {
+                tab2.classList.add('active');
+            }
+        } else if (index === 2) {
+            tab2.classList.add('active');
+        }
+        const tab3 = document.getElementById('tab3');
+        if (tab3.classList.contains('active')) {
+            tab3.classList.remove('active');
+            if (index === 3) {
+                tab3.classList.add('active');
+            }
+        } else if (index === 3) {
+            tab3.classList.add('active');
+        }
+        const tab4 = document.getElementById('tab4');
+        if (tab4.classList.contains('active')) {
+            tab4.classList.remove('active');
+            if (index === 4) {
+                tab4.classList.add('active');
+            }
+        } else if (index === 4) {
+            tab4.classList.add('active');
+        }
+        document.getElementById(`tabContent_${index}`).style.display = 'block';
     }
 
     getFontSize() {

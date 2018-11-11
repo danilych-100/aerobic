@@ -1,40 +1,8 @@
-/*:host {
-  display: block;
-  padding: 48px;
-  overflow: auto;
-}
-
-mat-card:not(:last-of-type) {
-  margin-bottom: 24px;
-}
-
-.wrapper{
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-.example-card {
-  width: 300px;
-    display: grid;
-    grid-template-columns: 100% 100% 100%;
-    grid-column-gap: 25px;
-    grid-row-gap: 15px;
-}
-
-.example-card > div {
-    min-width: 300px;
-}
-
-.example-header-image {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-  background-size: cover;
-}*/
-
 .example-container {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
     width: 450px;
+    margin-left: 30px;
 }
 
 .example-container > * {
@@ -70,4 +38,125 @@ mat-card:not(:last-of-type) {
     .container {
         max-width: 1470px;
     }
+}
+
+/*Vertical Tabs*/
+.tab_div {
+    width: 100%;
+    transform: translateZ(0);
+}
+
+.tabs_menu {
+    /*   background-color:blue; */
+    width: 20%;
+    float: left;
+}
+
+ul.tabs {
+    padding: 0;
+}
+
+#tab1,
+#tab2,
+#tab3,
+#tab4 {
+    padding-top: 8%;
+    padding-bottom: 8%;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 70%;
+}
+
+ul.tabs li {
+    list-style-type: none;
+    border-right: 2px solid white;
+    font-size: 18px;
+    color: white;
+    /*   transition: background-color 0.2s ease; */
+}
+
+/* hover effect */
+
+ul.tabs li {
+    display: inline-block;
+    position: relative;
+    padding: 1em;
+    cursor: pointer;
+    background: white;
+    color: deepskyblue;
+    z-index: 0;
+    border-right: 1px solid rgba(10, 11, 49, 0.2);
+}
+
+ul.tabs li:before {
+    content: ' ';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    //background: rgb(255, 153, 51);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform 0.5s ease-out;
+}
+
+ul.tabs li:hover:before {
+    transform: scaleX(1);
+}
+
+/*ul.tabs li:active {
+    background: #0a0a0a;
+}*/
+
+.tab_content {
+    display: flex;
+}
+.tab_content > div {
+    /*   background-color:red; */
+    height: auto;
+    width: 80%;
+    border: solid 2px rgb(234, 234, 225);
+    border-radius: 4px;
+    margin-top: 7px;
+}
+
+.tab_content div h3 {
+    padding-left: 25px;
+    width: 100%;
+    font-family: 'Roboto', sans-serif;
+    border-bottom: solid 1px rgb(234, 234, 225);
+}
+
+.tabs > li.active,
+.tabs > li.active:hover,
+.tabs > li.active:focus {
+    border-bottom-color: #ddd;
+    border-right-color: transparent;
+    background: #f90;
+    border: none;
+    border-radius: 0px;
+    margin: 0px;
+}
+
+.tabs > li:hover {
+    /* margin-right: 2px; */
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-right: 1px solid rgba(10, 11, 49, 0.2);
+    background: rgb(234, 234, 225);
+    /* border-radius: 4px 4px 0 0; */
+}
+.tabs > li.active::after {
+    content: '';
+    position: absolute;
+    top: 1.5em;
+    right: -0.5em;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+
+    border-left: 10px solid #f90;
+    display: block;
+    width: 0;
 }

@@ -571,6 +571,11 @@ angular-router-loader@0.8.5:
   dependencies:
     loader-utils "^1.0.2"
 
+angular-tabs-component@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/angular-tabs-component/-/angular-tabs-component-1.0.6.tgz#51038c2aee9807fcad555c5fa04f765d52a29fd8"
+  integrity sha1-UQOMKu6YB/ytVVxfoE92XVKin9g=
+
 angular2-template-loader@0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/angular2-template-loader/-/angular2-template-loader-0.6.2.tgz#c0d44e90fff0fac95e8b23f043acda7fd1c51d7c"

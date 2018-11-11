@@ -22,6 +22,7 @@ import {
     MatSortModule,
     MatStepperModule,
     MatTableModule,
+    MatTabsModule,
     MatTooltipModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -40,6 +41,7 @@ import { CreditCardDirective } from './directives/credit-card.directive';
 import { MainComponent } from './components/main/main.component';
 import { CommandRegistrationComponent } from 'app/client/components/commandreg/commandReg.component';
 import { SharedService } from 'app/client/components/shared/shared.service';
+import { TabModule } from 'angular-tabs-component';
 
 /**
  * Standard module.
@@ -70,7 +72,9 @@ import { SharedService } from 'app/client/components/shared/shared.service';
         MatSnackBarModule,
         MatIconModule,
         MatExpansionModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatTabsModule,
+        TabModule
     ],
     providers: [{ provide: MatPaginatorIntl, useClass: CarsMatPaginatorIntl }],
 
