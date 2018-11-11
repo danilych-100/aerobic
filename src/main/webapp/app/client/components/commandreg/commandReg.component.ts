@@ -370,7 +370,25 @@ export class CommandRegistrationComponent implements OnInit {
     }
 
     onSelectionMember(event: MatSelectionListChange) {
-        console.log(event.option.value);
+        console.log(event.option.selected);
+        if (event.option.selected) {
+            this.currentCommandRequest.members.push(event.option.value);
+        } else {
+            const index = this.currentCommandRequest.members.findIndex(elem => {
+                return JSON.stringify(elem) === JSON.stringify(event.option.value);
+            });
+            this.currentCommandRequest.members.splice(index, 1);
+        }
+    }
+    onSelectionCoach(event: MatSelectionListChange) {
+        if (event.option.selected) {
+            this.currentCommandRequest.coaches.push(event.option.value);
+        } else {
+            const index = this.currentCommandRequest.coaches.findIndex(elem => {
+                return JSON.stringify(elem) === JSON.stringify(event.option.value);
+            });
+            this.currentCommandRequest.coaches.splice(index, 1);
+        }
     }
 
     isMemsListEmpty(mems) {
