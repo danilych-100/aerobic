@@ -43,6 +43,7 @@ import { CommandRegistrationComponent } from 'app/client/components/commandreg/c
 import { SharedService } from 'app/client/components/shared/shared.service';
 import { TabModule } from 'angular-tabs-component';
 import { MembersFilterPipe } from 'app/client/components/commandreg/members.filter';
+import { CovalentFileModule } from '@covalent/core';
 
 /**
  * Standard module.
@@ -75,7 +76,8 @@ import { MembersFilterPipe } from 'app/client/components/commandreg/members.filt
         MatExpansionModule,
         MatTooltipModule,
         MatTabsModule,
-        TabModule
+        TabModule,
+        CovalentFileModule
     ],
     providers: [{ provide: MatPaginatorIntl, useClass: CarsMatPaginatorIntl }],
 

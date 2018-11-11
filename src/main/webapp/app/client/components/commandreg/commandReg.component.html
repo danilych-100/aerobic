@@ -57,28 +57,16 @@
                         </td>
                     </tr>
                 </table>
-                <!--<button mat-raised-button
-                        [disabled]="inpRegionTeam.invalid ||
-                     inpNameTeam.invalid ||
-                     inpCategoryTeam.invalid ||
-                     inpNominationTeam.invalid ||
-                     inpMemberCountTeam.invalid ||
-                     phone.invalid ||
-                     email.invalid ||
-                    !command.coaches.length || !command.members.length || command.memberCount !== command.members.length"
-                        color="primary" style="max-width: 250px" (click)="addCommand()">
-                    Зарегистрировать команду
+                <button mat-stroked-button color="primary" style="margin: 10px 0">
+                    Сохранить
                 </button>
-                <mat-hint *ngIf="!command.coaches.length">Должен быть добавлен хотя бы 1 тренер</mat-hint>
-                <mat-hint *ngIf="!command.members.length">
-                    {{command.memberCount ? 'Должно быть добавлено ' + command.memberCount +
-                    getNormilizedName(command.memberCount) : 'Должен быть добавлен хотя бы 1 участник'}}
-                </mat-hint>-->
             </form>
         </div>
+
+        <!-------------------------------Создание тренеров------------------------------------------------------------->
         <div id="tabContent_2" style="display: none">
             <h3>Добавьте тренеров</h3>
-            <form class="example-container" [formGroup]="optionsCoach" [style.fontSize.px]="getFontSize()"
+            <form class="example-container" [formGroup]="optionsCoach" [style.fontSize.px]="getFontSize()"  style="margin-bottom: 40px"
                   #coachForm="ngForm">
                 <mat-form-field [color]="optionsCoach.value.color">
                     <input matInput placeholder="ФИО тренера" [(ngModel)]="currentCoach.name" name="name" required
@@ -126,6 +114,8 @@
                         (click)="addCoach()">Добавить тренера
                 </button>
             </form>
+
+            <!-------------------------------Созданные тренеры--------------------------------------------------------->
             <div class="container" style="margin: 20px;">
                 <h4>Тренеры команды</h4>
                 <div *ngIf="!command.coaches.length">
@@ -158,9 +148,11 @@
                 </div>
             </div>
         </div>
+
+        <!-------------------------------Создание участников----------------------------------------------------------->
         <div id="tabContent_3" style="display: none">
             <h3>Добавьте участников</h3>
-            <form class="example-container" [formGroup]="optionsMember" [style.fontSize.px]="getFontSize()"
+            <form class="example-container" [formGroup]="optionsMember" [style.fontSize.px]="getFontSize()" style="margin-bottom: 40px"
                   #memberForm="ngForm">
                 <mat-form-field [color]="optionsMember.value.color">
                     <input matInput placeholder="ФИО участника" [(ngModel)]="currentMember.name" name="name" required
@@ -252,6 +244,8 @@
                         (click)="addMember();">Добавить участника
                 </button>
             </form>
+
+            <!-------------------------------Созданные участники------------------------------------------------------->
             <div class="container" style="margin: 20px">
                 <h4>Участники команды</h4>
                 <div *ngIf="!command.members.length">
@@ -298,9 +292,11 @@
                 </div>
             </div>
         </div>
+
+        <!-------------------------------Создание заявок--------------------------------------------------------------->
         <div id="tabContent_4" style="display: none">
             <h3>Заявки</h3>
-            <div class="container" style="margin-left: 12px">
+            <div class="container" style="margin-left: 12px; margin-bottom: 40px;">
                 <h4>Заполните поля и создайте заявку</h4>
                 <mat-form-field [color]="optionsMain.value.color">
                     <input matInput placeholder="Название заявки" [(ngModel)]="currentCommandRequest.name" name="name" [ngModelOptions]="{standalone: true}">
@@ -321,8 +317,22 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
+                <div style="margin-bottom: 10px">
+                    <td-file-upload #singleFileUpload [(ngModel)]="files"
+                                    (select)="selectEvent($event)"
+                                    (upload)="uploadEvent($event)"
+                                    (cancel)="cancelEvent()">
+                        <mat-icon>file_upload</mat-icon><span>{{ singleFileUpload.value?.name }}</span>
+                        <ng-template td-file-input-label >
+                            <mat-icon>attach_file</mat-icon>
+                            <span>
+                          Загрузите музыку
+                          <span [hidden]="!singleFileUpload?.required">*</span>
+                        </ng-template>
+                    </td-file-upload>
+                </div>
             </div>
-            <div class="container" style="margin-left: 10px; margin-bottom: 10px" *ngIf="currentCommandRequest.ageCategory && currentCommandRequest.nomination">
+            <div class="container" style="margin-left: 10px; margin-bottom: 40px" *ngIf="currentCommandRequest.ageCategory && currentCommandRequest.nomination">
                 <div class="row">
                     <div class="col-xl-6">
                         <h5>Выберите {{getCountOfMembersByNomination(currentCommandRequest.nomination)}}</h5>
@@ -351,27 +361,65 @@
                     </div>
                 </div>
                 <button mat-stroked-button type="submit"
-                        [disabled]="false"
-                        (click)="addCommandRequest()" style="margin: 10px 0">
+                        [disabled]="
+                        !currentCommandRequest.members.length ||
+                        !currentCommandRequest.coaches.length ||
+                        !isMembersAddedCorrect(currentCommandRequest.nomination, currentCommandRequest.members.length) ||
+                        foundErrorMember"
+                        (click)="addCommandRequest();singleFileUpload.cancel();" style="margin: 10px 0">
                     Добавить заявку
                 </button>
+                <div>
+                    <mat-hint *ngIf="!currentCommandRequest.coaches.length">Добавьте хотя бы 1 тренера</mat-hint>
+                    <br>
+                    <mat-hint *ngIf="!isMembersAddedCorrect(currentCommandRequest.nomination, currentCommandRequest.members.length)">
+                        {{getNominationError(currentCommandRequest.nomination)}}
+                    </mat-hint>
+                    <mat-error *ngIf="foundErrorMember">
+                        Участник: {{foundErrorMember.name}} участвует более, чем в 3 заявках,<br>
+                        замените его или удалите заявку.
+                    </mat-error>
+                </div>
             </div>
+
+            <!-------------------------------Созданные заявки---------------------------------------------------------->
             <div class="container" style="margin-left: 10px; margin-bottom: 10px">
                 <h4>Созданные заявки</h4>
                 <mat-hint *ngIf="!command.requests.length">Созданный заявок пока нет</mat-hint>
                 <mat-accordion>
-                    <div class="row" *ngFor="let request of command.requests" style="margin: 8px 0">
+                    <div class="row" *ngFor="let request of command.requests; let i = index" style="margin: 8px 0">
                         <div class="col-xl-9">
-                            <mat-expansion-panel>
-                                <mat-expansion-panel-header>
+                            <mat-expansion-panel style="height: auto">
+                                <mat-expansion-panel-header style="height: auto">
                                     <mat-panel-title style="align-self: center;">
-                                        <h5>{{request.name}}</h5>
+                                        <h5>{{request.name ? request.name : 'Без названия'}}</h5>
                                     </mat-panel-title>
-                                    <mat-panel-description>
+                                    <mat-panel-description *ngIf="request.name && request.name.length < 24">
                                         Номинация: {{request.nomination}} <br>
                                         Категория: {{request.ageCategory}}
                                     </mat-panel-description>
                                 </mat-expansion-panel-header>
+                              <!--  <div class="container" style="margin-bottom: 7px; padding-left: 6px;">
+                                    <div style="font: 15px 'Roboto'">
+                                        <span style="font-family: Roboto, monospace;
+                                                     font-size: 15px;
+                                                     font-weight: 400;
+                                                     color: rgba(0, 0, 0, 0.54);"
+                                              *ngIf="request.name && request.name.length > 24">Номинация: {{request.nomination}} <br></span>
+                                        <span style="font-family: Roboto, monospace;
+                                                     font-size: 15px;
+                                                     font-weight: 400;
+                                                     color: rgba(0, 0, 0, 0.54);"  *ngIf="request.name && request.name.length > 24">Категория: {{request.ageCategory}}  <br></span>
+                                        <span style="font-family: Roboto, monospace;
+                                                     font-size: 15px;
+                                                     font-weight: 400;
+                                                     color: rgba(0, 0, 0, 0.54);" >Музыкальный файл: {{request.music.name}}</span>
+                                    </div>
+                                </div>-->
+                                <span style="font-family: Roboto, monospace;
+                                                     font-size: 15px;
+                                                     font-weight: 400;
+                                                     color: rgba(0, 0, 0, 0.54); margin-bottom: 10px; margin-left: 12px" >Музыкальный файл: <a href="/">{{request.music.name}}</a></span>
                                 <div class="container">
                                     <h5>Тренеры</h5>
                                     <div *ngFor="let coach of request.coaches" style="margin: 10px 0;">
@@ -402,7 +450,7 @@
                             </mat-expansion-panel>
                         </div>
                         <div class="col-xl-2" style="align-self: center;">
-                            <button mat-stroked-button color="warn">Удалить заявку
+                            <button mat-stroked-button color="warn" (click)="removeRequest(i)">Удалить заявку
                             </button>
                         </div>
                     </div>

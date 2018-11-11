@@ -50,6 +50,7 @@ export class CommandRequest {
     public name: string;
     public ageCategory: string;
     public nomination: string;
+    public music: File;
     public members: CommandMember[];
     public coaches: CommandCoach[];
 
@@ -290,6 +291,7 @@ export class CommandRegistrationComponent implements OnInit {
         newRequest.ageCategory = this.currentCommandRequest.ageCategory;
         newRequest.coaches = this.currentCommandRequest.coaches;
         newRequest.members = this.currentCommandRequest.members;
+        newRequest.music = this.currentCommandRequest.music;
         this.command.requests.push(newRequest);
         this.currentCommandRequest = new CommandRequest();
     }
@@ -332,6 +334,10 @@ export class CommandRegistrationComponent implements OnInit {
         this.command.members.splice(index, 1);
     }
 
+    removeRequest(index: number) {
+        this.command.requests.splice(index, 1);
+    }
+
     isOk: boolean;
 
     addCommand() {
@@ -369,8 +375,69 @@ export class CommandRegistrationComponent implements OnInit {
         return ' несколько участников';
     }
 
+    getNominationError(nomination: string) {
+        if (nomination === 'Индивидуальные') {
+            return 'Должен быть добавлен 1 участник';
+        }
+        if (nomination === 'Смешанные пары') {
+            return 'Должно быть добавлено 2 участника';
+        }
+        if (nomination === 'Трио') {
+            return 'Должно быть добавлено 3 участника';
+        }
+        return 'Должно быть добавлено более 3 участников';
+    }
+
+    isMembersAddedCorrect(nomination: string, countAdded: number) {
+        if (nomination === 'Индивидуальные') {
+            return countAdded === 1;
+        }
+        if (nomination === 'Смешанные пары') {
+            return countAdded === 2;
+        }
+        if (nomination === 'Трио') {
+            return countAdded === 3;
+        }
+        return countAdded > 3;
+    }
+
+    isMemberInLimitRequest(addedMembers: CommandMember[]) {
+        if (addedMembers.length === 0 || this.command.requests.length < 3) {
+            return true;
+        }
+        console.log(addedMembers);
+        return (
+            addedMembers.filter(addedMember => {
+                return (
+                    this.command.requests.filter(request => {
+                        return (
+                            request.members.filter(mem => {
+                                return mem.name === addedMember.name;
+                            }).length > 1
+                        );
+                    }).length > 3
+                );
+            }).length > 1
+        );
+    }
+
+    getErrorMember(addedMembers: CommandMember[]) {
+        return addedMembers.find(addedMember => {
+            return (
+                this.command.requests.filter(request => {
+                    return (
+                        request.members.filter(mem => {
+                            return mem.name === addedMember.name;
+                        }).length > 1
+                    );
+                }).length > 3
+            );
+        });
+    }
+
+    foundErrorMember: CommandMember;
+
     onSelectionMember(event: MatSelectionListChange) {
-        console.log(event.option.selected);
         if (event.option.selected) {
             this.currentCommandRequest.members.push(event.option.value);
         } else {
@@ -378,6 +445,21 @@ export class CommandRegistrationComponent implements OnInit {
                 return JSON.stringify(elem) === JSON.stringify(event.option.value);
             });
             this.currentCommandRequest.members.splice(index, 1);
+        }
+
+        this.foundErrorMember = null;
+        if (this.command.requests.length > 1) {
+            this.foundErrorMember = this.currentCommandRequest.members.find(addedMember => {
+                return (
+                    this.command.requests.filter(request => {
+                        return (
+                            request.members.filter(mem => {
+                                return JSON.stringify(mem) === JSON.stringify(addedMember);
+                            }).length > 1
+                        );
+                    }).length > 3
+                );
+            });
         }
     }
     onSelectionCoach(event: MatSelectionListChange) {
@@ -437,6 +519,16 @@ export class CommandRegistrationComponent implements OnInit {
             tab4.classList.add('active');
         }
         document.getElementById(`tabContent_${index}`).style.display = 'block';
+    }
+
+    selectEvent(file: File): void {
+        this.currentCommandRequest.music = file;
+    }
+
+    uploadEvent(file: File): void {}
+
+    cancelEvent(): void {
+        this.currentCommandRequest.music = null;
     }
 
     getFontSize() {
