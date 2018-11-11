@@ -3,7 +3,7 @@ import { DoctorsService } from '../../../core/services/doctors.service';
 import { Observable } from 'rxjs/Rx';
 import { Doctor } from '../../../core/models/doctor';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { DateAdapter } from '@angular/material';
+import { DateAdapter, MatSelectionList, MatSelectionListChange } from '@angular/material';
 import { REGIONS } from './regions';
 import { RegisterCommandService } from './register.service';
 
@@ -17,10 +17,12 @@ export class Command {
     public email: string;
     public members: CommandMember[];
     public coaches: CommandCoach[];
+    public requests: CommandRequest[];
 
     constructor() {
         this.members = [];
         this.coaches = [];
+        this.requests = [];
     }
 }
 
@@ -35,10 +37,26 @@ export class CommandCoach {
 export class CommandMember {
     public name: string;
     public birthDate: Date;
+    public gender = 'male';
     public passportSeries: number;
     public passportNumber: number;
     public passportDesc: string;
+    public birthCertificateNumber: number;
+    public birthCertificateDesc: string;
     public quality: string;
+}
+
+export class CommandRequest {
+    public name: string;
+    public ageCategory: string;
+    public nomination: string;
+    public members: CommandMember[];
+    public coaches: CommandCoach[];
+
+    constructor() {
+        this.members = [];
+        this.coaches = [];
+    }
 }
 
 @Component({
@@ -55,6 +73,7 @@ export class CommandRegistrationComponent implements OnInit {
 
     private currentCoach: CommandCoach;
     private currentMember: CommandMember;
+    private currentCommandRequest: CommandRequest;
 
     private regions = REGIONS;
     private categories = ['6—8', '9—11', '12—14', '15—17', '18+'];
@@ -71,28 +90,19 @@ export class CommandRegistrationComponent implements OnInit {
     ];
 
     maxDate = new Date();
-
     email = new FormControl('', [Validators.email]);
-    passSeries = new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(4), Validators.pattern('^\\d*$')]);
-    passNumber = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6), Validators.pattern('^\\d*$')]);
-    passSeriesMember = new FormControl('', [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(4),
-        Validators.pattern('^\\d*$')
-    ]);
-    passNumberMember = new FormControl('', [
-        Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(6),
-        Validators.pattern('^\\d*$')
-    ]);
+    birthCertificateDesc = new FormControl('', [Validators.maxLength(100)]);
+    birthCertificateNumber = new FormControl('', [Validators.maxLength(100), Validators.pattern('^\\d*$')]);
+    passSeries = new FormControl('', [Validators.minLength(4), Validators.maxLength(4), Validators.pattern('^\\d*$')]);
+    passNumber = new FormControl('', [Validators.minLength(6), Validators.maxLength(6), Validators.pattern('^\\d*$')]);
+    passSeriesMember = new FormControl('', [Validators.minLength(4), Validators.maxLength(4), Validators.pattern('^\\d*$')]);
+    passNumberMember = new FormControl('', [Validators.minLength(6), Validators.maxLength(6), Validators.pattern('^\\d*$')]);
     inpNameCoach = new FormControl('', [Validators.required, Validators.maxLength(100)]);
     inpNameMember = new FormControl('', [Validators.required, Validators.maxLength(100)]);
     inpDateCoach = new FormControl('', [Validators.required]);
     inpDateMember = new FormControl('', [Validators.required]);
-    inpPassDescCoach = new FormControl('', [Validators.required, Validators.maxLength(100)]);
-    inpPassDescMember = new FormControl('', [Validators.required, Validators.maxLength(100)]);
+    inpPassDescCoach = new FormControl('', [Validators.maxLength(100)]);
+    inpPassDescMember = new FormControl('', [Validators.maxLength(100)]);
     inpNameTeam = new FormControl('', [Validators.required, Validators.maxLength(100)]);
     inpMemberCountTeam = new FormControl('', [Validators.required, Validators.min(1), Validators.max(20)]);
     inpRegionTeam = new FormControl('', [Validators.required]);
@@ -109,6 +119,16 @@ export class CommandRegistrationComponent implements OnInit {
     }
     getQualityErrorMessage() {
         return this.quality.hasError('required') ? 'Поле не должно быть пустым' : '';
+    }
+    getInpBirthCertificateNumberErrorMessage() {
+        return this.birthCertificateNumber.hasError('pattern')
+            ? 'Поле должно содержать цифры'
+            : this.birthCertificateNumber.hasError('maxlength')
+                ? 'Поле должно содержать не более 100 символов'
+                : '';
+    }
+    getInpBirthCertificateDescErrorMessage() {
+        return this.birthCertificateDesc.hasError('maxlength') ? 'Поле должно содержать не более 100 символов' : '';
     }
     getPassSeriesErrorMessage() {
         return this.passSeries.hasError('minlength') || this.passSeries.hasError('maxlength')
@@ -219,6 +239,7 @@ export class CommandRegistrationComponent implements OnInit {
         this.command = new Command();
         this.currentCoach = new CommandCoach();
         this.currentMember = new CommandMember();
+        this.currentCommandRequest = new CommandRequest();
         this.openTab(1);
     }
 
@@ -246,38 +267,31 @@ export class CommandRegistrationComponent implements OnInit {
     resetCoachForm() {
         this.inpDateCoach = new FormControl('', [Validators.required]);
         this.inpNameCoach = new FormControl('', [Validators.required, Validators.maxLength(100)]);
-        this.passSeries = new FormControl('', [
-            Validators.required,
-            Validators.pattern('^\\d*$'),
-            Validators.minLength(4),
-            Validators.maxLength(4)
-        ]);
-        this.passNumber = new FormControl('', [
-            Validators.required,
-            Validators.pattern('^\\d*$'),
-            Validators.minLength(6),
-            Validators.maxLength(6)
-        ]);
-        this.inpPassDescCoach = new FormControl('', [Validators.required, Validators.maxLength(100)]);
+        this.passSeries = new FormControl('', [Validators.pattern('^\\d*$'), Validators.minLength(4), Validators.maxLength(4)]);
+        this.passNumber = new FormControl('', [Validators.pattern('^\\d*$'), Validators.minLength(6), Validators.maxLength(6)]);
+        this.inpPassDescCoach = new FormControl('', [Validators.maxLength(100)]);
     }
 
     resetMemberForm() {
         this.inpDateMember = new FormControl('', [Validators.required]);
         this.inpNameMember = new FormControl('', [Validators.required, Validators.maxLength(100)]);
-        this.passSeriesMember = new FormControl('', [
-            Validators.required,
-            Validators.pattern('^\\d*$'),
-            Validators.minLength(4),
-            Validators.maxLength(4)
-        ]);
-        this.passNumberMember = new FormControl('', [
-            Validators.required,
-            Validators.pattern('^\\d*$'),
-            Validators.minLength(6),
-            Validators.maxLength(6)
-        ]);
+        this.passSeriesMember = new FormControl('', [Validators.pattern('^\\d*$'), Validators.minLength(4), Validators.maxLength(4)]);
+        this.passNumberMember = new FormControl('', [Validators.pattern('^\\d*$'), Validators.minLength(6), Validators.maxLength(6)]);
         this.quality = new FormControl('', [Validators.required]);
-        this.inpPassDescMember = new FormControl('', [Validators.required, Validators.maxLength(100)]);
+        this.inpPassDescMember = new FormControl('', [Validators.maxLength(100)]);
+        this.birthCertificateDesc = new FormControl('', [Validators.maxLength(100)]);
+        this.birthCertificateNumber = new FormControl('', [Validators.maxLength(100), Validators.pattern('^\\d*$')]);
+    }
+
+    addCommandRequest() {
+        const newRequest = new CommandRequest();
+        newRequest.name = this.currentCommandRequest.name;
+        newRequest.nomination = this.currentCommandRequest.nomination;
+        newRequest.ageCategory = this.currentCommandRequest.ageCategory;
+        newRequest.coaches = this.currentCommandRequest.coaches;
+        newRequest.members = this.currentCommandRequest.members;
+        this.command.requests.push(newRequest);
+        this.currentCommandRequest = new CommandRequest();
     }
 
     addCoach() {
@@ -293,14 +307,6 @@ export class CommandRegistrationComponent implements OnInit {
         this.currentCoach = new CommandCoach();
     }
 
-    removeCoach(index: number) {
-        this.command.coaches.splice(index, 1);
-    }
-
-    removeMember(index: number) {
-        this.command.members.splice(index, 1);
-    }
-
     addMember() {
         this.resetMemberForm();
 
@@ -310,9 +316,20 @@ export class CommandRegistrationComponent implements OnInit {
         newMember.passportDesc = this.currentMember.passportDesc;
         newMember.passportNumber = this.currentMember.passportNumber;
         newMember.passportSeries = this.currentMember.passportSeries;
+        newMember.birthCertificateNumber = this.currentMember.birthCertificateNumber;
+        newMember.birthCertificateDesc = this.currentMember.birthCertificateDesc;
         newMember.quality = this.currentMember.quality;
+        newMember.gender = this.currentMember.gender;
         this.command.members.push(newMember);
         this.currentMember = new CommandMember();
+    }
+
+    removeCoach(index: number) {
+        this.command.coaches.splice(index, 1);
+    }
+
+    removeMember(index: number) {
+        this.command.members.splice(index, 1);
     }
 
     isOk: boolean;
@@ -337,6 +354,27 @@ export class CommandRegistrationComponent implements OnInit {
                 this.isOk = false;
             }
         );
+    }
+
+    getCountOfMembersByNomination(nomination: string) {
+        if (nomination === 'Индивидуальные') {
+            return ' одного участника';
+        }
+        if (nomination === 'Смешанные пары') {
+            return ' двух участников';
+        }
+        if (nomination === 'Трио') {
+            return ' трех участников';
+        }
+        return ' несколько участников';
+    }
+
+    onSelectionMember(event: MatSelectionListChange) {
+        console.log(event.option.value);
+    }
+
+    isMemsListEmpty(mems) {
+        return mems.options && mems.options.length === 0;
     }
 
     openTab(index) {

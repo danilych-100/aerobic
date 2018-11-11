@@ -42,6 +42,7 @@ import { MainComponent } from './components/main/main.component';
 import { CommandRegistrationComponent } from 'app/client/components/commandreg/commandReg.component';
 import { SharedService } from 'app/client/components/shared/shared.service';
 import { TabModule } from 'angular-tabs-component';
+import { MembersFilterPipe } from 'app/client/components/commandreg/members.filter';
 
 /**
  * Standard module.
@@ -89,7 +90,8 @@ import { TabModule } from 'angular-tabs-component';
         BankCardComponent,
         CreditCardDirective,
         MainComponent,
-        CommandRegistrationComponent
+        CommandRegistrationComponent,
+        MembersFilterPipe
     ],
     entryComponents: [DialogDeactivationComponent, LoginComponent, StepperComponent]
 })
