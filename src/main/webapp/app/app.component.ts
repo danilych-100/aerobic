@@ -6,7 +6,7 @@ import { LoginComponent } from './client/components/login/login.component';
 import { HttpClient } from '@angular/common/http';
 import { MakeAppointmentComponent } from './client/components/make-appointment/make-appointment.component';
 import { StepperComponent } from './client/components/stepper/stepper.component';
-import { LoginService } from 'app/core';
+import { AccountService, LoginService } from 'app/core';
 import { SharedService } from 'app/client/components/shared/shared.service';
 
 /**
@@ -44,6 +44,7 @@ export class AppComponent {
     public constructor(
         private router: Router,
         private dialog: MatDialog,
+        private account: AccountService,
         private loginService: LoginService,
         private http: HttpClient,
         ss: SharedService
@@ -98,5 +99,18 @@ export class AppComponent {
     logout() {
         this.loginService.logout();
         this.router.navigate(['']);
+    }
+
+    getCurrentAccountName() {
+        return Promise.resolve(
+            this.account
+                .get()
+                .toPromise()
+                .then(response => {
+                    const account = response.body;
+                    console.log(account);
+                    return account.lastName + ' ' + account.firstName;
+                })
+        );
     }
 }

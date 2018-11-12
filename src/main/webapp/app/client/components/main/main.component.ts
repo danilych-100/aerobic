@@ -3,7 +3,7 @@ import { LoginComponent } from '../login/login.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { StepperComponent } from '../stepper/stepper.component';
 import { LoginModalService, Principal } from 'app/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SharedService } from 'app/client/components/shared/shared.service';
 import { Router } from '@angular/router';
 
@@ -38,16 +38,15 @@ export class MainComponent implements OnInit {
         } as MatDialogConfig<any>);*/
     }
 
+    register() {
+        this.router.navigate(['/register']);
+    }
+
     public openMakeAppointment(): void {
         this.dialog.open(StepperComponent, {
             width: '1200px',
             height: '800px',
             panelClass: 'dialog-no-padding-panel'
         } as MatDialogConfig<any>);
-    }
-
-    public setIsNeedShowRegistrLink(isNeed: boolean) {
-        this.ss.changeBool(isNeed);
-        this.router.navigate(['/commandRegistration']);
     }
 }

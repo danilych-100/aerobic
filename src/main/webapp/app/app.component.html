@@ -9,14 +9,28 @@
     </a>
     <a mat-tab-link
        routerLinkActive
+       [routerLink]="'/commandRegistration'"
+       *jhiHasAnyAuthority="'ROLE_USER'"
+       #linkReg='routerLinkActive'
+       [active]="linkReg.isActive">
+        Регистрация команды
+    </a>
+    <a mat-tab-link
+       routerLinkActive
        [routerLink]="'/table'"
        *jhiHasAnyAuthority="'ROLE_ADMIN'"
        #linkAdmin='routerLinkActive'
        [active]="linkAdmin.isActive">
         Просмотр записей
     </a>
+
     <a mat-tab-link (click)="logout()" id="logout" *jhiHasAnyAuthority="'ROLE_ADMIN'">
         <span style="margin-right: 20px; font-size: 16px">Администратор</span>
+        <fa-icon [icon]="'sign-out-alt'" [fixedWidth]="true"></fa-icon>
+        <span>Выйти</span>
+    </a>
+    <a mat-tab-link (click)="logout()" id="logout" *jhiHasAnyAuthority="'ROLE_USER'">
+        <span style="margin-right: 40px; font-size: 16px" >{{getCurrentAccountName()}}</span>
         <fa-icon [icon]="'sign-out-alt'" [fixedWidth]="true"></fa-icon>
         <span>Выйти</span>
     </a>
