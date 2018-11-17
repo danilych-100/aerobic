@@ -105,15 +105,13 @@
         </createTable>
 
 
-
         <createTable tableName="command">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="user_id" type="bigint"/>
             <column name="region" type="varchar(100)"/>
             <column name="name" type="varchar(100)"/>
-            <column name="age_category" type="varchar(50)"/>
-            <column name="nomination" type="varchar(50)"/>
             <column name="member_count" type="bigint"/>
             <column name="cost" type="bigint"/>
             <column name="phone_number" type="varchar(20)"/>
@@ -134,11 +132,23 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(100)"/>
+            <column name="gender" type="varchar(20)"/>
             <column name="birth_date" type="timestamp"/>
             <column name="passport_series" type="bigint"/>
             <column name="passport_number" type="bigint"/>
             <column name="passport_desc" type="varchar(255)"/>
+            <column name="birth_certificate_number" type="bigint"/>
+            <column name="birth_certificate_desc" type="varchar(255)"/>
             <column name="quality" type="varchar(100)"/>
+        </createTable>
+        <createTable tableName="command_request">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)"/>
+            <column name="age_category" type="varchar(50)"/>
+            <column name="nomination" type="varchar(50)"/>
+            <column name="music" type="blob"/>
         </createTable>
 
         <createTable tableName="coaches_join_table">
@@ -149,7 +159,6 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
         </createTable>
-
         <createTable tableName="members_join_table">
             <column name="command_id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>

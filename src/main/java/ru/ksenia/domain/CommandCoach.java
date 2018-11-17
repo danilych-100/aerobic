@@ -28,12 +28,9 @@ public class CommandCoach {
     @Column(name = "passport_desc")
     private String passportDesc;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "coaches_join_table",
-        joinColumns = @JoinColumn(name = "command_coach_id"),
-        inverseJoinColumns = @JoinColumn(name = "command_id")
-    )
-    private List<Command> commands = new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "command_id")
+    private Command command;
 
 
     public Long getId() {
@@ -84,11 +81,11 @@ public class CommandCoach {
         this.passportDesc = passportDesc;
     }
 
-    public List<Command> getCommands() {
-        return commands;
+    public Command getCommand() {
+        return command;
     }
 
-    public void setCommands(List<Command> commands) {
-        this.commands = commands;
+    public void setCommand(Command command) {
+        this.command = command;
     }
 }

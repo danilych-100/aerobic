@@ -7,9 +7,12 @@ import java.util.Date;
 public class CommandMemberDTO {
     private String name;
     private Date birthDate;
+    private String gender;
     private Long passportSeries;
     private Long passportNumber;
     private String passportDesc;
+    private Long birthCertificateNumber;
+    private String birthCertificateDesc;
     private String quality;
 
     public String getName() {
@@ -58,5 +61,29 @@ public class CommandMemberDTO {
 
     public void setQuality(String quality) {
         this.quality = quality;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Long getBirthCertificateNumber() {
+        return birthCertificateNumber;
+    }
+
+    public void setBirthCertificateNumber(Long birthCertificateNumber) {
+        this.birthCertificateNumber = birthCertificateNumber;
+    }
+
+    public String getBirthCertificateDesc() {
+        return birthCertificateDesc;
+    }
+
+    public void setBirthCertificateDesc(String birthCertificateDesc) {
+        this.birthCertificateDesc = birthCertificateDesc;
     }
 }

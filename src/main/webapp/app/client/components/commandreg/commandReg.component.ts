@@ -8,10 +8,9 @@ import { REGIONS } from './regions';
 import { RegisterCommandService } from './register.service';
 
 export class Command {
+    public userId: number;
     public region: string;
     public name: string;
-    public ageCategory: string;
-    public nomination: string;
     public memberCount: number;
     public phoneNumber: string;
     public email: string;
@@ -237,6 +236,14 @@ export class CommandRegistrationComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.registerCommandService.getCommandForCurrentUser().subscribe(
+            response => {
+                console.log(response);
+            },
+            err => {
+                console.log(err);
+            }
+        );
         this.command = new Command();
         this.currentCoach = new CommandCoach();
         this.currentMember = new CommandMember();
@@ -340,8 +347,8 @@ export class CommandRegistrationComponent implements OnInit {
 
     isOk: boolean;
 
-    addCommand() {
-        this.registerCommandService.register(this.command).subscribe(
+    flushCommand() {
+        this.registerCommandService.update(this.command).subscribe(
             () => {
                 this.isOk = true;
             },

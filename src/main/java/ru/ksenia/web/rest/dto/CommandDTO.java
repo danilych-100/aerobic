@@ -6,13 +6,12 @@ import java.util.List;
 public class CommandDTO {
     private String region;
     private String name;
-    private String ageCategory;
-    private String nomination;
     private Long memberCount;
     private String phoneNumber;
     private String email;
     private List<CommandMemberDTO> members = new ArrayList<>();
     private List<CommandCoachDTO> coaches = new ArrayList<>();
+    private List<CommandRequestDTO> requests = new ArrayList<>();
 
     public String getRegion() {
         return region;
@@ -28,22 +27,6 @@ public class CommandDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAgeCategory() {
-        return ageCategory;
-    }
-
-    public void setAgeCategory(String ageCategory) {
-        this.ageCategory = ageCategory;
-    }
-
-    public String getNomination() {
-        return nomination;
-    }
-
-    public void setNomination(String nomination) {
-        this.nomination = nomination;
     }
 
     public Long getMemberCount() {
@@ -84,5 +67,13 @@ public class CommandDTO {
 
     public void setCoaches(List<CommandCoachDTO> coaches) {
         this.coaches = coaches;
+    }
+
+    public List<CommandRequestDTO> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(List<CommandRequestDTO> requests) {
+        this.requests = requests;
     }
 }

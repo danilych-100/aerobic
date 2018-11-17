@@ -13,6 +13,7 @@ import { MakeAppointmentComponent } from './components/make-appointment/make-app
 import { StepperComponent } from './components/stepper/stepper.component';
 import { MainComponent } from './components/main/main.component';
 import { CommandRegistrationComponent } from 'app/client/components/commandreg/commandReg.component';
+import { AuthGuardService } from 'app/client/auth/auth-guard.service';
 
 const routes: Routes = [
     {
@@ -21,7 +22,8 @@ const routes: Routes = [
     },
     {
         path: 'commandRegistration',
-        component: CommandRegistrationComponent
+        component: CommandRegistrationComponent,
+        canActivate: [AuthGuardService]
     },
     {
         path: 'login',

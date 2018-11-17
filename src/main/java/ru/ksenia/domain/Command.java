@@ -13,17 +13,14 @@ public class Command {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
     @Column(name = "region", nullable = false)
     private String region;
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    @Column(name = "age_category")
-    private String ageCategory;
-
-    @Column(name = "nomination")
-    private String nomination;
 
     @Column(name = "member_count")
     private Long memberCount;
@@ -34,19 +31,14 @@ public class Command {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "coaches_join_table",
-        joinColumns = @JoinColumn(name = "command_id"),
-        inverseJoinColumns = @JoinColumn(name = "command_coach_id")
-    )
+    @OneToMany(mappedBy = "command", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommandCoach> coaches = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "members_join_table",
-        joinColumns = @JoinColumn(name = "command_id"),
-        inverseJoinColumns = @JoinColumn(name = "command_member_id")
-    )
+    @OneToMany(mappedBy = "command", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommandMember> members = new ArrayList<>();
+
+    @OneToMany(mappedBy = "command", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommandRequest> requests = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -54,6 +46,22 @@ public class Command {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public List<CommandRequest> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(List<CommandRequest> requests) {
+        this.requests = requests;
     }
 
     public String getRegion() {
@@ -70,22 +78,6 @@ public class Command {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAgeCategory() {
-        return ageCategory;
-    }
-
-    public void setAgeCategory(String ageCategory) {
-        this.ageCategory = ageCategory;
-    }
-
-    public String getNomination() {
-        return nomination;
-    }
-
-    public void setNomination(String nomination) {
-        this.nomination = nomination;
     }
 
     public Long getMemberCount() {

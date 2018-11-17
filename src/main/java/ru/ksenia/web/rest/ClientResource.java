@@ -28,10 +28,28 @@ public class ClientResource {
         return clientService.getCommands();
     }
 
-    @PostMapping("/registerCommand")
-    public ResponseEntity<Void> registerCommand(@RequestBody CommandDTO command) {
+    /*   @PostMapping("/registerCommand")
+       public ResponseEntity<Void> registerCommand(@RequestBody CommandDTO command) {
+           try {
+               clientService.registerCommand(command);
+               return ResponseEntity.ok().build();
+           } catch (Exception e) {
+               return ResponseEntity.noContent().build();
+           }
+       }*/
+    @GetMapping("/getCommandForCurrentUser")
+    public ResponseEntity<CommandDTO> getCommandForCurrentUser() {
         try {
-            clientService.registerCommand(command);
+            return ResponseEntity.ok(clientService.getCommandForCurrentUser());
+        } catch (Exception e) {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @PostMapping("/updateCommand")
+    public ResponseEntity<Void> updateCommand(@RequestBody CommandDTO command) {
+        try {
+            clientService.updateCommand(command);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.noContent().build();

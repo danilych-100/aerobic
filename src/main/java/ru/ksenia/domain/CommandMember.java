@@ -17,6 +17,9 @@ public class CommandMember {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "gender", nullable = false)
+    private String gender;
+
     @Column(name = "birth_date")
     private Instant birthDate;
 
@@ -29,15 +32,18 @@ public class CommandMember {
     @Column(name = "passport_desc")
     private String passportDesc;
 
+    @Column(name = "birth_certificate_number")
+    private Long birthCertificateNumber;
+
+    @Column(name = "birth_certificate_desc")
+    private String birthCertificateDesc;
+
     @Column(name = "quality")
     private String quality;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "members_join_table",
-        joinColumns = @JoinColumn(name = "command_member_id"),
-        inverseJoinColumns = @JoinColumn(name = "command_id")
-    )
-    private List<Command> commands = new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "command_id")
+    private Command command;
 
     public Long getId() {
         return id;
@@ -95,11 +101,35 @@ public class CommandMember {
         this.quality = quality;
     }
 
-    public List<Command> getCommands() {
-        return commands;
+    public Command getCommand() {
+        return command;
     }
 
-    public void setCommands(List<Command> commands) {
-        this.commands = commands;
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Long getBirthCertificateNumber() {
+        return birthCertificateNumber;
+    }
+
+    public void setBirthCertificateNumber(Long birthCertificateNumber) {
+        this.birthCertificateNumber = birthCertificateNumber;
+    }
+
+    public String getBirthCertificateDesc() {
+        return birthCertificateDesc;
+    }
+
+    public void setBirthCertificateDesc(String birthCertificateDesc) {
+        this.birthCertificateDesc = birthCertificateDesc;
     }
 }

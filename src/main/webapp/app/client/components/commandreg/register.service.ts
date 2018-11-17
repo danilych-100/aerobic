@@ -9,11 +9,15 @@ import { Command } from 'app/client/components/commandreg/commandReg.component';
 export class RegisterCommandService {
     constructor(private http: HttpClient) {}
 
-    register(command: Command): Observable<any> {
-        return this.http.post(SERVER_API_URL + 'api/registerCommand', command);
+    update(command: Command): Observable<any> {
+        return this.http.post(SERVER_API_URL + 'api/updateCommand', command);
     }
 
     getCommands(): Observable<any> {
         return this.http.get(SERVER_API_URL + 'api/getCommands');
+    }
+
+    getCommandForCurrentUser(): Observable<any> {
+        return this.http.get(SERVER_API_URL + 'api/getCommandForCurrentUser');
     }
 }

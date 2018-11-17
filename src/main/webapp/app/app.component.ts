@@ -34,6 +34,7 @@ export class AppComponent {
 
     public isNeedShowRegistrLink = false;
 
+    public currentUserName: string;
     /**
      * At the Navigation start show loading when the resolver loads data hide loading.
      *
@@ -77,6 +78,9 @@ export class AppComponent {
                 this.navLinks.pop();
             }
         });
+        if (this.currentUserName == null) {
+            setInterval(() => this.getCurrentAccountName(), 5000);
+        }
     }
 
     /**
@@ -108,8 +112,7 @@ export class AppComponent {
                 .toPromise()
                 .then(response => {
                     const account = response.body;
-                    console.log(account);
-                    return account.lastName + ' ' + account.firstName;
+                    this.currentUserName = account.lastName + ' ' + account.firstName;
                 })
         );
     }
