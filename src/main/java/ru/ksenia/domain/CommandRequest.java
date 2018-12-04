@@ -39,6 +39,9 @@ public class CommandRequest {
     )
     private List<CommandMember> members = new ArrayList<>();
 
+    @Column(name = "command_request_id", insertable = false, updatable = false)
+    private Long commandRequestId;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "command_request_id")
     private Command command;
@@ -105,5 +108,13 @@ public class CommandRequest {
 
     public void setCommand(Command command) {
         this.command = command;
+    }
+
+    public Long getCommandRequestId() {
+        return commandRequestId;
+    }
+
+    public void setCommandRequestId(Long commandRequestId) {
+        this.commandRequestId = commandRequestId;
     }
 }

@@ -236,15 +236,16 @@ export class CommandRegistrationComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.command = new Command();
         this.registerCommandService.getCommandForCurrentUser().subscribe(
             response => {
+                this.command = response;
                 console.log(response);
             },
             err => {
                 console.log(err);
             }
         );
-        this.command = new Command();
         this.currentCoach = new CommandCoach();
         this.currentMember = new CommandMember();
         this.currentCommandRequest = new CommandRequest();

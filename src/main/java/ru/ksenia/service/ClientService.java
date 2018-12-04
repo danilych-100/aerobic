@@ -64,11 +64,13 @@ public class ClientService {
     @Transactional
     public Command registerCommand(CommandDTO commandDTO, Long userId, Command existedCommand) {
         if(existedCommand != null){
-            return CommandMapper.mapDTOToEntity(commandDTO, existedCommand);
+            Command command = CommandMapper.mapDTOToEntity(commandDTO, existedCommand);
+            command.setUserId(userId);
+            return command;
         }
         Command command = new Command();
         command.setUserId(userId);
-        return CommandMapper.mapDTOToEntity(commandDTO, new Command());
+        return CommandMapper.mapDTOToEntity(commandDTO, command);
     }
 
 

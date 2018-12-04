@@ -126,6 +126,7 @@
             <column name="passport_series" type="bigint"/>
             <column name="passport_number" type="bigint"/>
             <column name="passport_desc" type="varchar(255)"/>
+            <column name="command_id" type="bigint"/>
         </createTable>
         <createTable tableName="command_member">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
@@ -140,6 +141,7 @@
             <column name="birth_certificate_number" type="bigint"/>
             <column name="birth_certificate_desc" type="varchar(255)"/>
             <column name="quality" type="varchar(100)"/>
+            <column name="command_id" type="bigint"/>
         </createTable>
         <createTable tableName="command_request">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
@@ -149,6 +151,7 @@
             <column name="age_category" type="varchar(50)"/>
             <column name="nomination" type="varchar(50)"/>
             <column name="music" type="blob"/>
+            <column name="command_request_id" type="bigint"/>
         </createTable>
 
         <createTable tableName="coaches_join_table">
