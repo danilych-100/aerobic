@@ -126,7 +126,7 @@
             <column name="passport_series" type="bigint"/>
             <column name="passport_number" type="bigint"/>
             <column name="passport_desc" type="varchar(255)"/>
-            <column name="command_id" type="bigint"/>
+            <column name="command_coach_id" type="bigint"/>
         </createTable>
         <createTable tableName="command_member">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
@@ -141,7 +141,7 @@
             <column name="birth_certificate_number" type="bigint"/>
             <column name="birth_certificate_desc" type="varchar(255)"/>
             <column name="quality" type="varchar(100)"/>
-            <column name="command_id" type="bigint"/>
+            <column name="command_member_id" type="bigint"/>
         </createTable>
         <createTable tableName="command_request">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
@@ -153,6 +153,24 @@
             <column name="music" type="blob"/>
             <column name="command_request_id" type="bigint"/>
         </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="command_coach_id"
+                                 baseTableName="command_coach"
+                                 constraintName="fk_command_coach"
+                                 referencedColumnNames="id"
+                                 referencedTableName="command"/>
+
+        <addForeignKeyConstraint baseColumnNames="command_member_id"
+                                 baseTableName="command_member"
+                                 constraintName="fk_command_member"
+                                 referencedColumnNames="id"
+                                 referencedTableName="command"/>
+
+        <addForeignKeyConstraint baseColumnNames="command_request_id"
+                                 baseTableName="command_request"
+                                 constraintName="fk_command_request"
+                                 referencedColumnNames="id"
+                                 referencedTableName="command"/>
 
         <createTable tableName="coaches_join_table">
             <column name="command_id" type="bigint">
@@ -170,6 +188,9 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
         </createTable>
+
+
+
 
         <createTable tableName="jhi_persistent_audit_evt_data">
             <column name="event_id" type="bigint">

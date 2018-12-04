@@ -28,11 +28,8 @@ public class CommandCoach {
     @Column(name = "passport_desc")
     private String passportDesc;
 
-    @Column(name = "command_id", insertable = false, updatable = false)
-    private Long commandId;
-
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "command_id")
+    @JoinColumn(name = "command_coach_id")
     private Command command;
 
 
@@ -92,11 +89,4 @@ public class CommandCoach {
         this.command = command;
     }
 
-    public Long getCommandId() {
-        return commandId;
-    }
-
-    public void setCommandId(Long commandId) {
-        this.commandId = commandId;
-    }
 }

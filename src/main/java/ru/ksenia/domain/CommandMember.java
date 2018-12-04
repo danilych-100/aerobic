@@ -41,11 +41,8 @@ public class CommandMember {
     @Column(name = "quality")
     private String quality;
 
-    @Column(name = "command_id", insertable = false, updatable = false)
-    private Long commandId;
-
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "command_id")
+    @JoinColumn(name = "command_member_id")
     private Command command;
 
     public Long getId() {
@@ -136,11 +133,4 @@ public class CommandMember {
         this.birthCertificateDesc = birthCertificateDesc;
     }
 
-    public Long getCommandId() {
-        return commandId;
-    }
-
-    public void setCommandId(Long commandId) {
-        this.commandId = commandId;
-    }
 }

@@ -78,10 +78,10 @@ public class ClientService {
     public void updateCommand(CommandDTO command) {
         User currentUser = userService.getUserWithAuthorities().orElseThrow(() -> new InternalServerErrorException("User could not be found"));
         List<Command> commands = commandRepository.findAllByUserId(currentUser.getId());
-        if(commands == null || commands.size() == 0){
-            commandRepository.save(registerCommand(command, currentUser.getId(), null));
-            return;
+        if(commands != null && commands.size() != 0){
+            commandRepository.deleteById(commands.get(0).getId());
+            commandRepository.flush();
         }
-        commandRepository.save(registerCommand(command, currentUser.getId(), commands.get(0)));
+        commandRepository.saveAndFlush(registerCommand(command, currentUser.getId(), null));
     }
 }

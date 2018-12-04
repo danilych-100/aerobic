@@ -5,7 +5,7 @@
             <li id="tab2" (click)="openTab(2)"><a>Тренеры</a></li>
             <li id="tab3" (click)="openTab(3)"><a>Участники</a></li>
             <li id="tab4" (click)="openTab(4)" style="border-bottom: 1px solid rgba(10, 11, 49, 0.20)"><a>Заявки</a>
-            <li id="tab5" (click)="flushCommand()" style="border-bottom: 1px solid rgba(10, 11, 49, 0.20)"><a>Сохранить</a>
+           <!-- <li id="tab5" (click)="flushCommand()" style="border-bottom: 1px solid rgba(10, 11, 49, 0.20)"><a>Сохранить</a>-->
             </li>
         </ul>
     </div>
@@ -420,7 +420,7 @@
                                 <span style="font-family: Roboto, monospace;
                                                      font-size: 15px;
                                                      font-weight: 400;
-                                                     color: rgba(0, 0, 0, 0.54); margin-bottom: 10px; margin-left: 12px" >Музыкальный файл: <a href="/">{{request.music.name}}</a></span>
+                                                     color: rgba(0, 0, 0, 0.54); margin-bottom: 10px; margin-left: 12px" *ngIf="request.music">Музыкальный файл: <a href="/">{{request.music.name}}</a></span>
                                 <div class="container">
                                     <h5>Тренеры</h5>
                                     <div *ngFor="let coach of request.coaches" style="margin: 10px 0;">

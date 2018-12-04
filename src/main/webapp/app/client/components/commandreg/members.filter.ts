@@ -14,7 +14,14 @@ export class MembersFilterPipe implements PipeTransform {
         // filter items array, items which match and return true will be
         // kept, false will be filtered out
         return items.filter(item => {
-            const age = new Date().getFullYear() - item.birthDate.getFullYear();
+            let birthYear;
+            if (typeof item.birthDate.getFullYear !== 'function') {
+                const splitted = item.birthDate.toString().split('T');
+                birthYear = parseInt(splitted[0].split('-')[0]);
+            } else {
+                birthYear = item.birthDate.getFullYear();
+            }
+            const age = new Date().getFullYear() - birthYear;
             if (category === '6—8') {
                 return age >= 6 && age <= 8;
             }

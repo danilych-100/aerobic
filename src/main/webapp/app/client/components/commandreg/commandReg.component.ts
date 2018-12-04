@@ -349,6 +349,7 @@ export class CommandRegistrationComponent implements OnInit {
     isOk: boolean;
 
     flushCommand() {
+        console.log(this.command);
         this.registerCommandService.update(this.command).subscribe(
             () => {
                 this.isOk = true;
@@ -527,6 +528,7 @@ export class CommandRegistrationComponent implements OnInit {
             tab4.classList.add('active');
         }
         document.getElementById(`tabContent_${index}`).style.display = 'block';
+        this.flushCommand();
     }
 
     selectEvent(file: File): void {

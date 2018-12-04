@@ -9,28 +9,44 @@ import ru.ksenia.web.rest.dto.CommandDTO;
 import ru.ksenia.web.rest.dto.CommandMemberDTO;
 import ru.ksenia.web.rest.dto.CommandRequestDTO;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class CommandMapper {
 
     private CommandMapper(){}
 
     public static Command mapDTOToEntity(CommandDTO commandDTO, Command command){
+        List<CommandCoach> commandCoachList = new ArrayList<>();
+        commandDTO.getCoaches().forEach(commandCoachDTO -> {
+            CommandCoach commandCoach = mapCommandCoachDToToEntity(commandCoachDTO);
+            commandCoach.setCommand(command);
+            commandCoachList.add(commandCoach);
+        });
+        command.setCoaches(commandCoachList);
+
+        List<CommandMember> commandMemberList = new ArrayList<>();
+        commandDTO.getMembers().forEach(commandMemberDTO -> {
+            CommandMember commandMember = mapCommandMemberDToToEntity(commandMemberDTO);
+            commandMember.setCommand(command);
+            commandMemberList.add(commandMember);
+        });
+        command.setMembers(commandMemberList);
+
+        List<CommandRequest> commandRequestList = new ArrayList<>();
+        commandDTO.getRequests().forEach(commandRequestDTO -> {
+            CommandRequest commandRequest = mapCommandRequestDToToEntity(commandRequestDTO);
+            commandRequest.setCommand(command);
+            commandRequestList.add(commandRequest);
+        });
+        command.setRequests(commandRequestList);
+
         command.setRegion(commandDTO.getRegion());
         command.setName(commandDTO.getName());
         command.setMemberCount(commandDTO.getMemberCount());
         command.setPhoneNumber(commandDTO.getPhoneNumber());
         command.setEmail(commandDTO.getEmail());
-
-        commandDTO.getCoaches().forEach(commandCoachDTO -> {
-            command.getCoaches().add(mapCommandCoachDToToEntity(commandCoachDTO));
-        });
-        commandDTO.getMembers().forEach(commandMemberDTO -> {
-            command.getMembers().add(mapCommandMemberDToToEntity(commandMemberDTO));
-        });
-        commandDTO.getRequests().forEach(commandRequestDTO -> {
-            command.getRequests().add(mapCommandRequestDToToEntity(commandRequestDTO));
-        });
 
         return command;
     }
