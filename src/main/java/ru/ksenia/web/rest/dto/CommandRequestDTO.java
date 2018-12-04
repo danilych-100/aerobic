@@ -1,7 +1,5 @@
 package ru.ksenia.web.rest.dto;
 
-import javax.servlet.http.Part;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +7,8 @@ public class CommandRequestDTO {
     private String name;
     private String ageCategory;
     private String nomination;
-    private Part music;
+    private String music;
+    private String musicFileName;
     private List<CommandMemberDTO> members = new ArrayList<>();
     private List<CommandCoachDTO> coaches = new ArrayList<>();
 
@@ -37,12 +36,12 @@ public class CommandRequestDTO {
         this.nomination = nomination;
     }
 
-    public byte[] getMusic() {
-        return null;
+    public String getMusic() {
+        return music;
     }
 
-    public void setMusic(byte[] music) {
-        this.music = null;
+    public void setMusic(String music) {
+        this.music = music;
     }
 
     public List<CommandMemberDTO> getMembers() {
@@ -59,5 +58,13 @@ public class CommandRequestDTO {
 
     public void setCoaches(List<CommandCoachDTO> coaches) {
         this.coaches = coaches;
+    }
+
+    public String getMusicFileName() {
+        return musicFileName;
+    }
+
+    public void setMusicFileName(String musicFileName) {
+        this.musicFileName = musicFileName;
     }
 }

@@ -49,7 +49,8 @@ export class CommandRequest {
     public name: string;
     public ageCategory: string;
     public nomination: string;
-    public music: File;
+    public music: string;
+    public musicFileName: string;
     public members: CommandMember[];
     public coaches: CommandCoach[];
 
@@ -300,6 +301,7 @@ export class CommandRegistrationComponent implements OnInit {
         newRequest.coaches = this.currentCommandRequest.coaches;
         newRequest.members = this.currentCommandRequest.members;
         newRequest.music = this.currentCommandRequest.music;
+        newRequest.musicFileName = this.currentCommandRequest.musicFileName;
         this.command.requests.push(newRequest);
         this.currentCommandRequest = new CommandRequest();
     }
@@ -349,7 +351,6 @@ export class CommandRegistrationComponent implements OnInit {
     isOk: boolean;
 
     flushCommand() {
-        console.log(this.command);
         this.registerCommandService.update(this.command).subscribe(
             () => {
                 this.isOk = true;
@@ -532,13 +533,24 @@ export class CommandRegistrationComponent implements OnInit {
     }
 
     selectEvent(file: File): void {
-        this.currentCommandRequest.music = file;
+        //this.currentCommandRequest.music = file;
+        var reader = new FileReader();
+        reader.onload = () => {
+            var arrayBuffer = reader.result;
+            var array = new Uint8Array(arrayBuffer);
+            var binaryString = String.fromCharCode.apply(null, array);
+
+            this.currentCommandRequest.music = binaryString;
+            this.currentCommandRequest.musicFileName = file.name;
+        };
+        reader.readAsArrayBuffer(file);
     }
 
     uploadEvent(file: File): void {}
 
     cancelEvent(): void {
         this.currentCommandRequest.music = null;
+        this.currentCommandRequest.musicFileName = null;
     }
 
     getFontSize() {

@@ -151,6 +151,7 @@
             <column name="age_category" type="varchar(50)"/>
             <column name="nomination" type="varchar(50)"/>
             <column name="music" type="blob"/>
+            <column name="music_file_name" type="varchar(200)"/>
             <column name="command_request_id" type="bigint"/>
         </createTable>
 

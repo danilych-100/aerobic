@@ -21,6 +21,9 @@ public class CommandRequest {
     @Column(name = "nomination")
     private String nomination;
 
+    @Column(name = "music_file_name")
+    private String musicFileName;
+
     @Lob
     @Column(name = "music")
     private byte[] music;
@@ -107,4 +110,11 @@ public class CommandRequest {
         this.command = command;
     }
 
+    public String getMusicFileName() {
+        return musicFileName;
+    }
+
+    public void setMusicFileName(String musicFileName) {
+        this.musicFileName = musicFileName;
+    }
 }

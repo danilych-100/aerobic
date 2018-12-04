@@ -77,7 +77,8 @@ public class CommandMapper {
         commandRequest.setName(commandRequestDTO.getName());
         commandRequest.setAgeCategory(commandRequestDTO.getAgeCategory());
         commandRequest.setNomination(commandRequestDTO.getNomination());
-        commandRequest.setMusic(commandRequestDTO.getMusic());
+        commandRequest.setMusic(commandRequestDTO.getMusic().getBytes());
+        commandRequest.setMusicFileName(commandRequestDTO.getMusicFileName());
         commandRequestDTO.getCoaches().forEach(commandCoachDTO -> {
             commandRequest.getCoaches().add(mapCommandCoachDToToEntity(commandCoachDTO));
         });
@@ -92,7 +93,8 @@ public class CommandMapper {
         commandRequestDTO.setName(commandRequest.getName());
         commandRequestDTO.setAgeCategory(commandRequest.getAgeCategory());
         commandRequestDTO.setNomination(commandRequest.getNomination());
-        commandRequestDTO.setMusic(commandRequest.getMusic());
+        commandRequestDTO.setMusic(new String(commandRequest.getMusic()));
+        commandRequestDTO.setMusicFileName(commandRequest.getMusicFileName());
         commandRequest.getCoaches().forEach(commandCoach -> {
             commandRequestDTO.getCoaches().add(mapCommandCoachEntityToDTO(commandCoach));
         });
