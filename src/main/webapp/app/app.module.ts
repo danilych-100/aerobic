@@ -23,6 +23,8 @@ import * as moment from 'moment';
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatPaginatorIntl } from '@angular/material';
+import { MatPaginatorIntlRu } from 'app/client/components/table/table.component';
 
 @NgModule({
     imports: [
@@ -60,6 +62,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
             provide: HTTP_INTERCEPTORS,
             useClass: NotificationInterceptor,
             multi: true
+        },
+        {
+            provide: MatPaginatorIntl,
+            useClass: MatPaginatorIntlRu
         }
     ],
     bootstrap: [AppComponent]

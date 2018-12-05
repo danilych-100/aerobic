@@ -6,7 +6,7 @@ import { LoginComponent } from './client/components/login/login.component';
 import { HttpClient } from '@angular/common/http';
 import { MakeAppointmentComponent } from './client/components/make-appointment/make-appointment.component';
 import { StepperComponent } from './client/components/stepper/stepper.component';
-import { AccountService, LoginService } from 'app/core';
+import { AccountService, LoginService, Principal } from 'app/core';
 import { SharedService } from 'app/client/components/shared/shared.service';
 
 /**
@@ -43,6 +43,7 @@ export class AppComponent {
      * @param dialog Material dialog.
      */
     public constructor(
+        private principal: Principal,
         private router: Router,
         private dialog: MatDialog,
         private account: AccountService,
@@ -81,6 +82,7 @@ export class AppComponent {
         if (this.currentUserName == null) {
             setInterval(() => this.getCurrentAccountName(), 5000);
         }
+        this.principal.identity();
     }
 
     /**

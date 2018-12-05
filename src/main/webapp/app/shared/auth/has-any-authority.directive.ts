@@ -29,9 +29,12 @@ export class HasAnyAuthorityDirective {
     }
 
     private updateView(): void {
+        console.log('cccccccccccccccccccccccccc');
         this.principal.hasAnyAuthority(this.authorities).then(result => {
             this.viewContainerRef.clear();
+            console.log('bbbbbbbbbbbbbbbbbbb');
             if (result) {
+                console.log('aaaaaaaaaaaaaaaaa');
                 this.viewContainerRef.createEmbeddedView(this.templateRef);
             }
         });

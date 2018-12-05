@@ -21,7 +21,7 @@
        *jhiHasAnyAuthority="'ROLE_ADMIN'"
        #linkAdmin='routerLinkActive'
        [active]="linkAdmin.isActive">
-        Просмотр записей
+        Просмотр заявок
     </a>
 
     <a mat-tab-link (click)="logout()" id="logout" *jhiHasAnyAuthority="'ROLE_ADMIN'">
@@ -29,10 +29,10 @@
         <fa-icon [icon]="'sign-out-alt'" [fixedWidth]="true"></fa-icon>
         <span>Выйти</span>
     </a>
-    <a mat-tab-link (click)="logout()" id="logout" *ngIf="currentUserName">
-        <span style="margin-right: 40px; font-size: 16px" >{{currentUserName}}</span>
-        <fa-icon [icon]="'sign-out-alt'" [fixedWidth]="true"></fa-icon>
-        <span>Выйти</span>
+    <a mat-tab-link (click)="logout()" id="logout" *jhiHasAnyAuthority="'ROLE_USER'">
+        <span style="margin-right: 40px; font-size: 16px" *ngIf="currentUserName">{{currentUserName}}</span>
+        <fa-icon [icon]="'sign-out-alt'" [fixedWidth]="true" *ngIf="currentUserName"></fa-icon>
+        <span *ngIf="currentUserName">Выйти</span>
     </a>
 
     <!--<button mat-raised-button color="primary" (click)="openLogin()">Login</button>-->
