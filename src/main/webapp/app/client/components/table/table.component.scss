@@ -1,3 +1,7 @@
+@import 'https://fonts.googleapis.com/css?family=Merriweather';
+@import 'https://fonts.googleapis.com/css?family=Cuprum';
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
 .cars-table {
     width: 100%;
 }
@@ -142,4 +146,13 @@ ul.tabs li:hover:before {
 
     border-left: 5px solid orangered;
     border-right: 1px solid rgba(10, 11, 49, 0.2);
+}
+
+.request-table-row:hover {
+    background: rgb(234, 234, 225);
+}
+
+.remove-icon {
+    font-size: 19px;
+    color: #ff3300;
 }

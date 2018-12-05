@@ -62,6 +62,10 @@ export class TableComponent implements OnInit {
     selectingCategory: string;
     selectingNominations: string;
 
+    selectingRegionCleared = false;
+    selectingCategoryCleared = false;
+    selectingNominationsCleared = false;
+
     @ViewChild(MatPaginator)
     paginator: MatPaginator;
     @ViewChild(MatSort)
@@ -80,6 +84,11 @@ export class TableComponent implements OnInit {
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.sort = this.sort;
                 this.dataSource.filterPredicate = function(data, filter: string): boolean {
+                    console.log('filtering');
+                    console.log(filter);
+                    if (filter == 'clear') {
+                        return true;
+                    }
                     const fieldName = filter.split('$')[0];
                     const fieldValue = filter.split('$')[1];
                     return data[fieldName].toLowerCase() == fieldValue.toLowerCase();
@@ -96,7 +105,46 @@ export class TableComponent implements OnInit {
     }
 
     applyFilterByName(filterValue: string, filterFieldName: string) {
-        this.dataSource.filter = `${filterFieldName}$${filterValue}`;
+        switch (filterFieldName) {
+            case 'region':
+                if (!this.selectingRegionCleared) {
+                    this.dataSource.filter = `${filterFieldName}$${filterValue}`;
+                }
+                this.selectingRegionCleared = false;
+                break;
+            case 'ageCategory':
+                if (!this.selectingCategoryCleared) {
+                    this.dataSource.filter = `${filterFieldName}$${filterValue}`;
+                }
+                this.selectingCategoryCleared = false;
+                break;
+            case 'nomination':
+                if (!this.selectingNominationsCleared) {
+                    this.dataSource.filter = `${filterFieldName}$${filterValue}`;
+                }
+                this.selectingNominationsCleared = false;
+                break;
+        }
+    }
+
+    selectRow(row) {
+        console.log(row);
+    }
+
+    removeFilterByName(name) {
+        switch (name) {
+            case 'region':
+                this.selectingRegionCleared = true;
+                break;
+            case 'ageCategory':
+                this.selectingCategoryCleared = true;
+                break;
+            case 'nomination':
+                this.selectingNominationsCleared = true;
+                break;
+        }
+
+        this.dataSource.filter = 'clear';
     }
 
     public ngOnInit(): void {

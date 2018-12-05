@@ -11,35 +11,53 @@
 
 <div class="tab_content">
     <div id="tabContent_1" style="display: none">
-        <mat-form-field>
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск заявки">
-        </mat-form-field>
 
-        <br>
+        <div>
+            <mat-form-field style="width: 200px;">
+                <mat-select placeholder="Субъект РФ" [(ngModel)]="selectingRegion">
+                    <mat-option *ngFor="let reg of regions" [value]="reg" (onSelectionChange)="applyFilterByName(reg, 'region')">
+                        {{reg}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
-        <mat-form-field style="margin-right: 40px">
-            <mat-select placeholder="Субъект РФ" [(ngModel)]="selectingRegion">
-                <mat-option *ngFor="let reg of regions" [value]="reg" (onSelectionChange)="applyFilterByName(reg, 'region')">
-                    {{reg}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+            <a (click)="removeFilterByName('region');selectingRegion = null; ">
+                <mat-icon class="remove-icon" *ngIf="selectingRegion">clear</mat-icon>
+            </a>
+        </div>
 
-        <mat-form-field style="margin-right: 40px; width: 200px;">
-            <mat-select placeholder="Возрастная категория" [(ngModel)]="selectingCategory">
-                <mat-option *ngFor="let cat of categories" [value]="cat" (onSelectionChange)="applyFilterByName(cat, 'ageCategory')">
-                    {{cat}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+        <div>
+            <mat-form-field style="width: 200px;">
+                <mat-select placeholder="Возрастная категория" [(ngModel)]="selectingCategory">
+                    <mat-option *ngFor="let cat of categories" [value]="cat" (onSelectionChange)="applyFilterByName(cat, 'ageCategory')">
+                        {{cat}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <a (click)="removeFilterByName('ageCategory');selectingCategory = null; ">
+                <mat-icon class="remove-icon" *ngIf="selectingCategory">clear</mat-icon>
+            </a>
 
-        <mat-form-field>
-            <mat-select placeholder="Номинация" [(ngModel)]="selectingNominations">
-                <mat-option *ngFor="let nom of nominations" [value]="nom" (onSelectionChange)="applyFilterByName(nom, 'nomination')">
-                    {{nom}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field style="width: 200px;">
+                <mat-select placeholder="Номинация" [(ngModel)]="selectingNominations">
+                    <mat-option *ngFor="let nom of nominations" [value]="nom" (onSelectionChange)="applyFilterByName(nom, 'nomination')">
+                        {{nom}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <a (click)="removeFilterByName('nomination');selectingNominations = null; ">
+                <mat-icon class="remove-icon" *ngIf="selectingNominations">clear</mat-icon>
+            </a>
+
+
+            <mat-form-field style="float: right;">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск заявки">
+            </mat-form-field>
+        </div>
+
 
         <div>
             <div *ngIf="isLoadingResults" class="example-loading-shade">
@@ -85,7 +103,7 @@
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)" class="request-table-row"></tr>
             </table>
 
             <mat-paginator [length]="resultsLength"
