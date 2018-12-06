@@ -1,5 +1,6 @@
 @import 'https://fonts.googleapis.com/css?family=Merriweather';
 @import 'https://fonts.googleapis.com/css?family=Cuprum';
+@import 'https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz';
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
 .cars-table {
@@ -156,4 +157,16 @@ ul.tabs li:hover:before {
 .remove-icon {
     font-size: 19px;
     color: #ff3300;
+}
+
+.modal-header .request-modal-value-field {
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+
+.modal-body > .coach-card {
+    vertical-align: top;
+    min-width: 290px;
+    max-width: 290px;
+    display: inline-block;
+    margin: 10px;
 }

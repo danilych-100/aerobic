@@ -137,7 +137,7 @@ export class TableComponent implements OnInit {
         if (this.isOpen) {
             return;
         }
-        this.modalRef = this.modalService.open(RequestModalComponent);
+        this.modalRef = this.modalService.open(RequestModalComponent, { size: 'lg' });
         this.modalRef.componentInstance.requestId = requestId;
         this.isOpen = true;
         this.modalRef.result.then(
