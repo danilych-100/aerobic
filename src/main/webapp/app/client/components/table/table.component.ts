@@ -12,6 +12,9 @@ import { RegisterCommandService } from 'app/client/components/commandreg/registe
 import { Command, CommandCoach, CommandMember, CommandRequest } from 'app/client/components/commandreg/commandReg.component';
 import { merge } from 'rxjs';
 import { REGIONS } from 'app/client/components/commandreg/regions';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { JhiLoginModalComponent } from 'app/shared';
+import { RequestModalComponent } from 'app/client/components/table/modals/request_modal.component';
 
 /**
  * Component with table car.
@@ -66,6 +69,8 @@ export class TableComponent implements OnInit {
     selectingCategoryCleared = false;
     selectingNominationsCleared = false;
 
+    modalRef: NgbModalRef;
+
     @ViewChild(MatPaginator)
     paginator: MatPaginator;
     @ViewChild(MatSort)
@@ -73,7 +78,7 @@ export class TableComponent implements OnInit {
 
     public requests: CommandRequestAdmin[];
 
-    constructor(private carsService: CarsService, private registerCommandService: RegisterCommandService) {
+    constructor(private carsService: CarsService, private registerCommandService: RegisterCommandService, private modalService: NgbModal) {
         this.registerCommandService.getAllRequests().subscribe(
             response => {
                 console.log(response);
@@ -127,8 +132,26 @@ export class TableComponent implements OnInit {
         }
     }
 
+    private isOpen = false;
+    public openRequestModal(requestId: number): void {
+        if (this.isOpen) {
+            return;
+        }
+        this.modalRef = this.modalService.open(RequestModalComponent);
+        this.modalRef.componentInstance.requestId = requestId;
+        this.isOpen = true;
+        this.modalRef.result.then(
+            result => {
+                this.isOpen = false;
+            },
+            reason => {
+                this.isOpen = false;
+            }
+        );
+    }
+
     selectRow(row) {
-        console.log(row);
+        this.openRequestModal(row.id);
     }
 
     removeFilterByName(name) {

@@ -28,4 +28,8 @@ export class RegisterCommandService {
     getAllRequests(): Observable<any> {
         return this.http.get(SERVER_API_URL + 'api/getAllRequests');
     }
+
+    getRequestInfo(requestId: number): Observable<any> {
+        return this.http.get(SERVER_API_URL + 'api/getRequestInfo?requestId=' + requestId);
+    }
 }

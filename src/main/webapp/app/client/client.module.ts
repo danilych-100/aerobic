@@ -44,6 +44,8 @@ import { SharedService } from 'app/client/components/shared/shared.service';
 import { TabModule } from 'angular-tabs-component';
 import { MembersFilterPipe } from 'app/client/components/commandreg/members.filter';
 import { CovalentFileModule } from '@covalent/core';
+import { RequestModalComponent } from 'app/client/components/table/modals/request_modal.component';
+import { JhiLoginModalComponent } from 'app/shared';
 
 /**
  * Standard module.
@@ -80,7 +82,6 @@ import { CovalentFileModule } from '@covalent/core';
         CovalentFileModule
     ],
     providers: [{ provide: MatPaginatorIntl, useClass: CarsMatPaginatorIntl }],
-
     declarations: [
         TableComponent,
         FormCarComponent,
@@ -93,8 +94,9 @@ import { CovalentFileModule } from '@covalent/core';
         CreditCardDirective,
         MainComponent,
         CommandRegistrationComponent,
-        MembersFilterPipe
+        MembersFilterPipe,
+        RequestModalComponent
     ],
-    entryComponents: [DialogDeactivationComponent, LoginComponent, StepperComponent]
+    entryComponents: [DialogDeactivationComponent, LoginComponent, StepperComponent, RequestModalComponent]
 })
 export class ClientModule {}
