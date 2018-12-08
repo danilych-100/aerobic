@@ -30,6 +30,15 @@ export class CommandRequestAdmin {
     public musicFileName: string;
 }
 
+export class CommandUserInfo {
+    public commandId: number;
+    public userName: string;
+    public commandName: string;
+    public region: string;
+    public phoneNumber: string;
+    public mail: string;
+}
+
 export class MatPaginatorIntlRu extends MatPaginatorIntl {
     itemsPerPageLabel = 'Заявок на странице:';
     nextPageLabel = 'Следующая страница';
@@ -56,6 +65,7 @@ export class TableComponent implements OnInit {
     private categories = ['6—8', '9—11', '12—14', '15—17', '18+'];
     private nominations = ['Индивидуальные', 'Смешанные пары', 'Трио', 'Группы'];
     dataSource: MatTableDataSource<CommandRequestAdmin>;
+    dataSourceUsers: MatTableDataSource<CommandUserInfo>;
     displayedColumns: string[] = ['name', 'commandName', 'region', 'ageCategory', 'nominations', 'musicFileName'];
 
     resultsLength = 0;
@@ -98,6 +108,16 @@ export class TableComponent implements OnInit {
                     const fieldValue = filter.split('$')[1];
                     return data[fieldName].toLowerCase() == fieldValue.toLowerCase();
                 };
+            },
+            err => {
+                console.log(err);
+            }
+        );
+
+        this.registerCommandService.getAllCommandUserInfo().subscribe(
+            response => {
+                console.log(response);
+                this.dataSourceUsers = new MatTableDataSource(response);
             },
             err => {
                 console.log(err);

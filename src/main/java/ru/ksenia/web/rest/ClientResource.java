@@ -8,6 +8,7 @@ import ru.ksenia.web.rest.dto.CommandCoachDTO;
 import ru.ksenia.web.rest.dto.CommandDTO;
 import ru.ksenia.web.rest.dto.CommandMemberDTO;
 import ru.ksenia.web.rest.dto.admin.CommandRequestAdminInfoDTO;
+import ru.ksenia.web.rest.dto.admin.CommandUserInfoDTO;
 import ru.ksenia.web.rest.dto.admin.ReqeustInfoDTO;
 
 import javax.annotation.PostConstruct;
@@ -198,6 +199,22 @@ public class ClientResource {
     @GetMapping("/getAllRequests")
     public ResponseEntity<List<CommandRequestAdminInfoDTO>> getAllRequests() {
         return ResponseEntity.ok(requestDTOS);
+    }
+
+    @GetMapping("/getAllCommandUserInfo")
+    public ResponseEntity<List<CommandUserInfoDTO>> getAllCommandUserInfo() {
+        List<CommandUserInfoDTO> commandUserInfoDTOS = new ArrayList<>();
+        commandDTOS.forEach(commandDTO -> {
+            CommandUserInfoDTO commandUserInfoDTO = new CommandUserInfoDTO();
+            commandUserInfoDTO.setCommandId(1L);
+            commandUserInfoDTO.setUserName("Мягкая Елизавета Павловна");
+            commandUserInfoDTO.setCommandName(commandDTO.getName());
+            commandUserInfoDTO.setMail(commandDTO.getEmail());
+            commandUserInfoDTO.setPhoneNumber(commandDTO.getPhoneNumber());
+            commandUserInfoDTO.setRegion(commandDTO.getRegion());
+            commandUserInfoDTOS.add(commandUserInfoDTO);
+        });
+        return ResponseEntity.ok(commandUserInfoDTOS);
     }
 
     @GetMapping("/getAllCommands")
