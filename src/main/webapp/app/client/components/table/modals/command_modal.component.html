@@ -1,0 +1,93 @@
+<div class="modal-header">
+    <div>
+        <h4 class="modal-title" *ngIf="this.command"><span style="font-family: 'Yanone Kaffeesatz', sans-serif;">Комманда:</span>
+            {{command.name}}
+        </h4>
+        <h5 *ngIf="this.command" style="font-size: 15px;margin-top: 10px; margin-bottom: 0;" class="text-muted">
+            <span style="display: block; margin-top: 10px"><span style="font-family: 'Yanone Kaffeesatz', sans-serif;">Субект РФ:</span>
+                {{command.region}}
+            </span>
+        </h5>
+    </div>
+
+    <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="activeModal.dismiss('closed')">
+        <span aria-hidden="true">x</span>
+    </button>
+
+</div>
+<div class="modal-body">
+    <div *ngIf="this.command" style="margin-left: 45px;">
+            <span><span
+                style="font-family: 'Yanone Kaffeesatz', sans-serif; font-size: x-large;">Количество участников: </span>
+                <span style="font-size: 18px; margin-left: 10px;">{{command.members.length}}</span>
+            </span>
+        <span style="display: block; margin-top: 10px"><span
+            style="font-family: 'Yanone Kaffeesatz', sans-serif; font-size: x-large;">Количество тренеров: </span>
+            <span style="font-size: 18px; margin-left: 10px;">{{command.coaches.length}}</span>
+            </span>
+    </div>
+    <div class="container" style="margin: 20px" *ngIf="this.command">
+        <h4 style="font-family: 'Yanone Kaffeesatz', sans-serif; margin-left: 10px;">Созданные заявки</h4>
+        <mat-accordion>
+            <div class="row" *ngFor="let request of command.requests; let i = index" style="margin: 8px 0">
+                <div class="col-xl-10">
+                    <mat-expansion-panel style="height: auto">
+                        <mat-expansion-panel-header style="height: auto">
+                            <mat-panel-title style="align-self: center;">
+                                <h5>{{request.name ? request.name : 'Без названия'}}</h5>
+                            </mat-panel-title>
+                            <mat-panel-description *ngIf="request.name && request.name.length < 24">
+                                Номинация: {{request.nomination}} <br>
+                                Категория: {{request.ageCategory}}
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <span style="font-family: Roboto, monospace;
+                                                     font-size: 15px;
+                                                     font-weight: 400;
+                                                     color: rgba(0, 0, 0, 0.54); margin-bottom: 10px; margin-left: 12px"
+                              *ngIf="request.musicFileName">Музыкальный файл: <a href="/">{{request.musicFileName}}</a></span>
+                        <div class="container">
+                            <h5>Тренеры</h5>
+                            <div *ngFor="let coach of request.coaches" style="margin: 10px 0;">
+                                <mat-card>
+                                    <mat-card-header>
+                                        <mat-card-title>Тренер: {{coach.name}}</mat-card-title>
+                                        <mat-card-subtitle>Дата рождения: {{coach.birthDate| date: 'dd.MM.yyyy'}}
+                                        </mat-card-subtitle>
+                                    </mat-card-header>
+                                </mat-card>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <h5>Участники</h5>
+                            <div *ngFor="let member of request.members" style="margin: 10px 0;">
+                                <mat-card>
+                                    <mat-card-header>
+                                        <mat-card-title>{{member.name}}</mat-card-title>
+                                        <mat-card-subtitle>
+                                            Пол: <span>{{member.gender === 'male' ? 'мужской' : 'женский'}}</span> <br>
+                                            Дата рождения: <span>{{member.birthDate| date: 'dd.MM.yyyy'}}</span> <br>
+                                            Разряд: <span>{{member.quality}}</span>
+                                        </mat-card-subtitle>
+                                    </mat-card-header>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </div>
+            </div>
+        </mat-accordion>
+    </div>
+</div>
+<div class="modal-footer" style=" justify-content: normal; font-size: 18px;">
+    <div *ngIf="command">
+        <span style="font-family: 'Yanone Kaffeesatz', sans-serif; margin-right: 6px;">Телефон: </span>
+        +7{{command.phoneNumber}}
+
+        <span style="margin-left: 32px;">
+         <span style="font-family: 'Yanone Kaffeesatz', sans-serif; margin-right: 6px;">Почта: </span>
+        {{command.email}}
+
+     </span>
+    </div>
+</div>

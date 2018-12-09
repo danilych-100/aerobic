@@ -46,6 +46,7 @@ import { MembersFilterPipe } from 'app/client/components/commandreg/members.filt
 import { CovalentFileModule } from '@covalent/core';
 import { RequestModalComponent } from 'app/client/components/table/modals/request_modal.component';
 import { JhiLoginModalComponent } from 'app/shared';
+import { CommandModalComponent } from 'app/client/components/table/modals/command_modal.component';
 
 /**
  * Standard module.
@@ -95,8 +96,9 @@ import { JhiLoginModalComponent } from 'app/shared';
         MainComponent,
         CommandRegistrationComponent,
         MembersFilterPipe,
-        RequestModalComponent
+        RequestModalComponent,
+        CommandModalComponent
     ],
-    entryComponents: [DialogDeactivationComponent, LoginComponent, StepperComponent, RequestModalComponent]
+    entryComponents: [DialogDeactivationComponent, LoginComponent, StepperComponent, RequestModalComponent, CommandModalComponent]
 })
 export class ClientModule {}

@@ -15,6 +15,7 @@ import { REGIONS } from 'app/client/components/commandreg/regions';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiLoginModalComponent } from 'app/shared';
 import { RequestModalComponent } from 'app/client/components/table/modals/request_modal.component';
+import { CommandModalComponent } from 'app/client/components/table/modals/command_modal.component';
 
 /**
  * Component with table car.
@@ -67,9 +68,12 @@ export class TableComponent implements OnInit {
     dataSource: MatTableDataSource<CommandRequestAdmin>;
     dataSourceUsers: MatTableDataSource<CommandUserInfo>;
     displayedColumns: string[] = ['name', 'commandName', 'region', 'ageCategory', 'nominations', 'musicFileName'];
+    displayedColumnsUsers: string[] = ['userName', 'commandName', 'region', 'phoneNumber', 'mail'];
 
     resultsLength = 0;
+    resultsLengthUsers = 0;
     isLoadingResults = true;
+    isLoadingResultsUsers = true;
 
     selectingRegion: string;
     selectingCategory: string;
@@ -86,7 +90,13 @@ export class TableComponent implements OnInit {
     @ViewChild(MatSort)
     sort: MatSort;
 
+    @ViewChild(MatPaginator)
+    paginatorUsers: MatPaginator;
+    @ViewChild(MatSort)
+    sortUsers: MatSort;
+
     public requests: CommandRequestAdmin[];
+    public users: CommandUserInfo[];
 
     constructor(private carsService: CarsService, private registerCommandService: RegisterCommandService, private modalService: NgbModal) {
         this.registerCommandService.getAllRequests().subscribe(
@@ -117,7 +127,12 @@ export class TableComponent implements OnInit {
         this.registerCommandService.getAllCommandUserInfo().subscribe(
             response => {
                 console.log(response);
+                this.resultsLengthUsers = response.length;
+                this.users = response;
+                this.isLoadingResultsUsers = false;
                 this.dataSourceUsers = new MatTableDataSource(response);
+                this.dataSourceUsers.paginator = this.paginatorUsers;
+                this.dataSourceUsers.sort = this.sortUsers;
             },
             err => {
                 console.log(err);
@@ -170,8 +185,29 @@ export class TableComponent implements OnInit {
         );
     }
 
+    public openCommandModal(commandId: number): void {
+        if (this.isOpen) {
+            return;
+        }
+        this.modalRef = this.modalService.open(CommandModalComponent, { size: 'lg' });
+        this.modalRef.componentInstance.commandId = commandId;
+        this.isOpen = true;
+        this.modalRef.result.then(
+            result => {
+                this.isOpen = false;
+            },
+            reason => {
+                this.isOpen = false;
+            }
+        );
+    }
+
     selectRow(row) {
         this.openRequestModal(row.id);
+    }
+
+    selectRowUsers(row) {
+        this.openCommandModal(row.commandId);
     }
 
     removeFilterByName(name) {

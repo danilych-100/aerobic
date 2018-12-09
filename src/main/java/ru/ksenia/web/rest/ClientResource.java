@@ -1,5 +1,6 @@
 package ru.ksenia.web.rest;
 
+import org.h2.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +8,7 @@ import ru.ksenia.service.ClientService;
 import ru.ksenia.web.rest.dto.CommandCoachDTO;
 import ru.ksenia.web.rest.dto.CommandDTO;
 import ru.ksenia.web.rest.dto.CommandMemberDTO;
+import ru.ksenia.web.rest.dto.CommandRequestDTO;
 import ru.ksenia.web.rest.dto.admin.CommandRequestAdminInfoDTO;
 import ru.ksenia.web.rest.dto.admin.CommandUserInfoDTO;
 import ru.ksenia.web.rest.dto.admin.ReqeustInfoDTO;
@@ -116,8 +118,17 @@ public class ClientResource {
             commandRequestDTO2.setRegion("Свердловская Область");
             commandRequestDTO2.setId((long) (i + 200));
 
-    /*        commandDTO.getRequests().add(commandRequestDTO1);
-            commandDTO.getRequests().add(commandRequestDTO2);*/
+            CommandRequestDTO commandRequestDTOOld1 = new CommandRequestDTO();
+            commandRequestDTOOld1.setName("Веселая команда");
+            commandRequestDTOOld1.setAgeCategory("12—14");
+            commandRequestDTOOld1.setNomination("Смешанные пары");
+            commandRequestDTOOld1.setMusicFileName("Команда.mp3");
+            commandRequestDTOOld1.setMusic("123asdawdadawWE@32313=i62523");
+            commandRequestDTOOld1.setMembers(Arrays.asList(commandMemberDTO2, commandMemberDTO3));
+            commandRequestDTOOld1.setCoaches(Collections.singletonList(commandCoach2));
+
+            commandDTO.getRequests().add(commandRequestDTOOld1);
+            commandDTO.getRequests().add(commandRequestDTOOld1);
 
             requestDTOS.add(commandRequestDTO1);
             requestDTOS.add(commandRequestDTO2);
@@ -125,6 +136,11 @@ public class ClientResource {
             commandDTOS.add(commandDTO);
         }
 
+    }
+
+    @GetMapping("/getCommand")
+    public ResponseEntity<CommandDTO> getCommand(@RequestParam Long commandId) {
+        return ResponseEntity.ok(commandDTOS.get((int) (commandId % 2)));
     }
 
     @GetMapping("/getRequestInfo")

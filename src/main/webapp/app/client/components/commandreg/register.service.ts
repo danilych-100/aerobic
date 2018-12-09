@@ -36,4 +36,8 @@ export class RegisterCommandService {
     getRequestInfo(requestId: number): Observable<any> {
         return this.http.get(SERVER_API_URL + 'api/getRequestInfo?requestId=' + requestId);
     }
+
+    getCommand(commandId: number): Observable<any> {
+        return this.http.get(SERVER_API_URL + 'api/getCommand?commandId=' + commandId);
+    }
 }
