@@ -213,12 +213,30 @@ export class TableComponent implements OnInit {
         );
     }
 
+    private clickTime;
+
+    saveClickTime() {
+        this.clickTime = Date.now();
+    }
+
     selectRow(row) {
-        this.openRequestModal(row.id);
+        const curTime = Date.now();
+        var diff = curTime - this.clickTime;
+        if (diff > 300) {
+            return;
+        } else {
+            this.openRequestModal(row.id);
+        }
     }
 
     selectRowUsers(row) {
-        this.openCommandModal(row.commandId);
+        const curTime = Date.now();
+        var diff = curTime - this.clickTime;
+        if (diff > 300) {
+            return;
+        } else {
+            this.openCommandModal(row.commandId);
+        }
     }
 
     removeFilterByName(name) {

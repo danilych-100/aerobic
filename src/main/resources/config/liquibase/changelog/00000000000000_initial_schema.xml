@@ -197,6 +197,7 @@
             <column name="music_file" type="blob"/>
             <column name="command_name" type="varchar(200)"/>
             <column name="music_file_name" type="varchar(200)"/>
+            <column name="save_date" type="timestamp"/>
         </createTable>
 
         <createTable tableName="jhi_persistent_audit_evt_data">

@@ -68,29 +68,29 @@
                 <!-- Number Column -->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Название заявки</th>
-                    <td mat-cell *matCellDef="let row"  (click)="selectRow(row)">{{row.name}}</td>
+                    <td mat-cell *matCellDef="let row"  (mousedown)="saveClickTime()" (mouseup)="selectRow(row)">{{row.name}}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="commandName">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Название команды</th>
-                    <td mat-cell *matCellDef="let row"  (click)="selectRow(row)">{{row.commandName}}</td>
+                    <td mat-cell *matCellDef="let row"  (mousedown)="saveClickTime()" (mouseup)="selectRow(row)">{{row.commandName}}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="region">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Субъект РФ</th>
-                    <td mat-cell *matCellDef="let row"  (click)="selectRow(row)">{{row.region}}</td>
+                    <td mat-cell *matCellDef="let row"  (mousedown)="saveClickTime()" (mouseup)="selectRow(row)">{{row.region}}</td>
                 </ng-container>
 
                 <!-- Title Column -->
                 <ng-container matColumnDef="ageCategory">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Возрастная категория</th>
-                    <td mat-cell *matCellDef="let row"  (click)="selectRow(row)">{{row.ageCategory}}</td>
+                    <td mat-cell *matCellDef="let row" (mousedown)="saveClickTime()" (mouseup)="selectRow(row)">{{row.ageCategory}}</td>
                 </ng-container>
 
                 <!-- State Column -->
                 <ng-container matColumnDef="nominations">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Номинация</th>
-                    <td mat-cell *matCellDef="let row"  (click)="selectRow(row)">{{row.nomination}}</td>
+                    <td mat-cell *matCellDef="let row"  (mousedown)="saveClickTime()" (mouseup)="selectRow(row)">{{row.nomination}}</td>
                 </ng-container>
 
                 <!-- Created Column -->
@@ -167,7 +167,7 @@
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumnsUsers"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumnsUsers;" (click)="selectRowUsers(row)" class="request-table-row"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsUsers;" (mousedown)="saveClickTime()" (mouseup)="selectRowUsers(row)" class="request-table-row"></tr>
             </table>
 
             <mat-paginator [length]="resultsLengthUsers"

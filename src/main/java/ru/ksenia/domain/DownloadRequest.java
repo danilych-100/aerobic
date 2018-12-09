@@ -20,6 +20,9 @@ public class DownloadRequest {
     @Column(name = "music_file_name", nullable = false)
     private String musicFileName;
 
+    @Column(name = "save_date")
+    private Instant saveDate;
+
     public String getId() {
         return id;
     }
@@ -50,5 +53,13 @@ public class DownloadRequest {
 
     public void setMusicFileName(String musicFileName) {
         this.musicFileName = musicFileName;
+    }
+
+    public Instant getSaveDate() {
+        return saveDate;
+    }
+
+    public void setSaveDate(Instant saveDate) {
+        this.saveDate = saveDate;
     }
 }
