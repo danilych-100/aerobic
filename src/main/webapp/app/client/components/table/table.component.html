@@ -68,29 +68,29 @@
                 <!-- Number Column -->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Название заявки</th>
-                    <td mat-cell *matCellDef="let row">{{row.name}}</td>
+                    <td mat-cell *matCellDef="let row"  (click)="selectRow(row)">{{row.name}}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="commandName">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Название команды</th>
-                    <td mat-cell *matCellDef="let row">{{row.commandName}}</td>
+                    <td mat-cell *matCellDef="let row"  (click)="selectRow(row)">{{row.commandName}}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="region">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Субъект РФ</th>
-                    <td mat-cell *matCellDef="let row">{{row.region}}</td>
+                    <td mat-cell *matCellDef="let row"  (click)="selectRow(row)">{{row.region}}</td>
                 </ng-container>
 
                 <!-- Title Column -->
                 <ng-container matColumnDef="ageCategory">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Возрастная категория</th>
-                    <td mat-cell *matCellDef="let row">{{row.ageCategory}}</td>
+                    <td mat-cell *matCellDef="let row"  (click)="selectRow(row)">{{row.ageCategory}}</td>
                 </ng-container>
 
                 <!-- State Column -->
                 <ng-container matColumnDef="nominations">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Номинация</th>
-                    <td mat-cell *matCellDef="let row">{{row.nomination}}</td>
+                    <td mat-cell *matCellDef="let row"  (click)="selectRow(row)">{{row.nomination}}</td>
                 </ng-container>
 
                 <!-- Created Column -->
@@ -99,12 +99,12 @@
                         Музыкальный файл
                     </th>
                     <td mat-cell *matCellDef="let row">
-                        <span style="color: blue; text-decoration: underline; cursor: pointer;">{{row.musicFileName}}</span>
+                        <span style="color: blue; text-decoration: underline; cursor: pointer;" (click)="downloadMusicFile(row)">{{row.musicFileName}}</span>
                     </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)" class="request-table-row"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="request-table-row"></tr>
             </table>
 
             <mat-paginator [length]="resultsLength"

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { Command } from 'app/client/components/commandreg/commandReg.component';
+import { DonwloadFileRequest } from 'app/client/components/table/table.component';
 
 @Injectable({ providedIn: 'root' })
 export class RegisterCommandService {
@@ -39,5 +40,9 @@ export class RegisterCommandService {
 
     getCommand(commandId: number): Observable<any> {
         return this.http.get(SERVER_API_URL + 'api/getCommand?commandId=' + commandId);
+    }
+
+    saveDownloadedMusicFile(donwloadFileRequest: DonwloadFileRequest): Observable<any> {
+        return this.http.post(SERVER_API_URL + 'api/saveDownloadedMusicFile', donwloadFileRequest);
     }
 }

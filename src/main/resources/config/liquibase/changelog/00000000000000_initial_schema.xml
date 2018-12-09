@@ -190,8 +190,14 @@
             </column>
         </createTable>
 
-
-
+        <createTable tableName="download_request">
+            <column name="id" type="varchar(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="music_file" type="blob"/>
+            <column name="command_name" type="varchar(200)"/>
+            <column name="music_file_name" type="varchar(200)"/>
+        </createTable>
 
         <createTable tableName="jhi_persistent_audit_evt_data">
             <column name="event_id" type="bigint">

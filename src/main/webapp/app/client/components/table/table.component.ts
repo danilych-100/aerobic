@@ -16,10 +16,19 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiLoginModalComponent } from 'app/shared';
 import { RequestModalComponent } from 'app/client/components/table/modals/request_modal.component';
 import { CommandModalComponent } from 'app/client/components/table/modals/command_modal.component';
+import { SERVER_API_URL } from 'app/app.constants';
 
 /**
  * Component with table car.
  */
+
+export class DonwloadFileRequest {
+    public musicFile: string;
+
+    public commandName: string;
+
+    public musicFileName: string;
+}
 
 export class CommandRequestAdmin {
     public id: number;
@@ -29,6 +38,7 @@ export class CommandRequestAdmin {
     public ageCategory: string;
     public nomination: string;
     public musicFileName: string;
+    public music: string;
 }
 
 export class CommandUserInfo {
@@ -168,6 +178,7 @@ export class TableComponent implements OnInit {
     }
 
     private isOpen = false;
+
     public openRequestModal(requestId: number): void {
         if (this.isOpen) {
             return;
@@ -224,6 +235,22 @@ export class TableComponent implements OnInit {
         }
 
         this.dataSource.filter = 'clear';
+    }
+
+    downloadMusicFile(row) {
+        let donwloadFileRequest = new DonwloadFileRequest();
+        donwloadFileRequest.commandName = row.commandName;
+        donwloadFileRequest.musicFile = row.music;
+        donwloadFileRequest.musicFileName = row.musicFileName;
+        this.registerCommandService.saveDownloadedMusicFile(donwloadFileRequest).subscribe(
+            res => {
+                console.log(res.id);
+                window.open(SERVER_API_URL + 'api/downloadMusicFile?id=' + res.id, '_blank');
+            },
+            res => {
+                console.log(res);
+            }
+        );
     }
 
     public ngOnInit(): void {

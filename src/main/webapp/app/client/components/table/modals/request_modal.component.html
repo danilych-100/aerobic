@@ -31,7 +31,7 @@
         <span style="display: block; margin-top: 10px" *ngIf="requestInfo.generalInfo.musicFileName"><span
             style="font-family: 'Yanone Kaffeesatz', sans-serif; font-size: x-large;">Музыкальный файл: </span>
             <span style="font-size: 18px; margin-left: 10px;">
-                <a style="color: blue; text-decoration: underline; cursor: pointer;">{{requestInfo.generalInfo.musicFileName}}</a>
+                <a style="color: blue; text-decoration: underline; cursor: pointer;" (click)="downloadMusicFile()">{{requestInfo.generalInfo.musicFileName}}</a>
             </span>
             </span>
     </div>
