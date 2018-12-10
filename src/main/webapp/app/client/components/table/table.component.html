@@ -63,7 +63,7 @@
                 <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
             </div>
 
-            <table mat-table [dataSource]="dataSource" class="cars-table mat-elevation-z8"
+            <table mat-table [dataSource]="dataSource" class="cars-table mat-elevation-z8"  [ngClass]="{'loaded-table': isLoadingResults}"
                    matSort matSortActive="created" matSortDisableClear matSortDirection="asc">
                 <!-- Number Column -->
                 <ng-container matColumnDef="name">
@@ -107,7 +107,7 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="request-table-row"></tr>
             </table>
 
-            <mat-paginator [length]="resultsLength"
+            <mat-paginator [length]="resultsLength"  [ngClass]="{'loaded-pager': isLoadingResults}"
                            [pageSize]="10"></mat-paginator>
         </div>
     </div>

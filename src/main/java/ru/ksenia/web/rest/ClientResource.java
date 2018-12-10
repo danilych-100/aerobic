@@ -150,107 +150,22 @@ public class ClientResource {
 
     @GetMapping("/getCommand")
     public ResponseEntity<CommandDTO> getCommand(@RequestParam Long commandId) {
-        return ResponseEntity.ok(commandDTOS.get((int) (commandId % 2)));
-    }
-
-    @GetMapping("/getRequestInfo")
-    public ResponseEntity<ReqeustInfoDTO> getRequestInfo(@RequestParam Long requestId) {
-        if (requestId < 200) {
-            ReqeustInfoDTO reqeustInfoDTO = new ReqeustInfoDTO();
-            reqeustInfoDTO.setGeneralInfo(requestDTOS.get(0));
-            reqeustInfoDTO.setPhoneNumber("9222933305");
-            reqeustInfoDTO.setMail("danADs@mail.ru");
-
-            CommandMemberDTO commandMemberDTO1 = new CommandMemberDTO();
-            commandMemberDTO1.setName("Игорек");
-            commandMemberDTO1.setGender("М");
-            commandMemberDTO1.setBirthDate(new Date(388823123123L));
-            commandMemberDTO1.setPassportDesc("ОУФМС");
-            commandMemberDTO1.setPassportNumber(152311L);
-            commandMemberDTO1.setPassportSeries(5444L);
-            commandMemberDTO1.setBirthCertificateNumber(52123223L);
-            commandMemberDTO1.setBirthCertificateDesc("dfasdasda");
-            commandMemberDTO1.setQuality("Мастер спорта");
-
-            reqeustInfoDTO.setMembers(Collections.singletonList(commandMemberDTO1));
-
-            CommandCoachDTO commandCoach1 = new CommandCoachDTO();
-            commandCoach1.setName("Виктор Борисович");
-            commandCoach1.setBirthDate(new Date(123123123123L));
-            commandCoach1.setPassportDesc("ОУФМС");
-            commandCoach1.setPassportNumber(132354L);
-            commandCoach1.setPassportSeries(5523L);
-
-            CommandCoachDTO commandCoach2 = new CommandCoachDTO();
-            commandCoach2.setName("Манина Виктория Павловна");
-            commandCoach2.setBirthDate(new Date(223123123123L));
-            commandCoach2.setPassportDesc("ОУФМС");
-            commandCoach2.setPassportNumber(662354L);
-            commandCoach2.setPassportSeries(5663L);
-
-            reqeustInfoDTO.setCoaches(Arrays.asList(commandCoach1, commandCoach2));
-            return ResponseEntity.ok(reqeustInfoDTO);
-        } else {
-            ReqeustInfoDTO reqeustInfoDTO = new ReqeustInfoDTO();
-            reqeustInfoDTO.setGeneralInfo(requestDTOS.get(1));
-            reqeustInfoDTO.setPhoneNumber("9505504770");
-            reqeustInfoDTO.setMail("dsadksksksks@mail.ru");
-
-            CommandMemberDTO commandMemberDTO2 = new CommandMemberDTO();
-            commandMemberDTO2.setName("Регина Валентина");
-            commandMemberDTO2.setGender("Ж");
-            commandMemberDTO2.setBirthDate(new Date(1111993231230L));
-            commandMemberDTO2.setQuality("I разряд");
-
-            CommandMemberDTO commandMemberDTO3 = new CommandMemberDTO();
-            commandMemberDTO3.setName("Вяхин Иван");
-            commandMemberDTO3.setGender("М");
-            commandMemberDTO3.setBirthDate(new Date(1111993231230L));
-            commandMemberDTO3.setQuality("I разряд");
-
-            reqeustInfoDTO.setMembers(Arrays.asList(commandMemberDTO2, commandMemberDTO3));
-
-            CommandCoachDTO commandCoach3 = new CommandCoachDTO();
-            commandCoach3.setName("Глеб Иваноский");
-            commandCoach3.setBirthDate(new Date(323123123123L));
-            commandCoach3.setPassportDesc("ОУФМС");
-            commandCoach3.setPassportNumber(152354L);
-            commandCoach3.setPassportSeries(5223L);
-
-            reqeustInfoDTO.setCoaches(Collections.singletonList(commandCoach3));
-            return ResponseEntity.ok(reqeustInfoDTO);
-        }
-    }
-
-    @GetMapping("/getAllRequests")
-    public ResponseEntity<List<CommandRequestAdminInfoDTO>> getAllRequests() {
-        return ResponseEntity.ok(requestDTOS);
+        return ResponseEntity.ok(clientService.getCommand(commandId));
     }
 
     @GetMapping("/getAllCommandUserInfo")
     public ResponseEntity<List<CommandUserInfoDTO>> getAllCommandUserInfo() {
-        List<CommandUserInfoDTO> commandUserInfoDTOS = new ArrayList<>();
-        commandDTOS.forEach(commandDTO -> {
-            CommandUserInfoDTO commandUserInfoDTO = new CommandUserInfoDTO();
-            commandUserInfoDTO.setCommandId(1L);
-            commandUserInfoDTO.setUserName("Мягкая Елизавета Павловна");
-            commandUserInfoDTO.setCommandName(commandDTO.getName());
-            commandUserInfoDTO.setMail(commandDTO.getEmail());
-            commandUserInfoDTO.setPhoneNumber(commandDTO.getPhoneNumber());
-            commandUserInfoDTO.setRegion(commandDTO.getRegion());
-            commandUserInfoDTOS.add(commandUserInfoDTO);
-        });
-        return ResponseEntity.ok(commandUserInfoDTOS);
+        return ResponseEntity.ok(clientService.getAllCommandUserInfo());
     }
 
-    @GetMapping("/getAllCommands")
-    public ResponseEntity<List<CommandDTO>> getAllCommands() {
-        return ResponseEntity.ok(commandDTOS);
+    @GetMapping("/getRequestInfo")
+    public ResponseEntity<RequestInfoDTO> getRequestInfo(@RequestParam Long requestId) {
+        return ResponseEntity.ok(clientService.getRequestInfo(requestId));
     }
 
-    @GetMapping("/getCommands")
-    public List<CommandDTO> getCommands() {
-        return clientService.getCommands();
+    @GetMapping("/getAllRequests")
+    public ResponseEntity<List<CommandRequestAdminInfoDTO>> getAllRequests() {
+        return ResponseEntity.ok(clientService.getAllRequests());
     }
 
     @GetMapping("/getCommandForCurrentUser")
@@ -341,4 +256,14 @@ public class ClientResource {
         return builder.toString();
     }
 
+
+    @GetMapping("/getAllCommands")
+    public ResponseEntity<List<CommandDTO>> getAllCommands() {
+        return ResponseEntity.ok(commandDTOS);
+    }
+
+    @GetMapping("/getCommands")
+    public List<CommandDTO> getCommands() {
+        return clientService.getCommands();
+    }
 }

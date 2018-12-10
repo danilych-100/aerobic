@@ -7,13 +7,24 @@
     width: 100%;
 }
 
+.loaded-table {
+    background: rgba(0, 0, 0, 0.06);
+    z-index: 1;
+}
+
+.loaded-pager {
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+}
 .example-loading-shade {
-    position: absolute;
-    top: 197px;
+    /*position: absolute;
+    top: 386px;
     left: 50px;
     bottom: -34px;
     right: 50px;
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.15);*/
+    position: absolute;
+    left: 45%;
     z-index: 1;
     display: flex;
     align-items: center;

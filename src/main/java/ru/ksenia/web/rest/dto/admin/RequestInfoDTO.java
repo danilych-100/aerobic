@@ -6,7 +6,7 @@ import ru.ksenia.web.rest.dto.CommandMemberDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReqeustInfoDTO {
+public class RequestInfoDTO {
 
     private CommandRequestAdminInfoDTO generalInfo;
     private String phoneNumber;

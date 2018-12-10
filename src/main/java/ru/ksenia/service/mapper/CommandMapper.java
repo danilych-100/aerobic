@@ -168,7 +168,7 @@ public class CommandMapper {
         commandCoach.setPassportSeries(commandCoachDTO.getPassportSeries());
         return commandCoach;
     }
-    private static CommandCoachDTO mapCommandCoachEntityToDTO(CommandCoach commandCoach){
+    public static CommandCoachDTO mapCommandCoachEntityToDTO(CommandCoach commandCoach){
         CommandCoachDTO commandCoachDTO = new CommandCoachDTO();
         commandCoachDTO.setName(commandCoach.getName());
         commandCoachDTO.setBirthDate(Date.from(commandCoach.getBirthDate()));
@@ -192,7 +192,7 @@ public class CommandMapper {
         return commandMember;
     }
 
-    private static CommandMemberDTO mapCommandMemberEntityToDTO(CommandMember commandMember){
+    public static CommandMemberDTO mapCommandMemberEntityToDTO(CommandMember commandMember){
         CommandMemberDTO commandMemberDTO = new CommandMemberDTO();
         commandMemberDTO.setName(commandMember.getName());
         commandMemberDTO.setGender(commandMember.getGender());

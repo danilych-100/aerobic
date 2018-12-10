@@ -13,4 +13,6 @@ import java.util.List;
 public interface CommandRepository extends JpaRepository<Command, Long> {
 
     List<Command> findAllByUserId(@Param("userId") Long userId);
+
+
 }
