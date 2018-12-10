@@ -322,4 +322,28 @@ export class TableComponent implements OnInit {
 
         document.getElementById(`tabContent_${index}`).style.display = 'block';
     }
+
+    sortData(event) {
+        this.dataSource.data.sort((a, b) => {
+            const isAsc = event.direction === 'asc';
+            switch (event.active) {
+                case 'name':
+                    return this.compare(a.name, b.name, isAsc);
+                case 'commandName':
+                    return this.compare(a.commandName, b.commandName, isAsc);
+                case 'region':
+                    return this.compare(a.region, b.region, isAsc);
+                case 'ageCategory':
+                    return this.compare(a.ageCategory, b.ageCategory, isAsc);
+                case 'nomination':
+                    return this.compare(a.nomination, b.nomination, isAsc);
+                default:
+                    return 0;
+            }
+        });
+    }
+
+    compare(a: string, b: string, isAsc: boolean) {
+        return a.localeCompare(b) * (isAsc ? 1 : -1);
+    }
 }

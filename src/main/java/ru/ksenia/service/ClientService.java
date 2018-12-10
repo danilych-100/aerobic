@@ -19,6 +19,7 @@ import ru.ksenia.web.rest.dto.admin.CommandUserInfoDTO;
 import ru.ksenia.web.rest.dto.admin.RequestInfoDTO;
 import ru.ksenia.web.rest.errors.InternalServerErrorException;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +85,7 @@ public class ClientService {
         commandRepository.saveAndFlush(registerCommand(command, currentUser.getId(), null));
     }
 
-    public List<CommandRequestAdminInfoDTO> getAllRequests() {
+    public List<CommandRequestAdminInfoDTO> getAllRequests() throws UnsupportedEncodingException {
         List<CommandRequestAdminInfoDTO> commandRequestAdminInfoDTOS = new ArrayList<>();
         List<Command> commands = commandRepository.findAll();
         for(Command command : commands){
@@ -101,7 +102,7 @@ public class ClientService {
         return commandRequestAdminInfoDTOS;
     }
 
-    public RequestInfoDTO getRequestInfo(Long requestId) {
+    public RequestInfoDTO getRequestInfo(Long requestId) throws UnsupportedEncodingException {
         CommandRequest commandRequest = commandRequestRepository.findById(requestId).get();
         CommandRequestAdminInfoDTO commandRequestAdminInfoDTO = getCommandRequestAdminInfoDTO(commandRequest.getCommand(),
                                                                                               commandRequest);
@@ -126,14 +127,15 @@ public class ClientService {
         return requestInfoDTO;
     }
 
-    private CommandRequestAdminInfoDTO getCommandRequestAdminInfoDTO(Command command, CommandRequest commandRequest) {
+    private CommandRequestAdminInfoDTO getCommandRequestAdminInfoDTO(Command command, CommandRequest commandRequest)
+        throws UnsupportedEncodingException {
         CommandRequestAdminInfoDTO commandRequestAdminInfoDTO = new CommandRequestAdminInfoDTO();
         commandRequestAdminInfoDTO.setId(commandRequest.getId());
         commandRequestAdminInfoDTO.setName(commandRequest.getName());
         commandRequestAdminInfoDTO.setAgeCategory(commandRequest.getAgeCategory());
         commandRequestAdminInfoDTO.setNomination(commandRequest.getNomination());
         if(commandRequest.getMusic() != null){
-            commandRequestAdminInfoDTO.setMusic(new String(commandRequest.getMusic()));
+            commandRequestAdminInfoDTO.setMusic(new String(commandRequest.getMusic(), "UTF-8"));
         }
         commandRequestAdminInfoDTO.setMusicFileName(commandRequest.getMusicFileName());
         commandRequestAdminInfoDTO.setCommandName(command.getName());
@@ -167,6 +169,7 @@ public class ClientService {
                 commandUserInfoDTO.setUserName(user.getEmail());
             }
 
+            commandUserInfoDTOS.add(commandUserInfoDTO);
         }
         return commandUserInfoDTOS;
     }

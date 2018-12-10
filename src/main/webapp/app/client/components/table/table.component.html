@@ -63,33 +63,33 @@
                 <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
             </div>
 
-            <table mat-table [dataSource]="dataSource" class="cars-table mat-elevation-z8"  [ngClass]="{'loaded-table': isLoadingResults}"
-                   matSort matSortActive="created" matSortDisableClear matSortDirection="asc">
+            <table mat-table [dataSource]="dataSource" class="cars-table mat-elevation-z8"  [ngClass]="{'loaded-table': isLoadingResults}" (matSortChange)="sortData($event)"
+                   matSort>
                 <!-- Number Column -->
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Название заявки</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear mat-sort-header="name">Название заявки</th>
                     <td mat-cell *matCellDef="let row"  (mousedown)="saveClickTime()" (mouseup)="selectRow(row)">{{row.name}}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="commandName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Название команды</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Название команды</th>
                     <td mat-cell *matCellDef="let row"  (mousedown)="saveClickTime()" (mouseup)="selectRow(row)">{{row.commandName}}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="region">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Субъект РФ</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Субъект РФ</th>
                     <td mat-cell *matCellDef="let row"  (mousedown)="saveClickTime()" (mouseup)="selectRow(row)">{{row.region}}</td>
                 </ng-container>
 
                 <!-- Title Column -->
                 <ng-container matColumnDef="ageCategory">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Возрастная категория</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Возрастная категория</th>
                     <td mat-cell *matCellDef="let row" (mousedown)="saveClickTime()" (mouseup)="selectRow(row)">{{row.ageCategory}}</td>
                 </ng-container>
 
                 <!-- State Column -->
                 <ng-container matColumnDef="nominations">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Номинация</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Номинация</th>
                     <td mat-cell *matCellDef="let row"  (mousedown)="saveClickTime()" (mouseup)="selectRow(row)">{{row.nomination}}</td>
                 </ng-container>
 
@@ -99,7 +99,8 @@
                         Музыкальный файл
                     </th>
                     <td mat-cell *matCellDef="let row">
-                        <span style="color: blue; text-decoration: underline; cursor: pointer;" (click)="downloadMusicFile(row)">{{row.musicFileName}}</span>
+                        <span style="color: blue; text-decoration: underline; cursor: pointer;" (click)="downloadMusicFile(row)" *ngIf="row.musicFileName">{{row.musicFileName}}</span>
+                        <span *ngIf="!row.musicFileName">Не загружен</span>
                     </td>
                 </ng-container>
 

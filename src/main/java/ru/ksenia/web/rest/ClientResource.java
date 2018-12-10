@@ -19,6 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -159,12 +160,13 @@ public class ClientResource {
     }
 
     @GetMapping("/getRequestInfo")
-    public ResponseEntity<RequestInfoDTO> getRequestInfo(@RequestParam Long requestId) {
+    public ResponseEntity<RequestInfoDTO> getRequestInfo(@RequestParam Long requestId)
+        throws UnsupportedEncodingException {
         return ResponseEntity.ok(clientService.getRequestInfo(requestId));
     }
 
     @GetMapping("/getAllRequests")
-    public ResponseEntity<List<CommandRequestAdminInfoDTO>> getAllRequests() {
+    public ResponseEntity<List<CommandRequestAdminInfoDTO>> getAllRequests() throws UnsupportedEncodingException {
         return ResponseEntity.ok(clientService.getAllRequests());
     }
 
@@ -188,11 +190,12 @@ public class ClientResource {
     }
 
     @PostMapping(value = "/saveDownloadedMusicFile", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<DownloadDTO> saveDownloadedMusicFile(final @RequestBody(required = true)DonwloadFileRequest donwloadFileRequest){
+    public @ResponseBody ResponseEntity<DownloadDTO> saveDownloadedMusicFile(final @RequestBody(required = true)DonwloadFileRequest donwloadFileRequest)
+        throws UnsupportedEncodingException {
         DownloadRequest downloadRequest = new DownloadRequest();
         downloadRequest.setId(UUID.randomUUID().toString());
         downloadRequest.setCommandName(donwloadFileRequest.getCommandName());
-        downloadRequest.setMusicFile(donwloadFileRequest.getMusicFile().getBytes());
+        downloadRequest.setMusicFile(donwloadFileRequest.getMusicFile().getBytes("UTF-8"));
         downloadRequest.setMusicFileName(donwloadFileRequest.getMusicFileName());
         downloadRequestRepository.save(downloadRequest);
 

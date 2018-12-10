@@ -6,6 +6,8 @@ import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } f
 import { DateAdapter, MatSelectionList, MatSelectionListChange } from '@angular/material';
 import { REGIONS } from './regions';
 import { RegisterCommandService } from './register.service';
+import { DonwloadFileRequest } from 'app/client/components/table/table.component';
+import { SERVER_API_URL } from 'app/app.constants';
 
 export class Command {
     public userId: number;
@@ -556,5 +558,21 @@ export class CommandRegistrationComponent implements OnInit {
 
     getFontSize() {
         return Math.max(10, this.optionsMain.value.fontSize);
+    }
+
+    downloadMusicFile(request) {
+        let donwloadFileRequest = new DonwloadFileRequest();
+        donwloadFileRequest.commandName = 'вфыв';
+        donwloadFileRequest.musicFile = request.music;
+        donwloadFileRequest.musicFileName = '323423.mp3';
+        this.registerCommandService.saveDownloadedMusicFile(donwloadFileRequest).subscribe(
+            res => {
+                console.log(res.id);
+                window.open(SERVER_API_URL + 'api/downloadMusicFile?id=' + res.id, '_blank');
+            },
+            res => {
+                console.log(res);
+            }
+        );
     }
 }

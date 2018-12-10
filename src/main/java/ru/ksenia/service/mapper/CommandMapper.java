@@ -9,6 +9,7 @@ import ru.ksenia.web.rest.dto.CommandDTO;
 import ru.ksenia.web.rest.dto.CommandMemberDTO;
 import ru.ksenia.web.rest.dto.CommandRequestDTO;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +36,13 @@ public class CommandMapper {
 
         List<CommandRequest> commandRequestList = new ArrayList<>();
         commandDTO.getRequests().forEach(commandRequestDTO -> {
-            CommandRequest commandRequest = mapCommandRequestDToToEntity(commandRequestDTO);
+            CommandRequest commandRequest = null;
+            try {
+                commandRequest = mapCommandRequestDToToEntity(commandRequestDTO);
+            }
+            catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
 
             List<CommandMember> commandMembersForRequest = new ArrayList<>();
             List<CommandCoach> commandCoachesForRequest = new ArrayList<>();
@@ -121,32 +128,39 @@ public class CommandMapper {
             commandDTO.getMembers().add(mapCommandMemberEntityToDTO(commandMember));
         });
         command.getRequests().forEach(commandRequest -> {
-            commandDTO.getRequests().add(mapCommandRequestEntityToDTO(commandRequest));
+            try {
+                commandDTO.getRequests().add(mapCommandRequestEntityToDTO(commandRequest));
+            }
+            catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         });
 
         return commandDTO;
     }
 
-    private static CommandRequest mapCommandRequestDToToEntity(CommandRequestDTO commandRequestDTO){
+    private static CommandRequest mapCommandRequestDToToEntity(CommandRequestDTO commandRequestDTO)
+        throws UnsupportedEncodingException {
         CommandRequest commandRequest = new CommandRequest();
         commandRequest.setName(commandRequestDTO.getName());
         commandRequest.setAgeCategory(commandRequestDTO.getAgeCategory());
         commandRequest.setNomination(commandRequestDTO.getNomination());
         if(commandRequestDTO.getMusic() != null){
-            commandRequest.setMusic(commandRequestDTO.getMusic().getBytes());
+            commandRequest.setMusic(commandRequestDTO.getMusic().getBytes("UTF-8"));
         }
 
         commandRequest.setMusicFileName(commandRequestDTO.getMusicFileName());
         return commandRequest;
     }
 
-    private static CommandRequestDTO mapCommandRequestEntityToDTO(CommandRequest commandRequest){
+    private static CommandRequestDTO mapCommandRequestEntityToDTO(CommandRequest commandRequest)
+        throws UnsupportedEncodingException {
         CommandRequestDTO commandRequestDTO = new CommandRequestDTO();
         commandRequestDTO.setName(commandRequest.getName());
         commandRequestDTO.setAgeCategory(commandRequest.getAgeCategory());
         commandRequestDTO.setNomination(commandRequest.getNomination());
         if(commandRequest.getMusic() != null){
-            commandRequestDTO.setMusic(new String(commandRequest.getMusic()));
+            commandRequestDTO.setMusic(new String(commandRequest.getMusic(),"UTF-8"));
         }
 
         commandRequestDTO.setMusicFileName(commandRequest.getMusicFileName());
