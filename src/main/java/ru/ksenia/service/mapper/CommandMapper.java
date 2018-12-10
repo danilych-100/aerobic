@@ -50,7 +50,7 @@ public class CommandMapper {
                 for(CommandMember commandMember : commandMemberList){
                     if(isMembersEquals(commandMember, commandMemberDTO)){
                         commandMembersForRequest.add(commandMember);
-                        commandMember.setCommandRequest(commandRequest);
+                        commandMember.getCommandRequests().add(commandRequest);
                         break;
                     }
                 }
@@ -59,7 +59,7 @@ public class CommandMapper {
                 for(CommandCoach commandCoach : commandCoachList){
                     if(isCoachesEquals(commandCoach, commandCoachDTO)){
                         commandCoachesForRequest.add(commandCoach);
-                        commandCoach.setCommandRequest(commandRequest);
+                        commandCoach.getCommandRequests().add(commandRequest);
                         break;
                     }
                 }

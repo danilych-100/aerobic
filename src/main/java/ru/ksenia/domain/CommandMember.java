@@ -45,9 +45,12 @@ public class CommandMember {
     @JoinColumn(name = "command_member_id")
     private Command command;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "command_request_id")
-    private CommandRequest commandRequest;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "members_join_table",
+               joinColumns = @JoinColumn(name = "command_member_id"),
+               inverseJoinColumns = @JoinColumn(name = "command_request_id")
+    )
+    private List<CommandRequest> commandRequests = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -137,11 +140,11 @@ public class CommandMember {
         this.birthCertificateDesc = birthCertificateDesc;
     }
 
-    public CommandRequest getCommandRequest() {
-        return commandRequest;
+    public List<CommandRequest> getCommandRequests() {
+        return commandRequests;
     }
 
-    public void setCommandRequest(CommandRequest commandRequest) {
-        this.commandRequest = commandRequest;
+    public void setCommandRequests(List<CommandRequest> commandRequests) {
+        this.commandRequests = commandRequests;
     }
 }

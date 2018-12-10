@@ -5,10 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ksenia.domain.*;
-import ru.ksenia.repository.CommandCoachRepository;
-import ru.ksenia.repository.CommandMemberRepository;
-import ru.ksenia.repository.CommandRepository;
-import ru.ksenia.repository.CommandRequestRepository;
+import ru.ksenia.repository.*;
 import ru.ksenia.service.mapper.CommandMapper;
 import ru.ksenia.web.rest.dto.CommandCoachDTO;
 import ru.ksenia.web.rest.dto.CommandDTO;
@@ -41,6 +38,12 @@ public class ClientService {
 
     @Autowired
     private CommandRequestRepository commandRequestRepository;
+
+    @Autowired
+    private CoachJoinRepository coachJoinRepository;
+
+    @Autowired
+    private MemberJoinRepository memberJoinRepository;
 
 
     public List<CommandDTO> getCommands(){
@@ -79,6 +82,20 @@ public class ClientService {
         User currentUser = userService.getUserWithAuthorities().orElseThrow(() -> new InternalServerErrorException("User could not be found"));
         List<Command> commands = commandRepository.findAllByUserId(currentUser.getId());
         if(commands != null && commands.size() != 0){
+            List<CoachJoinTable> coachJoinTables = coachJoinRepository.findAllByUserId(currentUser.getId());
+            if(coachJoinTables != null){
+                coachJoinTables.forEach(coachJoinTable -> {
+                    coachJoinRepository.delete(coachJoinTable);
+                });
+                coachJoinRepository.flush();
+            }
+            List<MemberJoinTable> memberJoinTables = memberJoinRepository.findAllByUserId(currentUser.getId());
+            if(memberJoinTables != null){
+                memberJoinTables.forEach(memberJoinTable -> {
+                    memberJoinRepository.delete(memberJoinTable);
+                });
+                memberJoinRepository.flush();
+            }
             commandRepository.deleteById(commands.get(0).getId());
             commandRepository.flush();
         }

@@ -323,6 +323,28 @@ export class TableComponent implements OnInit {
         document.getElementById(`tabContent_${index}`).style.display = 'block';
     }
 
+    sortDataUsers(event) {
+        console.log(this.dataSourceUsers.data);
+        this.dataSourceUsers.data.sort((a, b) => {
+            const isAsc = event.direction === 'asc';
+            switch (event.active) {
+                case 'userName':
+                    return this.compare(a.userName, b.userName, isAsc);
+                case 'commandName':
+                    return this.compare(a.commandName, b.commandName, isAsc);
+                case 'region':
+                    return this.compare(a.region, b.region, isAsc);
+                case 'mail':
+                    return this.compare(a.mail, b.mail, isAsc);
+                case 'phoneNumber':
+                    return this.compare(a.phoneNumber, b.phoneNumber, isAsc);
+                default:
+                    return 0;
+            }
+        });
+        console.log(this.dataSourceUsers.data);
+    }
+
     sortData(event) {
         this.dataSource.data.sort((a, b) => {
             const isAsc = event.direction === 'asc';
@@ -335,7 +357,7 @@ export class TableComponent implements OnInit {
                     return this.compare(a.region, b.region, isAsc);
                 case 'ageCategory':
                     return this.compare(a.ageCategory, b.ageCategory, isAsc);
-                case 'nomination':
+                case 'nominations':
                     return this.compare(a.nomination, b.nomination, isAsc);
                 default:
                     return 0;
