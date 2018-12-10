@@ -253,7 +253,7 @@
                     <mat-hint>Пока участники не добавлены</mat-hint>
                 </div>
                 <div *ngIf="command.members.length">
-                    <div *ngFor="let member of command.members" class="coach-card">
+                    <div *ngFor="let member of command.members; let i = index" class="coach-card">
                         <mat-card>
                             <mat-card-header>
                                 <mat-card-title>Участник: {{member.name}}</mat-card-title>

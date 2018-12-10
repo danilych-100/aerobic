@@ -4,7 +4,6 @@ import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Rout
 
 import { LoginComponent } from './client/components/login/login.component';
 import { HttpClient } from '@angular/common/http';
-import { MakeAppointmentComponent } from './client/components/make-appointment/make-appointment.component';
 import { StepperComponent } from './client/components/stepper/stepper.component';
 import { AccountService, LoginService, Principal } from 'app/core';
 import { SharedService } from 'app/client/components/shared/shared.service';

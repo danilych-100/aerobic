@@ -9,7 +9,6 @@ import { FormCarComponent } from './components/form-car/form-car.component';
 import { LoginComponent } from './components/login/login.component';
 import { TableComponent } from './components/table/table.component';
 import { DoctorsComponent } from './components/doctors/doctors.component';
-import { MakeAppointmentComponent } from './components/make-appointment/make-appointment.component';
 import { StepperComponent } from './components/stepper/stepper.component';
 import { MainComponent } from './components/main/main.component';
 import { CommandRegistrationComponent } from 'app/client/components/commandreg/commandReg.component';

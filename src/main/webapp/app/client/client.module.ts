@@ -34,7 +34,6 @@ import { LoginComponent } from './components/login/login.component';
 import { TableComponent } from './components/table/table.component';
 import { CarsMatPaginatorIntl } from './intl/cars-mat-paginator-intl';
 import { DoctorsComponent } from './components/doctors/doctors.component';
-import { MakeAppointmentComponent } from './components/make-appointment/make-appointment.component';
 import { StepperComponent } from './components/stepper/stepper.component';
 import { BankCardComponent } from './components/bank-card/bank-card.component';
 import { CreditCardDirective } from './directives/credit-card.directive';
@@ -89,7 +88,6 @@ import { CommandModalComponent } from 'app/client/components/table/modals/comman
         LoginComponent,
         DialogDeactivationComponent,
         DoctorsComponent,
-        MakeAppointmentComponent,
         StepperComponent,
         BankCardComponent,
         CreditCardDirective,

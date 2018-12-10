@@ -41,7 +41,7 @@ import { MatPaginatorIntlRu } from 'app/client/components/table/table.component'
         ClientModule,
         NgxPermissionsModule.forRoot()
     ],
-    declarations: [NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, AppComponent],
+    declarations: [NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, AppComponent, JhiMainComponent],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,

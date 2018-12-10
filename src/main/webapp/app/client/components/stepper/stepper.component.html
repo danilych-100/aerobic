@@ -1,9 +1,6 @@
 <mat-horizontal-stepper #stepper [linear]="false" class="StepperContent">
   <mat-step>
     <ng-template matStepLabel>Персональные данные</ng-template>
-    <div class="content">
-      <app-make-appointment (submitRecord)="submitRecord($event)"></app-make-appointment>
-    </div>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Выбор врача</ng-template>

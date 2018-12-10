@@ -70,16 +70,16 @@ export class CommandRegistrationComponent implements OnInit {
     optionsCoach: FormGroup;
     optionsMember: FormGroup;
 
-    private command: Command;
+    public command: Command;
 
-    private currentCoach: CommandCoach;
-    private currentMember: CommandMember;
-    private currentCommandRequest: CommandRequest;
+    public currentCoach: CommandCoach;
+    public currentMember: CommandMember;
+    public currentCommandRequest: CommandRequest;
 
-    private regions = REGIONS;
-    private categories = ['6—8', '9—11', '12—14', '15—17', '18+'];
-    private nominations = ['Индивидуальные', 'Смешанные пары', 'Трио', 'Группы'];
-    private qualities = [
+    public regions = REGIONS;
+    public categories = ['6—8', '9—11', '12—14', '15—17', '18+'];
+    public nominations = ['Индивидуальные', 'Смешанные пары', 'Трио', 'Группы'];
+    public qualities = [
         'Мастер спорта',
         'Кандидат в мастера спорта',
         'I разряд',
@@ -89,6 +89,8 @@ export class CommandRegistrationComponent implements OnInit {
         'II юношеский разряд',
         'III юношеский разряд'
     ];
+
+    public files;
 
     maxDate = new Date();
     email = new FormControl('', [Validators.email]);
@@ -536,7 +538,7 @@ export class CommandRegistrationComponent implements OnInit {
         //this.currentCommandRequest.music = file;
         var reader = new FileReader();
         reader.onload = () => {
-            var arrayBuffer = reader.result;
+            var arrayBuffer = <ArrayBuffer>reader.result;
             var array = new Uint8Array(arrayBuffer);
             var binaryString = String.fromCharCode.apply(null, array);
 
