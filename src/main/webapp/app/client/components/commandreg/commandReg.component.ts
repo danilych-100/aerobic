@@ -252,7 +252,7 @@ export class CommandRegistrationComponent implements OnInit {
         this.currentCoach = new CommandCoach();
         this.currentMember = new CommandMember();
         this.currentCommandRequest = new CommandRequest();
-        this.openTab(1);
+        this.openTab(1, true);
     }
 
     getNormilizedName(count: number) {
@@ -489,7 +489,7 @@ export class CommandRegistrationComponent implements OnInit {
         return mems.options && mems.options.length === 0;
     }
 
-    openTab(index) {
+    openTab(index, isJustOpened = false) {
         document.getElementById('tabContent_1').style.display = 'none';
         document.getElementById('tabContent_2').style.display = 'none';
         document.getElementById('tabContent_3').style.display = 'none';
@@ -530,22 +530,21 @@ export class CommandRegistrationComponent implements OnInit {
         } else if (index === 4) {
             tab4.classList.add('active');
         }
+
         document.getElementById(`tabContent_${index}`).style.display = 'block';
-        this.flushCommand();
+        if (!isJustOpened) {
+            this.flushCommand();
+        }
     }
 
     selectEvent(file: File): void {
         //this.currentCommandRequest.music = file;
         var reader = new FileReader();
         reader.onload = () => {
-            var arrayBuffer = <ArrayBuffer>reader.result;
-            var array = new Uint8Array(arrayBuffer);
-            var binaryString = String.fromCharCode.apply(null, array);
-
-            this.currentCommandRequest.music = binaryString;
+            this.currentCommandRequest.music = <string>reader.result;
             this.currentCommandRequest.musicFileName = file.name;
         };
-        reader.readAsArrayBuffer(file);
+        reader.readAsText(file);
     }
 
     uploadEvent(file: File): void {}

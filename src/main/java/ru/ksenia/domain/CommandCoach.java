@@ -32,6 +32,10 @@ public class CommandCoach {
     @JoinColumn(name = "command_coach_id")
     private Command command;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "command_request_id")
+    private CommandRequest commandRequest;
+
 
     public Long getId() {
         return id;
@@ -89,4 +93,11 @@ public class CommandCoach {
         this.command = command;
     }
 
+    public CommandRequest getCommandRequest() {
+        return commandRequest;
+    }
+
+    public void setCommandRequest(CommandRequest commandRequest) {
+        this.commandRequest = commandRequest;
+    }
 }

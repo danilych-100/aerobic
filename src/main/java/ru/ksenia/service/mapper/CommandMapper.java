@@ -24,7 +24,6 @@ public class CommandMapper {
             commandCoach.setCommand(command);
             commandCoachList.add(commandCoach);
         });
-        command.setCoaches(commandCoachList);
 
         List<CommandMember> commandMemberList = new ArrayList<>();
         commandDTO.getMembers().forEach(commandMemberDTO -> {
@@ -32,15 +31,38 @@ public class CommandMapper {
             commandMember.setCommand(command);
             commandMemberList.add(commandMember);
         });
-        command.setMembers(commandMemberList);
+
 
         List<CommandRequest> commandRequestList = new ArrayList<>();
         commandDTO.getRequests().forEach(commandRequestDTO -> {
             CommandRequest commandRequest = mapCommandRequestDToToEntity(commandRequestDTO);
+
+            List<CommandMember> commandMembersForRequest = new ArrayList<>();
+            List<CommandCoach> commandCoachesForRequest = new ArrayList<>();
+            for(CommandMemberDTO commandMemberDTO : commandRequestDTO.getMembers()){
+                for(CommandMember commandMember : commandMemberList){
+                    if(isMembersEquals(commandMember, commandMemberDTO)){
+                        commandMembersForRequest.add(commandMember);
+                        commandMember.setCommandRequest(commandRequest);
+                        break;
+                    }
+                }
+            }
+            for(CommandCoachDTO commandCoachDTO : commandRequestDTO.getCoaches()){
+                for(CommandCoach commandCoach : commandCoachList){
+                    if(isCoachesEquals(commandCoach, commandCoachDTO)){
+                        commandCoachesForRequest.add(commandCoach);
+                        commandCoach.setCommandRequest(commandRequest);
+                        break;
+                    }
+                }
+            }
+
+            commandRequest.setCoaches(commandCoachesForRequest);
+            commandRequest.setMembers(commandMembersForRequest);
             commandRequest.setCommand(command);
             commandRequestList.add(commandRequest);
         });
-        command.setRequests(commandRequestList);
 
         command.setRegion(commandDTO.getRegion());
         command.setName(commandDTO.getName());
@@ -48,7 +70,40 @@ public class CommandMapper {
         command.setPhoneNumber(commandDTO.getPhoneNumber());
         command.setEmail(commandDTO.getEmail());
 
+        command.setCoaches(commandCoachList);
+        command.setMembers(commandMemberList);
+        command.setRequests(commandRequestList);
+
         return command;
+    }
+
+
+    private static boolean isCoachesEquals(CommandCoach first, CommandCoachDTO second){
+        if(!first.getName().equals(second.getName())){
+            return false;
+        }
+        if(Date.from(first.getBirthDate()).compareTo(second.getBirthDate()) != 0){
+            return false;
+        }
+
+        return true;
+    }
+
+    private static boolean isMembersEquals(CommandMember first, CommandMemberDTO second){
+        if(!first.getName().equals(second.getName())){
+            return false;
+        }
+        if(!first.getGender().equals(second.getGender())){
+            return false;
+        }
+        if(!first.getQuality().equals(second.getQuality())){
+            return false;
+        }
+        if(Date.from(first.getBirthDate()).compareTo(second.getBirthDate()) != 0){
+            return false;
+        }
+
+        return true;
     }
 
     public static CommandDTO mapEntityToDTO(Command command){
@@ -77,14 +132,11 @@ public class CommandMapper {
         commandRequest.setName(commandRequestDTO.getName());
         commandRequest.setAgeCategory(commandRequestDTO.getAgeCategory());
         commandRequest.setNomination(commandRequestDTO.getNomination());
-        commandRequest.setMusic(commandRequestDTO.getMusic().getBytes());
+        if(commandRequestDTO.getMusic() != null){
+            commandRequest.setMusic(commandRequestDTO.getMusic().getBytes());
+        }
+
         commandRequest.setMusicFileName(commandRequestDTO.getMusicFileName());
-        commandRequestDTO.getCoaches().forEach(commandCoachDTO -> {
-            commandRequest.getCoaches().add(mapCommandCoachDToToEntity(commandCoachDTO));
-        });
-        commandRequestDTO.getMembers().forEach(commandMemberDTO -> {
-            commandRequest.getMembers().add(mapCommandMemberDToToEntity(commandMemberDTO));
-        });
         return commandRequest;
     }
 
@@ -93,7 +145,10 @@ public class CommandMapper {
         commandRequestDTO.setName(commandRequest.getName());
         commandRequestDTO.setAgeCategory(commandRequest.getAgeCategory());
         commandRequestDTO.setNomination(commandRequest.getNomination());
-        commandRequestDTO.setMusic(new String(commandRequest.getMusic()));
+        if(commandRequest.getMusic() != null){
+            commandRequestDTO.setMusic(new String(commandRequest.getMusic()));
+        }
+
         commandRequestDTO.setMusicFileName(commandRequest.getMusicFileName());
         commandRequest.getCoaches().forEach(commandCoach -> {
             commandRequestDTO.getCoaches().add(mapCommandCoachEntityToDTO(commandCoach));

@@ -45,6 +45,10 @@ public class CommandMember {
     @JoinColumn(name = "command_member_id")
     private Command command;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "command_request_id")
+    private CommandRequest commandRequest;
+
     public Long getId() {
         return id;
     }
@@ -133,4 +137,11 @@ public class CommandMember {
         this.birthCertificateDesc = birthCertificateDesc;
     }
 
+    public CommandRequest getCommandRequest() {
+        return commandRequest;
+    }
+
+    public void setCommandRequest(CommandRequest commandRequest) {
+        this.commandRequest = commandRequest;
+    }
 }

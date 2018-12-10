@@ -1,5 +1,6 @@
 @import 'https://fonts.googleapis.com/css?family=Merriweather';
 @import 'https://fonts.googleapis.com/css?family=Cuprum';
+@import 'https://fonts.googleapis.com/css?family=Comfortaa';
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
 .example-container {
@@ -177,3 +178,30 @@ mat-card mat-card-header mat-card-subtitle > span {
 mat-selection-list mat-list-option p > span {
     font-style: italic;
 }
+
+.save-content-button {
+    margin: 2px;
+    font-size: 17px;
+    position: relative;
+    float: right;
+    padding: 4px;
+    height: 100%;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    font-family: 'Comfortaa', cursive;
+}
+
+.save-content-button:hover {
+    background: rgb(234, 234, 225);
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/*    margin: 0px;
+    font-size: 17px;
+    position: relative;
+    float: right;
+    border: solid 1px rgb(234, 234, 225);
+    border-radius: 5px;
+    padding: 4px;
+    height: 100%;*/

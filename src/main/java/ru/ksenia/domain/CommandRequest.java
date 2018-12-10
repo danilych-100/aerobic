@@ -28,18 +28,10 @@ public class CommandRequest {
     @Column(name = "music")
     private byte[] music;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "coaches_join_table",
-        joinColumns = @JoinColumn(name = "command_id"),
-        inverseJoinColumns = @JoinColumn(name = "command_coach_id")
-    )
+    @OneToMany(mappedBy = "commandRequest", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommandCoach> coaches = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "members_join_table",
-        joinColumns = @JoinColumn(name = "command_id"),
-        inverseJoinColumns = @JoinColumn(name = "command_member_id")
-    )
+    @OneToMany(mappedBy = "commandRequest", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommandMember> members = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
