@@ -92,6 +92,7 @@ export class TableComponent implements OnInit {
     selectingRegionCleared = false;
     selectingCategoryCleared = false;
     selectingNominationsCleared = false;
+    selectingNameCleared = false;
 
     modalRef: NgbModalRef;
 
@@ -119,13 +120,14 @@ export class TableComponent implements OnInit {
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.sort = this.sort;
                 this.dataSource.filterPredicate = function(data, filter: string): boolean {
-                    console.log('filtering');
-                    console.log(filter);
                     if (filter == 'clear') {
                         return true;
                     }
                     const fieldName = filter.split('$')[0];
                     const fieldValue = filter.split('$')[1];
+                    if (fieldName == 'name') {
+                        return data[fieldName].toLowerCase().includes(fieldValue.toLowerCase());
+                    }
                     return data[fieldName].toLowerCase() == fieldValue.toLowerCase();
                 };
             },
@@ -154,26 +156,34 @@ export class TableComponent implements OnInit {
         this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
-    applyFilterByName(filterValue: string, filterFieldName: string) {
-        switch (filterFieldName) {
-            case 'region':
-                if (!this.selectingRegionCleared) {
-                    this.dataSource.filter = `${filterFieldName}$${filterValue}`;
-                }
-                this.selectingRegionCleared = false;
-                break;
-            case 'ageCategory':
-                if (!this.selectingCategoryCleared) {
-                    this.dataSource.filter = `${filterFieldName}$${filterValue}`;
-                }
-                this.selectingCategoryCleared = false;
-                break;
-            case 'nomination':
-                if (!this.selectingNominationsCleared) {
-                    this.dataSource.filter = `${filterFieldName}$${filterValue}`;
-                }
-                this.selectingNominationsCleared = false;
-                break;
+    applyFilterByName(event, filterValue: string, filterFieldName: string) {
+        if (event.source) {
+            switch (filterFieldName) {
+                case 'region':
+                    if (!this.selectingRegionCleared) {
+                        this.dataSource.filter = `${filterFieldName}$${filterValue}`;
+                    }
+                    this.selectingRegionCleared = false;
+                    break;
+                case 'ageCategory':
+                    if (!this.selectingCategoryCleared) {
+                        this.dataSource.filter = `${filterFieldName}$${filterValue}`;
+                    }
+                    this.selectingCategoryCleared = false;
+                    break;
+                case 'nomination':
+                    if (!this.selectingNominationsCleared) {
+                        this.dataSource.filter = `${filterFieldName}$${filterValue}`;
+                    }
+                    this.selectingNominationsCleared = false;
+                    break;
+                case 'name':
+                    if (!this.selectingNameCleared) {
+                        this.dataSource.filter = `${filterFieldName}$${filterValue}`;
+                    }
+                    this.selectingNameCleared = false;
+                    break;
+            }
         }
     }
 

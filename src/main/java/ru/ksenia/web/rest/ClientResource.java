@@ -189,6 +189,24 @@ public class ClientResource {
         }
     }
 
+    @PostMapping(value = "/downloadFileMusic")
+    public @ResponseBody ResponseEntity<byte[]> downloadFileMusic(final @RequestBody(required = true)DonwloadFileRequest
+                                                          donwloadFileReques, HttpServletResponse response) {
+
+        String[] splittedFileName = donwloadFileReques.getMusicFileName().split(".");
+        String ext = splittedFileName.length == 2 ? splittedFileName[1] : "mp3";
+
+        DateTime now = DateTime.now();
+        DateTimeFormatter fmt = org.joda.time.format.DateTimeFormat.forPattern("dd.MM.YY-HHmm");
+
+        response.setHeader("Content-Disposition", String.format("attachment; filename=%s-%s.%s", transliterate
+            (donwloadFileReques.getCommandName()), fmt.print(now), ext));
+        response.setContentType("audio/mpeg");
+
+        return ResponseEntity.ok(donwloadFileReques.getMusicFile().getBytes());
+    }
+
+
     @PostMapping(value = "/saveDownloadedMusicFile", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResponseEntity<DownloadDTO> saveDownloadedMusicFile(final @RequestBody(required = true)DonwloadFileRequest donwloadFileRequest)
         throws UnsupportedEncodingException {

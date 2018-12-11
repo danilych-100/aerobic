@@ -540,13 +540,16 @@ export class CommandRegistrationComponent implements OnInit {
     }
 
     selectEvent(file: File): void {
+        /* let formData = new FormData();
+        formData.*/
         //this.currentCommandRequest.music = file;
         var reader = new FileReader();
         reader.onload = () => {
-            this.currentCommandRequest.music = <string>reader.result;
+            const enc = new TextDecoder('utf-8');
+            this.currentCommandRequest.music = enc.decode(new Uint8Array(<ArrayBuffer>reader.result));
             this.currentCommandRequest.musicFileName = file.name;
         };
-        reader.readAsText(file);
+        reader.readAsArrayBuffer(file);
     }
 
     uploadEvent(file: File): void {}
@@ -565,10 +568,11 @@ export class CommandRegistrationComponent implements OnInit {
         donwloadFileRequest.commandName = 'вфыв';
         donwloadFileRequest.musicFile = request.music;
         donwloadFileRequest.musicFileName = '323423.mp3';
-        this.registerCommandService.saveDownloadedMusicFile(donwloadFileRequest).subscribe(
+        this.registerCommandService.downloadFileMusic(donwloadFileRequest).subscribe(
             res => {
-                console.log(res.id);
-                window.open(SERVER_API_URL + 'api/downloadMusicFile?id=' + res.id, '_blank');
+                const file = new Blob([res], { type: 'audio/mpeg' });
+                const fileURL = URL.createObjectURL(file);
+                window.open(fileURL, '_blank');
             },
             res => {
                 console.log(res);

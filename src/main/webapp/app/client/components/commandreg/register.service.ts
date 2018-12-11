@@ -45,4 +45,8 @@ export class RegisterCommandService {
     saveDownloadedMusicFile(donwloadFileRequest: DonwloadFileRequest): Observable<any> {
         return this.http.post(SERVER_API_URL + 'api/saveDownloadedMusicFile', donwloadFileRequest);
     }
+
+    downloadFileMusic(donwloadFileRequest: DonwloadFileRequest): Observable<any> {
+        return this.http.post(SERVER_API_URL + 'api/downloadFileMusic', donwloadFileRequest);
+    }
 }

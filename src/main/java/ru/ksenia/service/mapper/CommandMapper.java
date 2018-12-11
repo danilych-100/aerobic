@@ -87,7 +87,6 @@ public class CommandMapper {
         mapperCommandDTO.setCommand(command);
         mapperCommandDTO.setCoachJoins(coachJoins);
         mapperCommandDTO.setMemberJoins(memberJoins);
-
         return mapperCommandDTO;
     }
 

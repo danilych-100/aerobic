@@ -14,13 +14,13 @@
         <div>
             <mat-form-field style="width: 200px;">
                 <mat-select placeholder="Субъект РФ" [(ngModel)]="selectingRegion">
-                    <mat-option *ngFor="let reg of regions" [value]="reg" (onSelectionChange)="applyFilterByName(reg, 'region')">
+                    <mat-option *ngFor="let reg of regions" [value]="reg" (onSelectionChange)="applyFilterByName($event, reg, 'region')">
                         {{reg}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
 
-            <a (click)="removeFilterByName('region');selectingRegion = null; ">
+            <a (click)="removeFilterByName('region');selectingRegion = null; " style="cursor: pointer">
                 <mat-icon class="remove-icon" *ngIf="selectingRegion">clear</mat-icon>
             </a>
         </div>
@@ -28,12 +28,12 @@
         <div>
             <mat-form-field style="width: 200px;">
                 <mat-select placeholder="Возрастная категория" [(ngModel)]="selectingCategory">
-                    <mat-option *ngFor="let cat of categories" [value]="cat" (onSelectionChange)="applyFilterByName(cat, 'ageCategory')">
+                    <mat-option *ngFor="let cat of categories" [value]="cat" (onSelectionChange)="applyFilterByName($event, cat, 'ageCategory')">
                         {{cat}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <a (click)="removeFilterByName('ageCategory');selectingCategory = null; ">
+            <a (click)="removeFilterByName('ageCategory');selectingCategory = null; " style="cursor: pointer">
                 <mat-icon class="remove-icon" *ngIf="selectingCategory">clear</mat-icon>
             </a>
 
@@ -42,18 +42,18 @@
         <div>
             <mat-form-field style="width: 200px;">
                 <mat-select placeholder="Номинация" [(ngModel)]="selectingNominations">
-                    <mat-option *ngFor="let nom of nominations" [value]="nom" (onSelectionChange)="applyFilterByName(nom, 'nomination')">
+                    <mat-option *ngFor="let nom of nominations" [value]="nom" (onSelectionChange)="applyFilterByName($event, nom, 'nomination')">
                         {{nom}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <a (click)="removeFilterByName('nomination');selectingNominations = null; ">
+            <a (click)="removeFilterByName('nomination');selectingNominations = null; " style="cursor: pointer">
                 <mat-icon class="remove-icon" *ngIf="selectingNominations">clear</mat-icon>
             </a>
 
 
             <mat-form-field style="float: right;">
-                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск заявки">
+                <input matInput (keyup)="applyFilterByName($event, $event.target.value, 'name')" placeholder="Поиск заявки">
             </mat-form-field>
         </div>
 
