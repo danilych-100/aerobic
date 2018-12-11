@@ -63,7 +63,7 @@
                 <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
             </div>
 
-            <table mat-table [dataSource]="dataSource" class="cars-table mat-elevation-z8"  [ngClass]="{'loaded-table': isLoadingResults}" (matSortChange)="sortData($event)"
+            <table mat-table [dataSource]="dataSource" class="cars-table mat-elevation-z8"  [ngClass]="{'loaded-table': isLoadingResults}" (matSortChange)="sortData($event)" #reqSort="matSort"
                    matSort>
                 <!-- Number Column -->
                 <ng-container matColumnDef="name">
@@ -114,19 +114,19 @@
     </div>
     <div id="tabContent_2" style="display: none">
         <mat-form-field style="float: right;min-width: 240px;">
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск пользователя">
+            <input matInput (keyup)="applyUsersFilterByName($event, $event.target.value, 'name')" placeholder="Поиск пользователя">
         </mat-form-field>
 
         <div>
             <mat-form-field style="width: 200px;">
                 <mat-select placeholder="Субъект РФ" [(ngModel)]="selectingRegion">
-                    <mat-option *ngFor="let reg of regions" [value]="reg" (onSelectionChange)="applyFilterByName(reg, 'region')">
+                    <mat-option *ngFor="let reg of regions" [value]="reg"(onSelectionChange)="applyUsersFilterByName($event, reg, 'region')">
                         {{reg}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
 
-            <a (click)="removeFilterByName('region');selectingRegion = null; ">
+            <a (click)="removeUsersFilterByName('region');selectingRegion = null; " style="cursor: pointer">
                 <mat-icon class="remove-icon" *ngIf="selectingRegion">clear</mat-icon>
             </a>
         </div>
@@ -137,7 +137,7 @@
                 <mat-spinner *ngIf="isLoadingResultsUsers"></mat-spinner>
             </div>
 
-            <table mat-table [dataSource]="dataSourceUsers" class="cars-table mat-elevation-z8" [ngClass]="{'loaded-table': isLoadingResultsUsers}"  (matSortChange)="sortDataUsers($event)"
+            <table mat-table #usersSort="matSort" [dataSource]="dataSourceUsers" class="cars-table mat-elevation-z8" [ngClass]="{'loaded-table': isLoadingResultsUsers}"  (matSortChange)="sortDataUsers($event)"
                    matSort>
                 <!-- Number Column -->
                 <ng-container matColumnDef="userName">

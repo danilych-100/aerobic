@@ -94,16 +94,18 @@ export class TableComponent implements OnInit {
     selectingNominationsCleared = false;
     selectingNameCleared = false;
 
+    selectingRegionUsersCleared = false;
+
     modalRef: NgbModalRef;
 
     @ViewChild(MatPaginator)
     paginator: MatPaginator;
-    @ViewChild(MatSort)
+    @ViewChild('reqSort')
     sort: MatSort;
 
     @ViewChild(MatPaginator)
     paginatorUsers: MatPaginator;
-    @ViewChild(MatSort)
+    @ViewChild('usersSort')
     sortUsers: MatSort;
 
     public requests: CommandRequestAdmin[];
@@ -123,12 +125,19 @@ export class TableComponent implements OnInit {
                     if (filter == 'clear') {
                         return true;
                     }
-                    const fieldName = filter.split('$')[0];
-                    const fieldValue = filter.split('$')[1];
-                    if (fieldName == 'name') {
-                        return data[fieldName].toLowerCase().includes(fieldValue.toLowerCase());
-                    }
-                    return data[fieldName].toLowerCase() == fieldValue.toLowerCase();
+                    const filters = filter.split(',');
+                    let isOk = true;
+                    filters.forEach(fil => {
+                        const fieldName = fil.split('$')[0];
+                        const fieldValue = fil.split('$')[1];
+
+                        if (fieldName == 'name' && isOk) {
+                            isOk = data[fieldName].toLowerCase().includes(fieldValue.toLowerCase());
+                        } else if (isOk) {
+                            isOk = data[fieldName].toLowerCase() == fieldValue.toLowerCase();
+                        }
+                    });
+                    return isOk;
                 };
             },
             err => {
@@ -138,13 +147,30 @@ export class TableComponent implements OnInit {
 
         this.registerCommandService.getAllCommandUserInfo().subscribe(
             response => {
-                console.log(response);
                 this.resultsLengthUsers = response.length;
                 this.users = response;
                 this.isLoadingResultsUsers = false;
                 this.dataSourceUsers = new MatTableDataSource(response);
                 this.dataSourceUsers.paginator = this.paginatorUsers;
                 this.dataSourceUsers.sort = this.sortUsers;
+                this.dataSourceUsers.filterPredicate = function(data, filter: string): boolean {
+                    if (filter == 'clear') {
+                        return true;
+                    }
+                    const filters = filter.split(',');
+                    let isOk = true;
+                    filters.forEach(fil => {
+                        const fieldName = fil.split('$')[0];
+                        const fieldValue = fil.split('$')[1];
+
+                        if (fieldName == 'name' && isOk) {
+                            isOk = data[fieldName].toLowerCase().includes(fieldValue.toLowerCase());
+                        } else if (isOk) {
+                            isOk = data[fieldName].toLowerCase() == fieldValue.toLowerCase();
+                        }
+                    });
+                    return isOk;
+                };
             },
             err => {
                 console.log(err);
@@ -156,35 +182,133 @@ export class TableComponent implements OnInit {
         this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
+    setFilter(filterValue: string, filterFieldName: string) {
+        if (!this.dataSource.filter || this.dataSource.filter == 'clear') {
+            this.dataSource.filter = `${filterFieldName}$${filterValue}`;
+        } else {
+            const filters = this.dataSource.filter.split(',');
+            let isFound = false;
+            filters.map(fil => {
+                const fieldName = fil.split('$')[0];
+                const fieldValue = fil.split('$')[1];
+                if (fieldName == filterFieldName) {
+                    isFound = true;
+                    return `${filterFieldName}$${filterValue}`;
+                }
+            });
+            if (!isFound) {
+                filters.push(`${filterFieldName}$${filterValue}`);
+            }
+            this.dataSource.filter = filters.join(',');
+            console.log(this.dataSource.filter);
+        }
+    }
+
     applyFilterByName(event, filterValue: string, filterFieldName: string) {
-        if (event.source) {
+        if (event.source || event.target) {
             switch (filterFieldName) {
                 case 'region':
                     if (!this.selectingRegionCleared) {
-                        this.dataSource.filter = `${filterFieldName}$${filterValue}`;
+                        this.setFilter(filterValue, filterFieldName);
                     }
                     this.selectingRegionCleared = false;
                     break;
                 case 'ageCategory':
                     if (!this.selectingCategoryCleared) {
-                        this.dataSource.filter = `${filterFieldName}$${filterValue}`;
+                        this.setFilter(filterValue, filterFieldName);
                     }
                     this.selectingCategoryCleared = false;
                     break;
                 case 'nomination':
                     if (!this.selectingNominationsCleared) {
-                        this.dataSource.filter = `${filterFieldName}$${filterValue}`;
+                        this.setFilter(filterValue, filterFieldName);
                     }
                     this.selectingNominationsCleared = false;
                     break;
                 case 'name':
                     if (!this.selectingNameCleared) {
-                        this.dataSource.filter = `${filterFieldName}$${filterValue}`;
+                        this.setFilter(filterValue, filterFieldName);
                     }
                     this.selectingNameCleared = false;
                     break;
             }
         }
+    }
+
+    removeFilterByName(name) {
+        switch (name) {
+            case 'region':
+                this.selectingRegionCleared = true;
+                break;
+            case 'ageCategory':
+                this.selectingCategoryCleared = true;
+                break;
+            case 'nomination':
+                this.selectingNominationsCleared = true;
+                break;
+        }
+        const filters = this.dataSource.filter.split(',');
+        this.dataSource.filter = filters
+            .filter(fil => {
+                const fieldName = fil.split('$')[0];
+                const fieldValue = fil.split('$')[1];
+                return fieldName != name;
+            })
+            .join(',');
+    }
+
+    setUsersFilter(filterValue: string, filterFieldName: string) {
+        if (!this.dataSourceUsers.filter || this.dataSourceUsers.filter == 'clear') {
+            this.dataSourceUsers.filter = `${filterFieldName}$${filterValue}`;
+        } else {
+            const filters = this.dataSourceUsers.filter.split(',');
+            let isFound = false;
+            filters.map(fil => {
+                const fieldName = fil.split('$')[0];
+                const fieldValue = fil.split('$')[1];
+                if (fieldName == filterFieldName) {
+                    isFound = true;
+                    return `${filterFieldName}$${filterValue}`;
+                }
+            });
+            if (!isFound) {
+                filters.push(`${filterFieldName}$${filterValue}`);
+            }
+            this.dataSourceUsers.filter = filters.join(',');
+            console.log(this.dataSourceUsers.filter);
+        }
+    }
+
+    applyUsersFilterByName(event, filterValue: string, filterFieldName: string) {
+        if (event.source || event.target) {
+            switch (filterFieldName) {
+                case 'region':
+                    if (!this.selectingRegionUsersCleared) {
+                        this.setUsersFilter(filterValue, filterFieldName);
+                    }
+                    this.selectingRegionUsersCleared = false;
+                    break;
+                case 'name':
+                    this.setUsersFilter(filterValue, filterFieldName);
+                    break;
+            }
+        }
+    }
+
+    removeUsersFilterByName(name) {
+        switch (name) {
+            case 'region':
+                this.selectingRegionUsersCleared = true;
+                break;
+        }
+        const filters = this.dataSourceUsers.filter.split(',');
+        this.dataSourceUsers.filter = filters
+            .filter(fil => {
+                const fieldName = fil.split('$')[0];
+                const fieldValue = fil.split('$')[1];
+                return fieldName != name;
+            })
+            .join(',');
     }
 
     private isOpen = false;
@@ -247,22 +371,6 @@ export class TableComponent implements OnInit {
         } else {
             this.openCommandModal(row.commandId);
         }
-    }
-
-    removeFilterByName(name) {
-        switch (name) {
-            case 'region':
-                this.selectingRegionCleared = true;
-                break;
-            case 'ageCategory':
-                this.selectingCategoryCleared = true;
-                break;
-            case 'nomination':
-                this.selectingNominationsCleared = true;
-                break;
-        }
-
-        this.dataSource.filter = 'clear';
     }
 
     downloadMusicFile(row) {
@@ -334,7 +442,6 @@ export class TableComponent implements OnInit {
     }
 
     sortDataUsers(event) {
-        console.log(this.dataSourceUsers.data);
         this.dataSourceUsers.data.sort((a, b) => {
             const isAsc = event.direction === 'asc';
             switch (event.active) {
@@ -352,7 +459,6 @@ export class TableComponent implements OnInit {
                     return 0;
             }
         });
-        console.log(this.dataSourceUsers.data);
     }
 
     sortData(event) {
