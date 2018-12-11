@@ -5,20 +5,22 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "members_join_table")
-@IdClass(MemberJoinTable.class)
-public class MemberJoinTable implements Serializable {
+public class MemberJoinTable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Id
-    @Column(name = "command_request_id", nullable = false)
-    private Long commandRequestId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "command_request_id")
+    private CommandRequest commandRequest;
 
-    @Id
-    @Column(name = "command_member_id", nullable = false)
-    private Long commandMemberId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "command_member_id")
+    private CommandMember commandMember;
 
     public Long getUserId() {
         return userId;
@@ -28,19 +30,27 @@ public class MemberJoinTable implements Serializable {
         this.userId = userId;
     }
 
-    public Long getCommandRequestId() {
-        return commandRequestId;
+    public Long getId() {
+        return id;
     }
 
-    public void setCommandRequestId(Long commandRequestId) {
-        this.commandRequestId = commandRequestId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getCommandMemberId() {
-        return commandMemberId;
+    public CommandRequest getCommandRequest() {
+        return commandRequest;
     }
 
-    public void setCommandMemberId(Long commandMemberId) {
-        this.commandMemberId = commandMemberId;
+    public void setCommandRequest(CommandRequest commandRequest) {
+        this.commandRequest = commandRequest;
+    }
+
+    public CommandMember getCommandMember() {
+        return commandMember;
+    }
+
+    public void setCommandMember(CommandMember commandMember) {
+        this.commandMember = commandMember;
     }
 }

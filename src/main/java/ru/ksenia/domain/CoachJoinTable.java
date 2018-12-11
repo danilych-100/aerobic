@@ -5,20 +5,30 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "coaches_join_table")
-@IdClass(CoachJoinTable.class)
-public class CoachJoinTable implements Serializable {
+public class CoachJoinTable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Id
-    @Column(name = "command_request_id", nullable = false)
-    private Long commandRequestId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "command_request_id")
+    private CommandRequest commandRequest;
 
-    @Id
-    @Column(name = "command_coach_id", nullable = false)
-    private Long commandCoachId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "command_coach_id")
+    private CommandCoach commandCoach;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getUserId() {
         return userId;
@@ -28,19 +38,19 @@ public class CoachJoinTable implements Serializable {
         this.userId = userId;
     }
 
-    public Long getCommandRequestId() {
-        return commandRequestId;
+    public CommandRequest getCommandRequest() {
+        return commandRequest;
     }
 
-    public void setCommandRequestId(Long commandRequestId) {
-        this.commandRequestId = commandRequestId;
+    public void setCommandRequest(CommandRequest commandRequest) {
+        this.commandRequest = commandRequest;
     }
 
-    public Long getCommandCoachId() {
-        return commandCoachId;
+    public CommandCoach getCommandCoach() {
+        return commandCoach;
     }
 
-    public void setCommandCoachId(Long commandCoachId) {
-        this.commandCoachId = commandCoachId;
+    public void setCommandCoach(CommandCoach commandCoach) {
+        this.commandCoach = commandCoach;
     }
 }

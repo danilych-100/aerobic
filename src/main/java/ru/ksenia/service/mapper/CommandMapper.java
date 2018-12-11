@@ -1,9 +1,7 @@
 package ru.ksenia.service.mapper;
 
-import ru.ksenia.domain.Command;
-import ru.ksenia.domain.CommandCoach;
-import ru.ksenia.domain.CommandMember;
-import ru.ksenia.domain.CommandRequest;
+import ru.ksenia.domain.*;
+import ru.ksenia.service.dto.MapperCommandDTO;
 import ru.ksenia.web.rest.dto.CommandCoachDTO;
 import ru.ksenia.web.rest.dto.CommandDTO;
 import ru.ksenia.web.rest.dto.CommandMemberDTO;
@@ -18,7 +16,7 @@ public class CommandMapper {
 
     private CommandMapper(){}
 
-    public static Command mapDTOToEntity(CommandDTO commandDTO, Command command){
+    public static MapperCommandDTO mapDTOToEntity(CommandDTO commandDTO, Command command){
         List<CommandCoach> commandCoachList = new ArrayList<>();
         commandDTO.getCoaches().forEach(commandCoachDTO -> {
             CommandCoach commandCoach = mapCommandCoachDToToEntity(commandCoachDTO);
@@ -35,6 +33,8 @@ public class CommandMapper {
 
 
         List<CommandRequest> commandRequestList = new ArrayList<>();
+        List<MemberJoinTable> memberJoins = new ArrayList<>();
+        List<CoachJoinTable> coachJoins = new ArrayList<>();
         commandDTO.getRequests().forEach(commandRequestDTO -> {
             CommandRequest commandRequest = null;
             try {
@@ -44,13 +44,14 @@ public class CommandMapper {
                 e.printStackTrace();
             }
 
-            List<CommandMember> commandMembersForRequest = new ArrayList<>();
-            List<CommandCoach> commandCoachesForRequest = new ArrayList<>();
             for(CommandMemberDTO commandMemberDTO : commandRequestDTO.getMembers()){
                 for(CommandMember commandMember : commandMemberList){
                     if(isMembersEquals(commandMember, commandMemberDTO)){
-                        commandMembersForRequest.add(commandMember);
-                        commandMember.getCommandRequests().add(commandRequest);
+                        MemberJoinTable memberJoin = new MemberJoinTable();
+                        memberJoin.setCommandMember(commandMember);
+                        memberJoin.setCommandRequest(commandRequest);
+                        memberJoin.setUserId(command.getUserId());
+                        memberJoins.add(memberJoin);
                         break;
                     }
                 }
@@ -58,15 +59,16 @@ public class CommandMapper {
             for(CommandCoachDTO commandCoachDTO : commandRequestDTO.getCoaches()){
                 for(CommandCoach commandCoach : commandCoachList){
                     if(isCoachesEquals(commandCoach, commandCoachDTO)){
-                        commandCoachesForRequest.add(commandCoach);
-                        commandCoach.getCommandRequests().add(commandRequest);
+                        CoachJoinTable coachJoin = new CoachJoinTable();
+                        coachJoin.setCommandCoach(commandCoach);
+                        coachJoin.setCommandRequest(commandRequest);
+                        coachJoin.setUserId(command.getUserId());
+                        coachJoins.add(coachJoin);
                         break;
                     }
                 }
             }
 
-            commandRequest.setCoaches(commandCoachesForRequest);
-            commandRequest.setMembers(commandMembersForRequest);
             commandRequest.setCommand(command);
             commandRequestList.add(commandRequest);
         });
@@ -81,7 +83,12 @@ public class CommandMapper {
         command.setMembers(commandMemberList);
         command.setRequests(commandRequestList);
 
-        return command;
+        MapperCommandDTO mapperCommandDTO = new MapperCommandDTO();
+        mapperCommandDTO.setCommand(command);
+        mapperCommandDTO.setCoachJoins(coachJoins);
+        mapperCommandDTO.setMemberJoins(memberJoins);
+
+        return mapperCommandDTO;
     }
 
 

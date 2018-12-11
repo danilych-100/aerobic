@@ -117,6 +117,31 @@
             <column name="phone_number" type="varchar(20)"/>
             <column name="email" type="varchar(50)"/>
         </createTable>
+
+        <createTable tableName="coaches_join_table">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+            </column>
+            <column name="command_request_id" type="bigint">
+            </column>
+            <column name="command_coach_id" type="bigint">
+            </column>
+        </createTable>
+
+        <createTable tableName="members_join_table">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+            </column>
+            <column name="command_request_id" type="bigint">
+            </column>
+            <column name="command_member_id" type="bigint">
+            </column>
+        </createTable>
+
         <createTable tableName="command_coach">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
@@ -185,28 +210,30 @@
                                  referencedColumnNames="id"
                                  referencedTableName="command_request"/>-->
 
-        <createTable tableName="coaches_join_table">
-            <column name="user_id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="command_request_id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="command_coach_id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-        </createTable>
-        <createTable tableName="members_join_table">
-            <column name="user_id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="command_request_id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="command_member_id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-        </createTable>
+        <addForeignKeyConstraint baseColumnNames="command_coach_id"
+                                 baseTableName="coaches_join_table"
+                                 constraintName="fk_command_join_coach_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="command_coach"/>
+
+        <addForeignKeyConstraint baseColumnNames="command_request_id"
+                                 baseTableName="coaches_join_table"
+                                 constraintName="fk_command_join_coach_request_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="command_request"/>
+
+        <addForeignKeyConstraint baseColumnNames="command_member_id"
+                                 baseTableName="members_join_table"
+                                 constraintName="fk_command_join_member"
+                                 referencedColumnNames="id"
+                                 referencedTableName="command_member"/>
+
+        <addForeignKeyConstraint baseColumnNames="command_request_id"
+                                 baseTableName="members_join_table"
+                                 constraintName="fk_command_join_member_request_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="command_request"/>
+
 
         <createTable tableName="download_request">
             <column name="id" type="varchar(36)">

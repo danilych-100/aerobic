@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ksenia.domain.*;
 import ru.ksenia.repository.*;
+import ru.ksenia.service.dto.MapperCommandDTO;
 import ru.ksenia.service.mapper.CommandMapper;
 import ru.ksenia.web.rest.dto.CommandCoachDTO;
 import ru.ksenia.web.rest.dto.CommandDTO;
@@ -65,12 +66,7 @@ public class ClientService {
     }
 
     @Transactional
-    public Command registerCommand(CommandDTO commandDTO, Long userId, Command existedCommand) {
-        if(existedCommand != null){
-            Command command = CommandMapper.mapDTOToEntity(commandDTO, existedCommand);
-            command.setUserId(userId);
-            return command;
-        }
+    public MapperCommandDTO registerCommand(CommandDTO commandDTO, Long userId) {
         Command command = new Command();
         command.setUserId(userId);
         return CommandMapper.mapDTOToEntity(commandDTO, command);
@@ -82,24 +78,35 @@ public class ClientService {
         User currentUser = userService.getUserWithAuthorities().orElseThrow(() -> new InternalServerErrorException("User could not be found"));
         List<Command> commands = commandRepository.findAllByUserId(currentUser.getId());
         if(commands != null && commands.size() != 0){
+            commandRepository.deleteById(commands.get(0).getId());
+            commandRepository.flush();
+
             List<CoachJoinTable> coachJoinTables = coachJoinRepository.findAllByUserId(currentUser.getId());
             if(coachJoinTables != null){
                 coachJoinTables.forEach(coachJoinTable -> {
-                    coachJoinRepository.delete(coachJoinTable);
+                    coachJoinRepository.deleteById(coachJoinTable.getId());
                 });
-                coachJoinRepository.flush();
+
+                //coachJoinRepository.flush();
             }
             List<MemberJoinTable> memberJoinTables = memberJoinRepository.findAllByUserId(currentUser.getId());
             if(memberJoinTables != null){
                 memberJoinTables.forEach(memberJoinTable -> {
-                    memberJoinRepository.delete(memberJoinTable);
+                    memberJoinRepository.deleteById(memberJoinTable.getId());
                 });
-                memberJoinRepository.flush();
+                //memberJoinRepository.flush();
             }
-            commandRepository.deleteById(commands.get(0).getId());
-            commandRepository.flush();
         }
-        commandRepository.saveAndFlush(registerCommand(command, currentUser.getId(), null));
+
+        MapperCommandDTO mapperCommandDTO = registerCommand(command, currentUser.getId());
+        commandRepository.saveAndFlush(mapperCommandDTO.getCommand());
+
+        if(mapperCommandDTO.getMemberJoins() != null && mapperCommandDTO.getMemberJoins().size() > 0){
+            mapperCommandDTO.getMemberJoins().forEach(memberJoinRepository::saveAndFlush);
+        }
+        if(mapperCommandDTO.getCoachJoins() != null && mapperCommandDTO.getCoachJoins().size() > 0){
+            mapperCommandDTO.getCoachJoins().forEach(coachJoinRepository::saveAndFlush);
+        }
     }
 
     public List<CommandRequestAdminInfoDTO> getAllRequests() throws UnsupportedEncodingException {
