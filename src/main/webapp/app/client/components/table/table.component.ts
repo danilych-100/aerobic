@@ -163,7 +163,7 @@ export class TableComponent implements OnInit {
                         const fieldValue = fil.split('$')[1];
 
                         if (fieldName == 'name' && isOk) {
-                            isOk = data[fieldName].toLowerCase().includes(fieldValue.toLowerCase());
+                            isOk = data['userName'].toLowerCase().includes(fieldValue.toLowerCase());
                         } else if (isOk) {
                             isOk = data[fieldName].toLowerCase() == fieldValue.toLowerCase();
                         }
@@ -185,52 +185,28 @@ export class TableComponent implements OnInit {
         if (!this.dataSource.filter || this.dataSource.filter == 'clear') {
             this.dataSource.filter = `${filterFieldName}$${filterValue}`;
         } else {
-            const filters = this.dataSource.filter.split(',');
+            let filters = this.dataSource.filter.split(',');
             let isFound = false;
-            filters.map(fil => {
+            filters = filters.map(fil => {
                 const fieldName = fil.split('$')[0];
                 const fieldValue = fil.split('$')[1];
                 if (fieldName == filterFieldName) {
                     isFound = true;
                     return `${filterFieldName}$${filterValue}`;
                 }
+                return fil;
             });
+
             if (!isFound) {
                 filters.push(`${filterFieldName}$${filterValue}`);
             }
             this.dataSource.filter = filters.join(',');
-            console.log(this.dataSource.filter);
         }
     }
 
     applyFilterByName(event, filterValue: string, filterFieldName: string) {
-        if (event.source || event.target) {
-            switch (filterFieldName) {
-                case 'region':
-                    if (!this.selectingRegionCleared) {
-                        this.setFilter(filterValue, filterFieldName);
-                    }
-                    this.selectingRegionCleared = false;
-                    break;
-                case 'ageCategory':
-                    if (!this.selectingCategoryCleared) {
-                        this.setFilter(filterValue, filterFieldName);
-                    }
-                    this.selectingCategoryCleared = false;
-                    break;
-                case 'nomination':
-                    if (!this.selectingNominationsCleared) {
-                        this.setFilter(filterValue, filterFieldName);
-                    }
-                    this.selectingNominationsCleared = false;
-                    break;
-                case 'name':
-                    if (!this.selectingNameCleared) {
-                        this.setFilter(filterValue, filterFieldName);
-                    }
-                    this.selectingNameCleared = false;
-                    break;
-            }
+        if ((event.source && event.isUserInput) || event.target) {
+            this.setFilter(filterValue, filterFieldName);
         }
     }
 
@@ -260,37 +236,27 @@ export class TableComponent implements OnInit {
         if (!this.dataSourceUsers.filter || this.dataSourceUsers.filter == 'clear') {
             this.dataSourceUsers.filter = `${filterFieldName}$${filterValue}`;
         } else {
-            const filters = this.dataSourceUsers.filter.split(',');
+            let filters = this.dataSourceUsers.filter.split(',');
             let isFound = false;
-            filters.map(fil => {
+            filters = filters.map(fil => {
                 const fieldName = fil.split('$')[0];
                 const fieldValue = fil.split('$')[1];
                 if (fieldName == filterFieldName) {
                     isFound = true;
                     return `${filterFieldName}$${filterValue}`;
                 }
+                return fil;
             });
             if (!isFound) {
                 filters.push(`${filterFieldName}$${filterValue}`);
             }
             this.dataSourceUsers.filter = filters.join(',');
-            console.log(this.dataSourceUsers.filter);
         }
     }
 
     applyUsersFilterByName(event, filterValue: string, filterFieldName: string) {
-        if (event.source || event.target) {
-            switch (filterFieldName) {
-                case 'region':
-                    if (!this.selectingRegionUsersCleared) {
-                        this.setUsersFilter(filterValue, filterFieldName);
-                    }
-                    this.selectingRegionUsersCleared = false;
-                    break;
-                case 'name':
-                    this.setUsersFilter(filterValue, filterFieldName);
-                    break;
-            }
+        if ((event.source && event.isUserInput) || event.target) {
+            this.setUsersFilter(filterValue, filterFieldName);
         }
     }
 

@@ -115,6 +115,9 @@ export class AppComponent {
                     const account = response.body;
                     this.currentUserName = account.lastName + ' ' + account.firstName;
                 })
+                .catch(error => {
+                    console.log(error);
+                })
         );
     }
 }
