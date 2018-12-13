@@ -7,13 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandRequestAdminInfoDTO {
-    private Long id;
+    private String id;
     private String name;
     private String commandName;
     private String region;
     private String ageCategory;
     private String nomination;
-    private String music;
     private String musicFileName;
 
     public String getName() {
@@ -40,14 +39,6 @@ public class CommandRequestAdminInfoDTO {
         this.nomination = nomination;
     }
 
-    public String getMusic() {
-        return music;
-    }
-
-    public void setMusic(String music) {
-        this.music = music;
-    }
-
     public String getMusicFileName() {
         return musicFileName;
     }
@@ -56,11 +47,11 @@ public class CommandRequestAdminInfoDTO {
         this.musicFileName = musicFileName;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

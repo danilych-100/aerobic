@@ -109,6 +109,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/updateCommand").hasAuthority(AuthoritiesConstants.USER)
             .antMatchers("/api/getCommandForCurrentUser").hasAuthority(AuthoritiesConstants.USER)
             .antMatchers("/api/getCommands").permitAll()
+            .antMatchers("/api/saveFileToDownloadRequest").permitAll()
             .antMatchers("/api/downloadMusicFile").permitAll()
             .antMatchers("/api/saveDownloadedMusicFile").permitAll()
             .antMatchers("/api/downloadFileMusic").permitAll()

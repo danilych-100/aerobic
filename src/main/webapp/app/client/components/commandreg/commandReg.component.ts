@@ -48,6 +48,7 @@ export class CommandMember {
 }
 
 export class CommandRequest {
+    public id: string;
     public name: string;
     public ageCategory: string;
     public nomination: string;
@@ -93,6 +94,7 @@ export class CommandRegistrationComponent implements OnInit {
     ];
 
     public files;
+    public requestFiles: [];
 
     maxDate = new Date();
     email = new FormControl('', [Validators.email]);
@@ -241,10 +243,15 @@ export class CommandRegistrationComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.requestFiles = [];
         this.command = new Command();
         this.registerCommandService.getCommandForCurrentUser().subscribe(
             response => {
                 this.command = response;
+                this.command.requests.forEach(request => {
+                    this.requestFiles[request.id] = request.music;
+                });
+
                 console.log(response);
             },
             err => {
@@ -254,6 +261,7 @@ export class CommandRegistrationComponent implements OnInit {
         this.currentCoach = new CommandCoach();
         this.currentMember = new CommandMember();
         this.currentCommandRequest = new CommandRequest();
+        this.currentCommandRequest.id = this.guid();
         this.openTab(1, true);
     }
 
@@ -299,15 +307,26 @@ export class CommandRegistrationComponent implements OnInit {
 
     addCommandRequest() {
         const newRequest = new CommandRequest();
+        newRequest.id = this.currentCommandRequest.id;
         newRequest.name = this.currentCommandRequest.name;
         newRequest.nomination = this.currentCommandRequest.nomination;
         newRequest.ageCategory = this.currentCommandRequest.ageCategory;
         newRequest.coaches = this.currentCommandRequest.coaches;
         newRequest.members = this.currentCommandRequest.members;
-        newRequest.music = this.currentCommandRequest.music;
+        //newRequest.music = this.currentCommandRequest.music;
         newRequest.musicFileName = this.currentCommandRequest.musicFileName;
         this.command.requests.push(newRequest);
         this.currentCommandRequest = new CommandRequest();
+        this.currentCommandRequest.id = this.guid();
+    }
+
+    guid() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     }
 
     addCoach() {
@@ -349,6 +368,8 @@ export class CommandRegistrationComponent implements OnInit {
     }
 
     removeRequest(index: number) {
+        this.requestFiles[this.command.requests[index].id] = null;
+        delete this.requestFiles[this.command.requests[index].id];
         this.command.requests.splice(index, 1);
     }
 
@@ -358,6 +379,17 @@ export class CommandRegistrationComponent implements OnInit {
         this.registerCommandService.update(this.command).subscribe(
             () => {
                 this.isOk = true;
+                if (this.command.requests && this.command.requests.length > 0 && this.requestFiles) {
+                    this.command.requests.forEach(request => {
+                        if (!request.music && this.requestFiles[request.id]) {
+                            this.registerCommandService
+                                .saveFileToRequest(this.requestFiles[request.id], request.id, request.name, request.musicFileName)
+                                .subscribe(() => {
+                                    console.log('file saved');
+                                });
+                        }
+                    });
+                }
             },
             () => {
                 this.isOk = false;
@@ -543,13 +575,15 @@ export class CommandRegistrationComponent implements OnInit {
         /* let formData = new FormData();
         formData.*/
         //this.currentCommandRequest.music = file;
-        var reader = new FileReader();
+        /*  var reader = new FileReader();
         reader.onload = () => {
             const enc = new TextDecoder('utf-8');
             this.currentCommandRequest.music = enc.decode(new Uint8Array(<ArrayBuffer>reader.result));
             this.currentCommandRequest.musicFileName = file.name;
         };
-        reader.readAsArrayBuffer(file);
+        reader.readAsArrayBuffer(file);*/
+        this.currentCommandRequest.musicFileName = file.name;
+        this.requestFiles[this.currentCommandRequest.id] = file;
     }
 
     uploadEvent(file: File): void {}

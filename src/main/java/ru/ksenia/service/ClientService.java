@@ -8,6 +8,7 @@ import ru.ksenia.domain.*;
 import ru.ksenia.repository.*;
 import ru.ksenia.service.dto.MapperCommandDTO;
 import ru.ksenia.service.mapper.CommandMapper;
+import ru.ksenia.web.rest.AuditResource;
 import ru.ksenia.web.rest.dto.CommandCoachDTO;
 import ru.ksenia.web.rest.dto.CommandDTO;
 import ru.ksenia.web.rest.dto.CommandMemberDTO;
@@ -21,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Service for managing audit events.
@@ -45,6 +47,9 @@ public class ClientService {
 
     @Autowired
     private MemberJoinRepository memberJoinRepository;
+
+    @Autowired
+    private DownloadRequestRepository downloadRequestRepository;
 
 
     public List<CommandDTO> getCommands(){
@@ -126,7 +131,7 @@ public class ClientService {
         return commandRequestAdminInfoDTOS;
     }
 
-    public RequestInfoDTO getRequestInfo(Long requestId) throws UnsupportedEncodingException {
+    public RequestInfoDTO getRequestInfo(String requestId) throws UnsupportedEncodingException {
         CommandRequest commandRequest = commandRequestRepository.findById(requestId).get();
         CommandRequestAdminInfoDTO commandRequestAdminInfoDTO = getCommandRequestAdminInfoDTO(commandRequest.getCommand(),
                                                                                               commandRequest);
@@ -151,16 +156,12 @@ public class ClientService {
         return requestInfoDTO;
     }
 
-    private CommandRequestAdminInfoDTO getCommandRequestAdminInfoDTO(Command command, CommandRequest commandRequest)
-        throws UnsupportedEncodingException {
+    private CommandRequestAdminInfoDTO getCommandRequestAdminInfoDTO(Command command, CommandRequest commandRequest) {
         CommandRequestAdminInfoDTO commandRequestAdminInfoDTO = new CommandRequestAdminInfoDTO();
         commandRequestAdminInfoDTO.setId(commandRequest.getId());
         commandRequestAdminInfoDTO.setName(commandRequest.getName());
         commandRequestAdminInfoDTO.setAgeCategory(commandRequest.getAgeCategory());
         commandRequestAdminInfoDTO.setNomination(commandRequest.getNomination());
-        if(commandRequest.getMusic() != null){
-            commandRequestAdminInfoDTO.setMusic(new String(commandRequest.getMusic(), "UTF-8"));
-        }
         commandRequestAdminInfoDTO.setMusicFileName(commandRequest.getMusicFileName());
         commandRequestAdminInfoDTO.setCommandName(command.getName());
         commandRequestAdminInfoDTO.setRegion(command.getRegion());
@@ -201,5 +202,29 @@ public class ClientService {
     public CommandDTO getCommand(Long commandId) {
         Command command = commandRepository.findById(commandId).get();
         return CommandMapper.mapEntityToDTO(command);
+    }
+
+    @Transactional
+    public void saveFileToDownloadRequest(String requestId, byte[] fileBytes, String requestName, String musicFileName) {
+        List<DownloadRequest> founded = downloadRequestRepository.getAllByRequestId(requestId);
+        if(founded != null && founded.size() > 0){
+            DownloadRequest downloadRequest = founded.get(0);
+            downloadRequest.setMusicFile(fileBytes);
+            downloadRequest.setRequestName(requestName);
+            downloadRequest.setMusicFileName(musicFileName);
+            downloadRequestRepository.save(downloadRequest);
+            return;
+        }
+        DownloadRequest downloadRequest = new DownloadRequest();
+        downloadRequest.setId(UUID.randomUUID().toString());
+        downloadRequest.setRequestId(requestId);
+        downloadRequest.setMusicFile(fileBytes);
+        downloadRequest.setRequestName(requestName);
+        downloadRequest.setMusicFileName(musicFileName);
+        downloadRequestRepository.save(downloadRequest);
+    }
+
+    public CommandRequest getRequestById(String id) {
+        return commandRequestRepository.findById(id).get();
     }
 }

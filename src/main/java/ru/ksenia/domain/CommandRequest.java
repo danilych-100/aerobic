@@ -9,8 +9,7 @@ import java.util.List;
 public class CommandRequest {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -46,11 +45,11 @@ public class CommandRequest {
     @JoinColumn(name = "command_request_id")
     private Command command;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

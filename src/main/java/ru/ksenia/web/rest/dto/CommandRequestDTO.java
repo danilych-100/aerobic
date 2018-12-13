@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandRequestDTO {
+    private String id;
     private String name;
     private String ageCategory;
     private String nomination;
@@ -66,5 +67,13 @@ public class CommandRequestDTO {
 
     public void setMusicFileName(String musicFileName) {
         this.musicFileName = musicFileName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

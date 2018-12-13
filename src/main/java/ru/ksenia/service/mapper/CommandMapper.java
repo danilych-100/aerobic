@@ -148,6 +148,7 @@ public class CommandMapper {
     private static CommandRequest mapCommandRequestDToToEntity(CommandRequestDTO commandRequestDTO)
         throws UnsupportedEncodingException {
         CommandRequest commandRequest = new CommandRequest();
+        commandRequest.setId(commandRequestDTO.getId());
         commandRequest.setName(commandRequestDTO.getName());
         commandRequest.setAgeCategory(commandRequestDTO.getAgeCategory());
         commandRequest.setNomination(commandRequestDTO.getNomination());
@@ -162,6 +163,7 @@ public class CommandMapper {
     private static CommandRequestDTO mapCommandRequestEntityToDTO(CommandRequest commandRequest)
         throws UnsupportedEncodingException {
         CommandRequestDTO commandRequestDTO = new CommandRequestDTO();
+        commandRequestDTO.setId(commandRequest.getId());
         commandRequestDTO.setName(commandRequest.getName());
         commandRequestDTO.setAgeCategory(commandRequest.getAgeCategory());
         commandRequestDTO.setNomination(commandRequest.getNomination());

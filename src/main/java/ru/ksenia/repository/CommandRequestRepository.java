@@ -7,5 +7,5 @@ import ru.ksenia.domain.CommandRequest;
 /**
  * Spring Data JPA repository for the Authority entity.
  */
-public interface CommandRequestRepository extends JpaRepository<CommandRequest, Long> {
+public interface CommandRequestRepository extends JpaRepository<CommandRequest, String> {
 }

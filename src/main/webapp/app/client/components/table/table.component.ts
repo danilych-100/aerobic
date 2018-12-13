@@ -31,14 +31,13 @@ export class DonwloadFileRequest {
 }
 
 export class CommandRequestAdmin {
-    public id: number;
+    public id: string;
     public name: string;
     public commandName: string;
     public region: string;
     public ageCategory: string;
     public nomination: string;
     public musicFileName: string;
-    public music: string;
 }
 
 export class CommandUserInfo {
@@ -374,19 +373,7 @@ export class TableComponent implements OnInit {
     }
 
     downloadMusicFile(row) {
-        let donwloadFileRequest = new DonwloadFileRequest();
-        donwloadFileRequest.commandName = row.commandName;
-        donwloadFileRequest.musicFile = row.music;
-        donwloadFileRequest.musicFileName = row.musicFileName;
-        this.registerCommandService.saveDownloadedMusicFile(donwloadFileRequest).subscribe(
-            res => {
-                console.log(res.id);
-                window.open(SERVER_API_URL + 'api/downloadMusicFile?id=' + res.id, '_blank');
-            },
-            res => {
-                console.log(res);
-            }
-        );
+        window.open(SERVER_API_URL + 'api/downloadMusicFile?id=' + row.id + '&commandName=' + row.commandName, '_blank');
     }
 
     public ngOnInit(): void {

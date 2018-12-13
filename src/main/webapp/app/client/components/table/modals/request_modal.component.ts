@@ -42,18 +42,13 @@ export class RequestModalComponent implements AfterViewInit {
     }
 
     downloadMusicFile() {
-        let donwloadFileRequest = new DonwloadFileRequest();
-        donwloadFileRequest.commandName = this.requestInfo.generalInfo.commandName;
-        donwloadFileRequest.musicFile = this.requestInfo.generalInfo.music;
-        donwloadFileRequest.musicFileName = this.requestInfo.generalInfo.musicFileName;
-        this.registerCommandService.saveDownloadedMusicFile(donwloadFileRequest).subscribe(
-            res => {
-                console.log(res.id);
-                window.open(SERVER_API_URL + 'api/downloadMusicFile?id=' + res.id, '_blank');
-            },
-            res => {
-                console.log(res);
-            }
+        window.open(
+            SERVER_API_URL +
+                'api/downloadMusicFile?id=' +
+                this.requestInfo.generalInfo.id +
+                '&commandName=' +
+                this.requestInfo.generalInfo.commandName,
+            '_blank'
         );
     }
 }

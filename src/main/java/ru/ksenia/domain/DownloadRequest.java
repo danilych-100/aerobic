@@ -10,18 +10,20 @@ public class DownloadRequest {
     @Id
     private String id;
 
+    @Column(name = "request_id", nullable = false)
+    private String requestId;
+
     @Lob
     @Column(name = "music_file", nullable = false)
     private byte[] musicFile;
 
-    @Column(name = "command_name", nullable = false)
-    private String commandName;
+
+    @Column(name = "request_name", nullable = false)
+    private String requestName;
 
     @Column(name = "music_file_name", nullable = false)
     private String musicFileName;
 
-    @Column(name = "save_date")
-    private Instant saveDate;
 
     public String getId() {
         return id;
@@ -39,12 +41,12 @@ public class DownloadRequest {
         this.musicFile = musicFile;
     }
 
-    public String getCommandName() {
-        return commandName;
+    public String getRequestId() {
+        return requestId;
     }
 
-    public void setCommandName(String commandName) {
-        this.commandName = commandName;
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
     }
 
     public String getMusicFileName() {
@@ -55,11 +57,11 @@ public class DownloadRequest {
         this.musicFileName = musicFileName;
     }
 
-    public Instant getSaveDate() {
-        return saveDate;
+    public String getRequestName() {
+        return requestName;
     }
 
-    public void setSaveDate(Instant saveDate) {
-        this.saveDate = saveDate;
+    public void setRequestName(String requestName) {
+        this.requestName = requestName;
     }
 }

@@ -3,9 +3,12 @@ package ru.ksenia.web.rest;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import ru.ksenia.domain.CommandRequest;
 import ru.ksenia.domain.DownloadRequest;
 import ru.ksenia.repository.DownloadRequestRepository;
 import ru.ksenia.service.ClientService;
@@ -116,8 +119,6 @@ public class ClientResource {
             commandRequestDTO1.setMusicFileName("Ласточки.mp3");
             commandRequestDTO1.setCommandName("Забавушка");
             commandRequestDTO1.setRegion("Архангельская Область");
-            commandRequestDTO1.setMusic("sdasda1321sadase");
-            commandRequestDTO1.setId((long) (i + 100));
 
             CommandRequestAdminInfoDTO commandRequestDTO2 = new CommandRequestAdminInfoDTO();
             commandRequestDTO2.setName("Веселая команда");
@@ -126,8 +127,6 @@ public class ClientResource {
             commandRequestDTO2.setMusicFileName("Команда.mp3");
             commandRequestDTO2.setCommandName("Екатеринбуржский ансамбль");
             commandRequestDTO2.setRegion("Свердловская Область");
-            commandRequestDTO1.setMusic("sdasda1321sadase");
-            commandRequestDTO2.setId((long) (i + 200));
 
             CommandRequestDTO commandRequestDTOOld1 = new CommandRequestDTO();
             commandRequestDTOOld1.setName("Веселая команда");
@@ -160,7 +159,7 @@ public class ClientResource {
     }
 
     @GetMapping("/getRequestInfo")
-    public ResponseEntity<RequestInfoDTO> getRequestInfo(@RequestParam Long requestId)
+    public ResponseEntity<RequestInfoDTO> getRequestInfo(@RequestParam String requestId)
         throws UnsupportedEncodingException {
         return ResponseEntity.ok(clientService.getRequestInfo(requestId));
     }
@@ -206,36 +205,32 @@ public class ClientResource {
         return ResponseEntity.ok(donwloadFileReques.getMusicFile().getBytes());
     }
 
-
-    @PostMapping(value = "/saveDownloadedMusicFile", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<DownloadDTO> saveDownloadedMusicFile(final @RequestBody(required = true)DonwloadFileRequest donwloadFileRequest)
-        throws UnsupportedEncodingException {
-        DownloadRequest downloadRequest = new DownloadRequest();
-        downloadRequest.setId(UUID.randomUUID().toString());
-        downloadRequest.setCommandName(donwloadFileRequest.getCommandName());
-        downloadRequest.setMusicFile(donwloadFileRequest.getMusicFile().getBytes("UTF-8"));
-        downloadRequest.setMusicFileName(donwloadFileRequest.getMusicFileName());
-        downloadRequestRepository.save(downloadRequest);
-
-        DownloadDTO downloadDTO = new DownloadDTO();
-        downloadDTO.setId(downloadRequest.getId());
-        return ResponseEntity.ok(downloadDTO);
+    @PostMapping(value = "/saveFileToRequest")
+    @ResponseStatus(HttpStatus.OK)
+    public void saveFileToRequest(@RequestParam("file") MultipartFile file,
+                                  @RequestParam("requestId") String requestId,
+                                  @RequestParam("requestName") String requestName,
+                                  @RequestParam("musicFileName") String musicFileName) throws IOException {
+        clientService.saveFileToDownloadRequest(requestId, file.getBytes(), requestName, musicFileName);
     }
 
     @GetMapping("/downloadMusicFile")
-    public void saveDownloadedMusicFile(final @RequestParam(required = true)String id, final HttpServletResponse httpServletResponse) throws IOException {
+    public void saveDownloadedMusicFile(final @RequestParam(required = true)String id,
+                                        final @RequestParam(required = true)String commandName,
+                                        final HttpServletResponse httpServletResponse) throws IOException {
 
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("cache-control", "must-revalidate");
 
-        DownloadRequest downloadRequest = downloadRequestRepository.findById(id).get();
+        DownloadRequest downloadRequest = downloadRequestRepository.getAllByRequestId(id).get(0);
 
         String[] splittedFileName = downloadRequest.getMusicFileName().split(".");
         String ext = splittedFileName.length == 2 ? splittedFileName[1] : "mp3";
 
-        DateTime now = DateTime.now();
-        DateTimeFormatter fmt = org.joda.time.format.DateTimeFormat.forPattern("dd.MM.YY-HHmm");
-        headers.put("Content-Disposition", String.format("attachment; filename=%s-%s.%s", transliterate(downloadRequest.getCommandName()), fmt.print(now), ext));
+        String name = downloadRequest.getRequestName() != null && !downloadRequest.getRequestName().isEmpty()
+            ? downloadRequest.getRequestName()
+            : "Unnamed";
+        headers.put("Content-Disposition", String.format("attachment; filename=%s.%s", transliterate(name), ext));
 
         writeDataToResponse(
             httpServletResponse,

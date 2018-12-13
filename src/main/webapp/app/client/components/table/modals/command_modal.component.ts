@@ -33,18 +33,6 @@ export class CommandModalComponent implements AfterViewInit {
     }
 
     downloadMusicFile(request) {
-        let donwloadFileRequest = new DonwloadFileRequest();
-        donwloadFileRequest.commandName = this.command.name;
-        donwloadFileRequest.musicFile = request.music;
-        donwloadFileRequest.musicFileName = request.musicFileName;
-        this.registerCommandService.saveDownloadedMusicFile(donwloadFileRequest).subscribe(
-            res => {
-                console.log(res.id);
-                window.open(SERVER_API_URL + 'api/downloadMusicFile?id=' + res.id, '_blank');
-            },
-            res => {
-                console.log(res);
-            }
-        );
+        window.open(SERVER_API_URL + 'api/downloadMusicFile?id=' + request.id + '&commandName=' + this.command.name, '_blank');
     }
 }

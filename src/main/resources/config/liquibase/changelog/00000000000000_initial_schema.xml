@@ -124,7 +124,7 @@
             </column>
             <column name="user_id" type="bigint">
             </column>
-            <column name="command_request_id" type="bigint">
+            <column name="command_request_id" type="varchar(36)">
             </column>
             <column name="command_coach_id" type="bigint">
             </column>
@@ -136,7 +136,7 @@
             </column>
             <column name="user_id" type="bigint">
             </column>
-            <column name="command_request_id" type="bigint">
+            <column name="command_request_id" type="varchar(36)">
             </column>
             <column name="command_member_id" type="bigint">
             </column>
@@ -169,7 +169,7 @@
             <column name="command_member_id" type="bigint"/>
         </createTable>
         <createTable tableName="command_request">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="varchar(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(100)"/>
@@ -239,10 +239,10 @@
             <column name="id" type="varchar(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="request_id" type="varchar(36)"/>
             <column name="music_file" type="blob"/>
-            <column name="command_name" type="varchar(200)"/>
+            <column name="request_name" type="varchar(200)"/>
             <column name="music_file_name" type="varchar(200)"/>
-            <column name="save_date" type="timestamp"/>
         </createTable>
 
         <createTable tableName="jhi_persistent_audit_evt_data">

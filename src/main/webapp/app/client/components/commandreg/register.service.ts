@@ -14,6 +14,16 @@ export class RegisterCommandService {
         return this.http.post(SERVER_API_URL + 'api/updateCommand', command);
     }
 
+    saveFileToRequest(file: File, requestId: string, requestName: string, musicFileName: string): Observable<any> {
+        let formdata: FormData = new FormData();
+
+        formdata.append('file', file);
+        formdata.append('requestId', requestId);
+        formdata.append('requestName', requestName);
+        formdata.append('musicFileName', musicFileName);
+        return this.http.post(SERVER_API_URL + 'api/saveFileToRequest', formdata);
+    }
+
     getCommands(): Observable<any> {
         return this.http.get(SERVER_API_URL + 'api/getCommands');
     }
