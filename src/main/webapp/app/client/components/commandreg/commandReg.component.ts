@@ -384,9 +384,7 @@ export class CommandRegistrationComponent implements OnInit {
                         if (!request.music && this.requestFiles[request.id]) {
                             this.registerCommandService
                                 .saveFileToRequest(this.requestFiles[request.id], request.id, request.name, request.musicFileName)
-                                .subscribe(() => {
-                                    console.log('file saved');
-                                });
+                                .subscribe(() => {});
                         }
                     });
                 }
