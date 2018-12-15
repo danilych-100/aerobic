@@ -24,6 +24,8 @@ header * {
   flex: 1;
 }*/
 @import 'https://fonts.googleapis.com/icon?family=Montserrat:400,600i,700,900';
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+@import 'https://fonts.googleapis.com/icon?family=Oswald:700|PT+Serif+Caption|Comfortaa|Yanone+Kaffeesatz|Jura';
 
 .title {
     font: 60px bold;
@@ -205,7 +207,7 @@ img {
 }
 
 .box1 {
-    height: 95vh;
+    height: 90vh;
     width: 100%;
     background-image: url('https://cdnmyslo.ru/NewsImage/05/2a/052afed7-c51b-4de4-8f6b-0a63bfa8c81d_1.jpg');
     filter: grayscale(75%);
@@ -225,7 +227,7 @@ img {
     background-position: center;
     display: table;
     background-attachment: fixed;
-    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.7);
+    //box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.7);
     transform-style: inherit;
 }
 
@@ -282,8 +284,8 @@ a.upButton:hover {
 
 .insta-icon {
     position: relative;
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     border-radius: 20%;
     background: radial-gradient(circle at 33% 100%, #fed373 4%, #f15245 30%, #d92e7f 62%, #9b36b7 85%, #515ecf);
 }
@@ -305,4 +307,47 @@ a.upButton:hover {
     width: 11px;
     height: 11px;
     border-radius: 50%;
+}
+
+.divider {
+    content: '';
+    border-top: solid 1px #ccc;
+    width: 95%;
+    margin: auto;
+}
+
+.little-divider-top {
+    content: '';
+    border-top: solid 1px #ccc;
+    width: 80%;
+    margin: auto;
+}
+
+.little-divider-bottom {
+    content: '';
+    border-bottom: solid 1px #ccc;
+    width: 80%;
+    margin: auto;
+}
+
+.separator {
+    font-family: 'Comfortaa', cursive;
+    font-size: 40px;
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.separator hr {
+    flex-grow: 1;
+}
+
+.separator span {
+    margin-left: 12px;
+    margin-right: 12px;
+    margin-top: -15px;
+}
+
+.question-item {
+    margin-bottom: 60px;
 }
