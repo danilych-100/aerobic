@@ -23,6 +23,7 @@
 header * {
   flex: 1;
 }*/
+@import 'https://fonts.googleapis.com/icon?family=Montserrat:400,600i,700,900';
 
 .title {
     font: 60px bold;
@@ -150,7 +151,7 @@ img {
 .button {
     display: inline-flex;
     align-items: center;
-    background: #c06c84;
+    background: white;
     box-shadow: 0 3px 2px 0 rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     height: 45px;
@@ -163,7 +164,7 @@ img {
     will-change: transform;
 
     &:hover {
-        background: darken(#c06c84, 10%);
+        background: darken(white, 10%);
         box-shadow: 0 4px 17px rgba(0, 0, 0, 0.2);
         transform: translate3d(0, -2px, 0);
     }
@@ -201,4 +202,107 @@ img {
     &:hover:after {
         display: none;
     }
+}
+
+.box1 {
+    height: 95vh;
+    width: 100%;
+    background-image: url('https://cdnmyslo.ru/NewsImage/05/2a/052afed7-c51b-4de4-8f6b-0a63bfa8c81d_1.jpg');
+    filter: grayscale(75%);
+    -webkit-filter: grayscale(75%);
+    background-size: cover;
+    background-position: center;
+    display: table;
+    background-attachment: fixed;
+    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.7);
+    transform-style: inherit;
+}
+.box2 {
+    height: 75vh;
+    width: 100%;
+    //background-image:url(http://www.wallpapers13.com/wp-content/uploads/2018/09/The-city-of-Chicago-from-the-Willis-Tower-Sears-Tower-United-States-Desktop-HD-Wallpaper-For-PC-Tablet-And-Mobile-3840x2400--915x515.jpg);
+    background-size: cover;
+    background-position: center;
+    display: table;
+    background-attachment: fixed;
+    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.7);
+    transform-style: inherit;
+}
+
+#content {
+    text-align: center;
+    padding-top: 25%;
+    text-shadow: 0px 4px 3px rgba(0, 0, 0, 0.4), 0px 8px 13px rgba(0, 0, 0, 0.1), 0px 18px 23px rgba(0, 0, 0, 0.1);
+}
+
+#content {
+    font-family: Montserrat sans-serif;
+    color: white;
+}
+#content h2 {
+    font-weight: 900;
+    font-size: 5em;
+}
+#content h3 {
+    font-weight: 600;
+    font-style: italic;
+    font-size: 2em;
+}
+
+#content hr {
+    width: 1100px;
+    border: 0;
+    height: 3px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0));
+}
+
+a.upButton {
+    line-height: normal;
+    font-family: Varela Round, sans-serif;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 13px;
+    color: #a7aaae;
+    position: fixed;
+    left: 20px;
+    bottom: 77px;
+    border: 1px solid #a7aaae;
+    padding: 12px 20px 10px;
+    border-radius: 50px;
+    transition: all 0.1s ease-in-out;
+    text-transform: uppercase;
+    z-index: 100;
+    cursor: pointer;
+}
+
+a.upButton:hover {
+    background: #a7aaae;
+    color: white;
+}
+
+.insta-icon {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    border-radius: 20%;
+    background: radial-gradient(circle at 33% 100%, #fed373 4%, #f15245 30%, #d92e7f 62%, #9b36b7 85%, #515ecf);
+}
+.insta-icon:after,
+.insta-icon:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    border: 2px solid #fff;
+    transform: translate(-50%, -50%);
+    content: '';
+}
+.insta-icon:before {
+    border-radius: 20%;
+}
+.insta-icon:after {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
 }

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
     MatButtonModule,
     MatCardModule,
@@ -79,7 +80,8 @@ import { CommandModalComponent } from 'app/client/components/table/modals/comman
         MatTooltipModule,
         MatTabsModule,
         TabModule,
-        CovalentFileModule
+        CovalentFileModule,
+        FontAwesomeModule
     ],
     providers: [{ provide: MatPaginatorIntl, useClass: CarsMatPaginatorIntl }],
     declarations: [

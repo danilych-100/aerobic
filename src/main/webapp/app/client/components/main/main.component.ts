@@ -25,7 +25,9 @@ export class MainComponent implements OnInit {
         private ss: SharedService
     ) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        window.onscroll = () => this.scrollFunction();
+    }
 
     /**
      *Open Login Modal window.
@@ -48,5 +50,18 @@ export class MainComponent implements OnInit {
             height: '800px',
             panelClass: 'dialog-no-padding-panel'
         } as MatDialogConfig<any>);
+    }
+
+    scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById('myBtn').style.display = 'block';
+        } else {
+            document.getElementById('myBtn').style.display = 'none';
+        }
+    }
+
+    topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
     }
 }
