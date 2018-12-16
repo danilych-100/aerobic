@@ -73,6 +73,8 @@ export class CommandRegistrationComponent implements OnInit {
     optionsCoach: FormGroup;
     optionsMember: FormGroup;
 
+    public tabIndex = 0;
+
     public command: Command;
 
     public currentCoach: CommandCoach;
@@ -97,7 +99,7 @@ export class CommandRegistrationComponent implements OnInit {
     public requestFiles: [];
 
     maxDate = new Date();
-    email = new FormControl('', [Validators.email]);
+    email = new FormControl('', [Validators.required, Validators.email]);
     birthCertificateDesc = new FormControl('', [Validators.maxLength(100)]);
     birthCertificateNumber = new FormControl('', [Validators.maxLength(100)]);
     passSeries = new FormControl('', [Validators.minLength(4), Validators.maxLength(4), Validators.pattern('^\\d*$')]);
@@ -119,7 +121,7 @@ export class CommandRegistrationComponent implements OnInit {
     quality = new FormControl('', [Validators.required]);
 
     getMailErrorMessage() {
-        return this.email.hasError('email') ? 'Не корректный email' : '';
+        return this.quality.hasError('required') ? 'Поле не должно быть пустым' : this.email.hasError('email') ? 'Не корректный email' : '';
     }
     getPhoneErrorMessage() {
         return this.phone.hasError('pattern') ? 'Нужно ввести 10 цифр номера телефона' : '';
@@ -519,6 +521,13 @@ export class CommandRegistrationComponent implements OnInit {
     }
 
     openTab(index, isJustOpened = false) {
+        if (
+            this.tabIndex == 1 &&
+            !isJustOpened &&
+            (!this.command.region || !this.command.name || !this.command.memberCount || !this.command.phoneNumber || !this.command.email)
+        ) {
+            return;
+        }
         document.getElementById('tabContent_1').style.display = 'none';
         document.getElementById('tabContent_2').style.display = 'none';
         document.getElementById('tabContent_3').style.display = 'none';
@@ -564,6 +573,8 @@ export class CommandRegistrationComponent implements OnInit {
         if (!isJustOpened) {
             this.flushCommand();
         }
+
+        this.tabIndex = index;
     }
 
     selectEvent(file: File): void {

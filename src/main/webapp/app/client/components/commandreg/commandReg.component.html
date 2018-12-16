@@ -2,7 +2,7 @@
     <div class="tabs_menu" style="margin-right: 30px">
         <ul class="tabs">
             <li id="tab1" (click)="openTab(1)" class="active" style="border-top: 1px solid rgba(10, 11, 49, 0.2)"><a>Общая информация</a></li>
-            <li id="tab2" (click)="openTab(2)"><a>Тренеры</a></li>
+            <li id="tab2" (click)="openTab(2)" ><a>Тренеры</a></li>
             <li id="tab3" (click)="openTab(3)"><a>Участники</a></li>
             <li id="tab4" (click)="openTab(4)" style="border-bottom: 1px solid rgba(10, 11, 49, 0.20)"><a>Заявки</a>
            <!-- <li id="tab5" (click)="flushCommand()" style="border-bottom: 1px solid rgba(10, 11, 49, 0.20)"><a>Сохранить</a>-->
@@ -56,7 +56,7 @@
                         </td>
                         <td>
                             <mat-form-field [color]="optionsMain.value.color">
-                                <input matInput placeholder="Электронная почта" [(ngModel)]="command.email" name="email"
+                                <input matInput placeholder="Электронная почта" [(ngModel)]="command.email" name="email" required
                                        [formControl]="email"
                                        type="email">
                             </mat-form-field>
@@ -65,6 +65,12 @@
                     </tr>
                 </table>
             </form>
+
+            <div *ngIf="tabIndex == 1 && (inpRegionTeam.invalid || inpNameTeam.invalid || inpMemberCountTeam.invalid || email.invalid || phone.invalid)"
+                 style="color: rgb(255, 26, 26); margin-left: 30px;margin-bottom: 11px;margin-right: 10px;">
+                Пожалуйста, заполните все обязательные поля для перехода на следующую страницу.
+            </div>
+
         </div>
 
         <!-------------------------------Создание тренеров------------------------------------------------------------->

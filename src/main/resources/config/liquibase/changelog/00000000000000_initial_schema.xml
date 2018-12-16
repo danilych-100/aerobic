@@ -113,7 +113,6 @@
             <column name="region" type="varchar(100)"/>
             <column name="name" type="varchar(100)"/>
             <column name="member_count" type="bigint"/>
-            <column name="cost" type="bigint"/>
             <column name="phone_number" type="varchar(20)"/>
             <column name="email" type="varchar(50)"/>
         </createTable>

@@ -44,6 +44,7 @@ public class ClientResource {
     @GetMapping("/getAllCommandUserInfo")
     public ResponseEntity<List<CommandUserInfoDTO>> getAllCommandUserInfo() {
         return ResponseEntity.ok(clientService.getAllCommandUserInfo());
+
     }
 
     @GetMapping("/getRequestInfo")
