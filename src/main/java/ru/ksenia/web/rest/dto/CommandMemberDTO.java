@@ -11,7 +11,7 @@ public class CommandMemberDTO {
     private Long passportSeries;
     private Long passportNumber;
     private String passportDesc;
-    private Long birthCertificateNumber;
+    private String birthCertificateNumber;
     private String birthCertificateDesc;
     private String quality;
 
@@ -71,11 +71,11 @@ public class CommandMemberDTO {
         this.gender = gender;
     }
 
-    public Long getBirthCertificateNumber() {
+    public String getBirthCertificateNumber() {
         return birthCertificateNumber;
     }
 
-    public void setBirthCertificateNumber(Long birthCertificateNumber) {
+    public void setBirthCertificateNumber(String birthCertificateNumber) {
         this.birthCertificateNumber = birthCertificateNumber;
     }
 

@@ -64,6 +64,7 @@
                     <label class="form-control-label" for="email">Почта</label>
                     <input type="email" class="form-control" id="email" name="email" #email="ngModel" placeholder="Ваша почта"
                            [(ngModel)]="registerAccount.email" minlength=5 maxlength=254 email required>
+
                     <div *ngIf="email.dirty && email.invalid">
                         <small class="form-text text-danger" *ngIf="email.errors.required"
                         >
@@ -71,11 +72,15 @@
                         </small>
                         <small class="form-text text-danger" *ngIf="email.errors.invalid"
                         >
-                            Почта не корректна
+                            Некорректная почта
+                        </small>
+                        <small class="form-text text-danger" *ngIf="email.errors.email"
+                        >
+                            Некорректная почта
                         </small>
                         <small class="form-text text-danger" *ngIf="email.errors.minlength"
                         >
-                            Должен быть как минимум 5 символов.
+                            Должно быть как минимум 5 символов.
                         </small>
                         <small class="form-text text-danger" *ngIf="email.errors.maxlength"
                         >

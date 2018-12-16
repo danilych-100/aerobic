@@ -163,7 +163,7 @@
             <column name="passport_series" type="bigint"/>
             <column name="passport_number" type="bigint"/>
             <column name="passport_desc" type="varchar(255)"/>
-            <column name="birth_certificate_number" type="bigint"/>
+            <column name="birth_certificate_number" type="varchar(255)"/>
             <column name="birth_certificate_desc" type="varchar(255)"/>
             <column name="quality" type="varchar(100)"/>
             <column name="command_member_id" type="bigint"/>

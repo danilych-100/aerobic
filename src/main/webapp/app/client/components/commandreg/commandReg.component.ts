@@ -42,7 +42,7 @@ export class CommandMember {
     public passportSeries: number;
     public passportNumber: number;
     public passportDesc: string;
-    public birthCertificateNumber: number;
+    public birthCertificateNumber: string;
     public birthCertificateDesc: string;
     public quality: string;
 }
@@ -99,7 +99,7 @@ export class CommandRegistrationComponent implements OnInit {
     maxDate = new Date();
     email = new FormControl('', [Validators.email]);
     birthCertificateDesc = new FormControl('', [Validators.maxLength(100)]);
-    birthCertificateNumber = new FormControl('', [Validators.maxLength(100), Validators.pattern('^\\d*$')]);
+    birthCertificateNumber = new FormControl('', [Validators.maxLength(100)]);
     passSeries = new FormControl('', [Validators.minLength(4), Validators.maxLength(4), Validators.pattern('^\\d*$')]);
     passNumber = new FormControl('', [Validators.minLength(6), Validators.maxLength(6), Validators.pattern('^\\d*$')]);
     passSeriesMember = new FormControl('', [Validators.minLength(4), Validators.maxLength(4), Validators.pattern('^\\d*$')]);
@@ -128,11 +128,7 @@ export class CommandRegistrationComponent implements OnInit {
         return this.quality.hasError('required') ? 'Поле не должно быть пустым' : '';
     }
     getInpBirthCertificateNumberErrorMessage() {
-        return this.birthCertificateNumber.hasError('pattern')
-            ? 'Поле должно содержать цифры'
-            : this.birthCertificateNumber.hasError('maxlength')
-                ? 'Поле должно содержать не более 100 символов'
-                : '';
+        return this.birthCertificateNumber.hasError('maxlength') ? 'Поле должно содержать не более 100 символов' : '';
     }
     getInpBirthCertificateDescErrorMessage() {
         return this.birthCertificateDesc.hasError('maxlength') ? 'Поле должно содержать не более 100 символов' : '';
@@ -302,7 +298,7 @@ export class CommandRegistrationComponent implements OnInit {
         this.quality = new FormControl('', [Validators.required]);
         this.inpPassDescMember = new FormControl('', [Validators.maxLength(100)]);
         this.birthCertificateDesc = new FormControl('', [Validators.maxLength(100)]);
-        this.birthCertificateNumber = new FormControl('', [Validators.maxLength(100), Validators.pattern('^\\d*$')]);
+        this.birthCertificateNumber = new FormControl('', [Validators.maxLength(100)]);
     }
 
     addCommandRequest() {

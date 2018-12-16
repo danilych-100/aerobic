@@ -33,7 +33,7 @@ public class CommandMember {
     private String passportDesc;
 
     @Column(name = "birth_certificate_number")
-    private Long birthCertificateNumber;
+    private String birthCertificateNumber;
 
     @Column(name = "birth_certificate_desc")
     private String birthCertificateDesc;
@@ -124,11 +124,11 @@ public class CommandMember {
         this.gender = gender;
     }
 
-    public Long getBirthCertificateNumber() {
+    public String getBirthCertificateNumber() {
         return birthCertificateNumber;
     }
 
-    public void setBirthCertificateNumber(Long birthCertificateNumber) {
+    public void setBirthCertificateNumber(String birthCertificateNumber) {
         this.birthCertificateNumber = birthCertificateNumber;
     }
 
