@@ -53,10 +53,13 @@ export class MainComponent implements OnInit {
     }
 
     scrollFunction() {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            document.getElementById('myBtn').style.display = 'block';
-        } else {
-            document.getElementById('myBtn').style.display = 'none';
+        let elem = document.getElementById('myBtn');
+        if (elem) {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                elem.style.display = 'block';
+            } else {
+                elem.style.display = 'none';
+            }
         }
     }
 

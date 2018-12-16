@@ -23,7 +23,6 @@ export class CommandModalComponent implements AfterViewInit {
     ngAfterViewInit(): void {
         this.registerCommandService.getCommand(this.commandId).subscribe(
             response => {
-                console.log(response);
                 this.command = response;
             },
             err => {

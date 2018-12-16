@@ -314,6 +314,7 @@ export class CommandRegistrationComponent implements OnInit {
         this.command.requests.push(newRequest);
         this.currentCommandRequest = new CommandRequest();
         this.currentCommandRequest.id = this.guid();
+        this.flushCommand();
     }
 
     guid() {

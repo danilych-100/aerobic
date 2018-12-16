@@ -32,10 +32,6 @@ export class RegisterCommandService {
         return this.http.get(SERVER_API_URL + 'api/getCommandForCurrentUser');
     }
 
-    getAllCommands(): Observable<any> {
-        return this.http.get(SERVER_API_URL + 'api/getAllCommands');
-    }
-
     getAllRequests(): Observable<any> {
         return this.http.get(SERVER_API_URL + 'api/getAllRequests');
     }

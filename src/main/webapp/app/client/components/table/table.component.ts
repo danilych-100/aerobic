@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatPaginator, MatPaginatorIntl, MatSort, MatTableDataSource, PageEvent, Sort } from '@angular/material';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -88,6 +88,8 @@ export class TableComponent implements OnInit {
     selectingCategory: string;
     selectingNominations: string;
 
+    selectingRegionUsers: string;
+
     selectingRegionCleared = false;
     selectingCategoryCleared = false;
     selectingNominationsCleared = false;
@@ -97,13 +99,11 @@ export class TableComponent implements OnInit {
 
     modalRef: NgbModalRef;
 
-    @ViewChild(MatPaginator)
-    paginator: MatPaginator;
+    @ViewChildren(MatPaginator)
+    paginators: QueryList<MatPaginator>;
+
     @ViewChild('reqSort')
     sort: MatSort;
-
-    @ViewChild(MatPaginator)
-    paginatorUsers: MatPaginator;
     @ViewChild('usersSort')
     sortUsers: MatSort;
 
@@ -113,12 +113,12 @@ export class TableComponent implements OnInit {
     constructor(private carsService: CarsService, private registerCommandService: RegisterCommandService, private modalService: NgbModal) {
         this.registerCommandService.getAllRequests().subscribe(
             response => {
-                console.log(response);
                 this.resultsLength = response.length;
                 this.requests = response;
                 this.isLoadingResults = false;
                 this.dataSource = new MatTableDataSource(response);
-                this.dataSource.paginator = this.paginator;
+                console.log(this.paginators);
+                this.dataSource.paginator = this.paginators.first;
                 this.dataSource.sort = this.sort;
                 this.dataSource.filterPredicate = function(data, filter: string): boolean {
                     if (filter == 'clear') {
@@ -150,7 +150,7 @@ export class TableComponent implements OnInit {
                 this.users = response;
                 this.isLoadingResultsUsers = false;
                 this.dataSourceUsers = new MatTableDataSource(response);
-                this.dataSourceUsers.paginator = this.paginatorUsers;
+                this.dataSourceUsers.paginator = this.paginators.last;
                 this.dataSourceUsers.sort = this.sortUsers;
                 this.dataSourceUsers.filterPredicate = function(data, filter: string): boolean {
                     if (filter == 'clear') {

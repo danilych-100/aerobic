@@ -32,7 +32,6 @@ export class RequestModalComponent implements AfterViewInit {
         console.log(this.requestId);
         this.registerCommandService.getRequestInfo(this.requestId).subscribe(
             response => {
-                console.log(response);
                 this.requestInfo = response;
             },
             err => {
