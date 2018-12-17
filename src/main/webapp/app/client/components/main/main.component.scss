@@ -112,48 +112,6 @@ img {
         display: none;
     }
 }
-@media only screen and (max-width: 330px) {
-    body {
-        width: 173% !important;
-    }
-    .box1 {
-        height: 142vh !important;
-        width: 100% !important;
-        display: block !important;
-    }
-
-    .insta-icon {
-        width: 35px;
-        height: 35px;
-    }
-
-    .left_bottom {
-        margin-bottom: 10px !important;
-    }
-
-    #content h2 {
-        font-size: 4em !important;
-    }
-
-    a.upButton {
-        display: none;
-    }
-
-    .mail-info {
-        width: 89%;
-        float: right !important;
-        margin-right: 0 !important;
-        margin-bottom: 20px !important;
-    }
-
-    .insta-info {
-        margin-left: 24px !important;
-    }
-
-    .mail-icon {
-        font-size: 30px;
-    }
-}
 
 .insta-info {
     display: inline-block;
@@ -314,4 +272,59 @@ a.upButton:hover {
 
 .question-item {
     margin-bottom: 60px;
+}
+
+@media only screen and (max-width: 470px) {
+    body {
+        width: 173% !important;
+    }
+    .box1 {
+        height: 142vh !important;
+        width: 108% !important;
+        display: block !important;
+    }
+
+    .insta-icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    .left_bottom {
+        margin-bottom: 10px !important;
+    }
+
+    #content h2 {
+        font-size: 4em !important;
+    }
+
+    a.upButton {
+        display: none;
+    }
+
+    .mail-info {
+        width: 89%;
+        float: right !important;
+        margin-right: 0 !important;
+        margin-bottom: 20px !important;
+    }
+
+    .insta-info {
+        margin-left: 24px !important;
+    }
+
+    .mail-icon {
+        font-size: 30px;
+    }
+}
+
+@media only screen and (min-width: 550px) and (max-width: 650px) {
+    body {
+        width: 200% !important;
+    }
+}
+
+@media only screen and (min-width: 651px) and (max-width: 750px) {
+    body {
+        width: 210% !important;
+    }
 }
