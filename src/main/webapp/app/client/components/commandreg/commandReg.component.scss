@@ -197,6 +197,11 @@ mat-selection-list mat-list-option p > span {
     border-radius: 4px;
 }
 
+.save-text {
+    position: relative;
+    float: left;
+}
+
 /*    margin: 0px;
     font-size: 17px;
     position: relative;
@@ -205,3 +210,32 @@ mat-selection-list mat-list-option p > span {
     border-radius: 5px;
     padding: 4px;
     height: 100%;*/
+
+@media only screen and (max-width: 330px) {
+    .tabs_menu {
+        float: none !important;
+    }
+
+    #tab1,
+    #tab2,
+    #tab3,
+    #tab4,
+    #tab5 {
+        width: 146%;
+    }
+
+    #tabContent_1,
+    #tabContent_2,
+    #tabContent_3,
+    #tabContent_4 {
+        width: 100% !important;
+    }
+
+    .save-content-button {
+        font-size: 12px;
+    }
+
+    .save-text {
+        margin-top: 3px;
+    }
+}

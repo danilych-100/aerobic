@@ -12,7 +12,7 @@
     <div class="tab_content">
         <div id="tabContent_1" style="display: none">
             <h3>Общая информация <div class="save-content-button" (click)="flushCommand()">
-                <span style="position: relative; float: left;">Сохранить внесенную информацию</span>
+                <span class="save-text">Сохранить внесенную информацию</span>
                 <mat-icon style="font-size: 21px;
                                      margin-left: 5px;">
                     save
@@ -430,23 +430,6 @@
                                         Категория: {{request.ageCategory}}
                                     </mat-panel-description>
                                 </mat-expansion-panel-header>
-                              <!--  <div class="container" style="margin-bottom: 7px; padding-left: 6px;">
-                                    <div style="font: 15px 'Roboto'">
-                                        <span style="font-family: Roboto, monospace;
-                                                     font-size: 15px;
-                                                     font-weight: 400;
-                                                     color: rgba(0, 0, 0, 0.54);"
-                                              *ngIf="request.name && request.name.length > 24">Номинация: {{request.nomination}} <br></span>
-                                        <span style="font-family: Roboto, monospace;
-                                                     font-size: 15px;
-                                                     font-weight: 400;
-                                                     color: rgba(0, 0, 0, 0.54);"  *ngIf="request.name && request.name.length > 24">Категория: {{request.ageCategory}}  <br></span>
-                                        <span style="font-family: Roboto, monospace;
-                                                     font-size: 15px;
-                                                     font-weight: 400;
-                                                     color: rgba(0, 0, 0, 0.54);" >Музыкальный файл: {{request.music.name}}</span>
-                                    </div>
-                                </div>-->
                                 <span style="font-family: Roboto, monospace;
                                                      font-size: 15px;
                                                      font-weight: 400;
