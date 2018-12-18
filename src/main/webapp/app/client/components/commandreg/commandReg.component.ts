@@ -113,7 +113,7 @@ export class CommandRegistrationComponent implements OnInit {
     inpPassDescCoach = new FormControl('', [Validators.maxLength(100)]);
     inpPassDescMember = new FormControl('', [Validators.maxLength(100)]);
     inpNameTeam = new FormControl('', [Validators.required, Validators.maxLength(100)]);
-    inpMemberCountTeam = new FormControl('', [Validators.required, Validators.min(1), Validators.max(20)]);
+    inpMemberCountTeam = new FormControl('', [Validators.required, Validators.min(1)]);
     inpRegionTeam = new FormControl('', [Validators.required]);
     inpNominationTeam = new FormControl('', [Validators.required]);
     inpCategoryTeam = new FormControl('', [Validators.required]);
@@ -209,9 +209,7 @@ export class CommandRegistrationComponent implements OnInit {
             ? 'Поле не должно быть пустым'
             : this.inpMemberCountTeam.hasError('min')
                 ? 'Кол-во участников должно быть больше 0'
-                : this.inpMemberCountTeam.hasError('max')
-                    ? 'Кол-во участников должно быть не больше 20'
-                    : '';
+                : '';
     }
     getInpRegionTeamErrorMessage() {
         return this.inpRegionTeam.hasError('required') ? 'Поле не должно быть пустым' : '';
@@ -278,7 +276,7 @@ export class CommandRegistrationComponent implements OnInit {
         this.inpNameTeam = new FormControl('', [Validators.required, Validators.maxLength(100)]);
         this.inpCategoryTeam = new FormControl('', [Validators.required]);
         this.inpNominationTeam = new FormControl('', [Validators.required]);
-        this.inpMemberCountTeam = new FormControl('', [Validators.required, Validators.min(1), Validators.max(20)]);
+        this.inpMemberCountTeam = new FormControl('', [Validators.required, Validators.min(1)]);
         this.phone = new FormControl('', [Validators.required, Validators.pattern('^\\d{10}$')]);
         this.email = new FormControl('', [Validators.required, Validators.email]);
         this.resetCoachForm();
