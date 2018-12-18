@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { DoctorsService } from '../../../core/services/doctors.service';
 import { Observable } from 'rxjs/Rx';
 import { Doctor } from '../../../core/models/doctor';
@@ -66,7 +66,8 @@ export class CommandRequest {
 @Component({
     selector: 'app-command-reg',
     templateUrl: './commandReg.component.html',
-    styleUrls: ['./commandReg.component.scss']
+    styleUrls: ['./commandReg.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class CommandRegistrationComponent implements OnInit {
     optionsMain: FormGroup;
@@ -354,6 +355,26 @@ export class CommandRegistrationComponent implements OnInit {
         newMember.gender = this.currentMember.gender;
         this.command.members.push(newMember);
         this.currentMember = new CommandMember();
+    }
+
+    isMemberAddedToAnyRequest(member: CommandMember) {
+        return this.command.requests.find(request => {
+            const founded = request.members.find(mem => {
+                return JSON.stringify(mem) == JSON.stringify(member);
+            });
+
+            return founded ? true : false;
+        });
+    }
+
+    isCoachAddedToAnyRequest(coach: CommandCoach) {
+        return this.command.requests.find(request => {
+            const founded = request.coaches.find(coa => {
+                return JSON.stringify(coa) == JSON.stringify(coach);
+            });
+
+            return founded ? true : false;
+        });
     }
 
     removeCoach(index: number) {

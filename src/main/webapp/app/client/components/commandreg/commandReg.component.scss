@@ -239,3 +239,13 @@ mat-selection-list mat-list-option p > span {
         margin-top: 3px;
     }
 }
+
+.tooltip-bigger {
+    font-size: 14px;
+}
+
+.disabled-remove-button {
+    color: rgba(0, 0, 0, 0.26) !important;
+    cursor: default !important;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12) !important;
+}

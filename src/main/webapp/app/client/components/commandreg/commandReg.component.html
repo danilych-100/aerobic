@@ -156,7 +156,15 @@
                                 </p>
                             </mat-card-content>
                             <mat-card-actions style="margin-left: 17px">
-                                <button mat-stroked-button color="warn" (click)="removeCoach(i)">Удалить тренера
+                                <button mat-stroked-button color="warn" *ngIf="isCoachAddedToAnyRequest(coach)" class="disabled-remove-button"
+                                        matTooltip="Тренер уже добавлен в заявку. Чтобы удалить тренера, удалите заявку."
+                                        [matTooltipDisabled] = "false"
+                                        [matTooltipPosition]="'above'"
+                                        matTooltipClass="tooltip-bigger">
+                                    Удалить тренера
+                                </button>
+                                <button mat-stroked-button color="warn" (click)="removeCoach(i)" *ngIf="!isCoachAddedToAnyRequest(coach)">
+                                    Удалить тренера
                                 </button>
                             </mat-card-actions>
                         </mat-card>
@@ -305,8 +313,15 @@
                                 </p>
                             </mat-card-content>
                             <mat-card-actions style="margin-left: 17px">
-                                <button mat-stroked-button color="warn" (click)="removeMember(i)">Удалить
-                                    участника
+                                <button mat-stroked-button color="warn" *ngIf="isMemberAddedToAnyRequest(member)" class="disabled-remove-button"
+                                        matTooltip="Участник уже добавлен в заявку. Чтобы удалить участника, удалите заявку."
+                                        [matTooltipDisabled] = "false"
+                                        [matTooltipPosition]="'above'"
+                                        matTooltipClass="tooltip-bigger">
+                                    Удалить участника
+                                </button>
+                                <button mat-stroked-button color="warn" (click)="removeMember(i)" *ngIf="!isMemberAddedToAnyRequest(member)">
+                                    Удалить участника
                                 </button>
                             </mat-card-actions>
                         </mat-card>
