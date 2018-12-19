@@ -109,17 +109,17 @@ ul.tabs li:hover:before {
     background: #0a0a0a;
 }*/
 
-.tab_content {
+.tab_content_admin {
     display: flex;
     width: 100%;
 }
-.tab_content > div {
+.tab_content_admin > div {
     /*   background-color:red; */
     width: 92%;
     margin: 10px auto auto;
 }
 
-.tab_content div h3 {
+.tab_content_admin div h3 {
     font-family: 'Cuprum', sans-serif;
     padding-left: 25px;
     padding-top: 3px;

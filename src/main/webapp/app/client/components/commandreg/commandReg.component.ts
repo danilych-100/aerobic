@@ -524,6 +524,7 @@ export class CommandRegistrationComponent implements OnInit {
             });
         }
     }
+
     onSelectionCoach(event: MatSelectionListChange) {
         if (event.option.selected) {
             this.currentCommandRequest.coaches.push(event.option.value);
@@ -533,6 +534,10 @@ export class CommandRegistrationComponent implements OnInit {
             });
             this.currentCommandRequest.coaches.splice(index, 1);
         }
+    }
+
+    onSelectionCategoryReq(event: MatSelectionListChange) {
+        this.currentCommandRequest.members = [];
     }
 
     isMemsListEmpty(mems) {

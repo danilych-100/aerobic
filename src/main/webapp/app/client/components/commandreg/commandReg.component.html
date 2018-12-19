@@ -349,7 +349,9 @@
                 </mat-form-field>
                 <br>
                 <mat-form-field [color]="optionsMain.value.color">
-                    <mat-select placeholder="Выберите категорию" [(ngModel)]="currentCommandRequest.ageCategory" name="ageCategory" [ngModelOptions]="{standalone: true}">
+                    <mat-select placeholder="Выберите категорию" [(ngModel)]="currentCommandRequest.ageCategory" name="ageCategory"
+                                [ngModelOptions]="{standalone: true}"
+                                (selectionChange)="onSelectionCategoryReq($event)">
                         <mat-option *ngFor="let cat of categories" [value]="cat">
                             {{cat}}
                         </mat-option>
