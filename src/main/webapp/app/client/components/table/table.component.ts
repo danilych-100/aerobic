@@ -73,7 +73,7 @@ export class MatPaginatorIntlRu extends MatPaginatorIntl {
 export class TableComponent implements OnInit {
     public regions = REGIONS;
     public categories = ['6—8', '9—11', '12—14', '15—17', '18+'];
-    public nominations = ['Индивидуальные', 'Смешанные пары', 'Трио', 'Группы'];
+    public nominations = ['ИЖ', 'ИМ', 'Смешанные пары', 'Трио', 'Группы', 'Гимнастическая платформа', 'Танцевальная гимнастика'];
     dataSource: MatTableDataSource<CommandRequestAdmin>;
     dataSourceUsers: MatTableDataSource<CommandUserInfo>;
     displayedColumns: string[] = ['name', 'commandName', 'region', 'ageCategory', 'nominations', 'musicFileName'];

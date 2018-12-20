@@ -84,7 +84,7 @@ export class CommandRegistrationComponent implements OnInit {
 
     public regions = REGIONS;
     public categories = ['6—8', '9—11', '12—14', '15—17', '18+'];
-    public nominations = ['Индивидуальные', 'Смешанные пары', 'Трио', 'Группы'];
+    public nominations = ['ИЖ', 'ИМ', 'Смешанные пары', 'Трио', 'Группы', 'Гимнастическая платформа', 'Танцевальная гимнастика'];
     public qualities = [
         'Мастер спорта',
         'Кандидат в мастера спорта',
@@ -425,7 +425,10 @@ export class CommandRegistrationComponent implements OnInit {
     }
 
     getCountOfMembersByNomination(nomination: string) {
-        if (nomination === 'Индивидуальные') {
+        if (nomination === 'ИЖ') {
+            return ' одного участника';
+        }
+        if (nomination === 'ИМ') {
             return ' одного участника';
         }
         if (nomination === 'Смешанные пары') {
@@ -434,11 +437,14 @@ export class CommandRegistrationComponent implements OnInit {
         if (nomination === 'Трио') {
             return ' трех участников';
         }
-        return ' несколько участников';
+        return ' одного или несколько участников';
     }
 
     getNominationError(nomination: string) {
-        if (nomination === 'Индивидуальные') {
+        if (nomination === 'ИЖ') {
+            return 'Должен быть добавлен 1 участник';
+        }
+        if (nomination === 'ИМ') {
             return 'Должен быть добавлен 1 участник';
         }
         if (nomination === 'Смешанные пары') {
@@ -447,11 +453,14 @@ export class CommandRegistrationComponent implements OnInit {
         if (nomination === 'Трио') {
             return 'Должно быть добавлено 3 участника';
         }
-        return 'Должно быть добавлено более 3 участников';
+        return 'Должен быть добавлен хотя бы 1 участник';
     }
 
     isMembersAddedCorrect(nomination: string, countAdded: number) {
-        if (nomination === 'Индивидуальные') {
+        if (nomination === 'ИЖ') {
+            return countAdded === 1;
+        }
+        if (nomination === 'ИМ') {
             return countAdded === 1;
         }
         if (nomination === 'Смешанные пары') {
@@ -460,7 +469,7 @@ export class CommandRegistrationComponent implements OnInit {
         if (nomination === 'Трио') {
             return countAdded === 3;
         }
-        return countAdded > 3;
+        return countAdded > 0;
     }
 
     isMemberInLimitRequest(addedMembers: CommandMember[]) {
