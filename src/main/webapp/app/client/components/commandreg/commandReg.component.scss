@@ -215,8 +215,7 @@ mat-selection-list mat-list-option p > span {
     .tabs_menu {
         float: none !important;
     }
-
-    #tab1,
+    tabs #tab1,
     #tab2,
     #tab3,
     #tab4,
@@ -248,4 +247,15 @@ mat-selection-list mat-list-option p > span {
     color: rgba(0, 0, 0, 0.26) !important;
     cursor: default !important;
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12) !important;
+}
+
+.unstyled::-webkit-inner-spin-button,
+.unstyled::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+.remove_button:hover {
+    color: #ff4e22;
+    cursor: pointer;
 }

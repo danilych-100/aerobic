@@ -76,7 +76,7 @@ export class TableComponent implements OnInit {
     public nominations = ['ИЖ', 'ИМ', 'Смешанные пары', 'Трио', 'Группы', 'Гимнастическая платформа', 'Танцевальная гимнастика'];
     dataSource: MatTableDataSource<CommandRequestAdmin>;
     dataSourceUsers: MatTableDataSource<CommandUserInfo>;
-    displayedColumns: string[] = ['name', 'commandName', 'region', 'ageCategory', 'nominations', 'musicFileName'];
+    displayedColumns: string[] = ['commandName', 'region', 'ageCategory', 'nominations', 'musicFileName'];
     displayedColumnsUsers: string[] = ['userName', 'commandName', 'region', 'phoneNumber', 'mail'];
 
     resultsLength = 0;
@@ -130,7 +130,7 @@ export class TableComponent implements OnInit {
                         const fieldName = fil.split('$')[0];
                         const fieldValue = fil.split('$')[1];
 
-                        if (fieldName == 'name' && isOk) {
+                        if (fieldName == 'commandName' && isOk) {
                             isOk = data[fieldName].toLowerCase().includes(fieldValue.toLowerCase());
                         } else if (isOk) {
                             isOk = data[fieldName].toLowerCase() == fieldValue.toLowerCase();
@@ -418,8 +418,6 @@ export class TableComponent implements OnInit {
         this.dataSource.data.sort((a, b) => {
             const isAsc = event.direction === 'asc';
             switch (event.active) {
-                case 'name':
-                    return this.compare(a.name, b.name, isAsc);
                 case 'commandName':
                     return this.compare(a.commandName, b.commandName, isAsc);
                 case 'region':

@@ -3,7 +3,14 @@ import { DoctorsService } from '../../../core/services/doctors.service';
 import { Observable } from 'rxjs/Rx';
 import { Doctor } from '../../../core/models/doctor';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { DateAdapter, MatSelectionList, MatSelectionListChange } from '@angular/material';
+import {
+    DateAdapter,
+    MAT_DATE_FORMATS,
+    MAT_DATE_LOCALE,
+    MatSelectionList,
+    MatSelectionListChange,
+    NativeDateAdapter
+} from '@angular/material';
 import { REGIONS } from './regions';
 import { RegisterCommandService } from './register.service';
 import { DonwloadFileRequest } from 'app/client/components/table/table.component';
@@ -63,6 +70,55 @@ export class CommandRequest {
     }
 }
 
+/*
+export class AppDateAdapter extends NativeDateAdapter {
+    parse(value: any): Date | null {
+        if ((typeof value === 'string') && (value.indexOf('/') > -1)) {
+            const str = value.split('/');
+            const year = Number(str[2]);
+            const month = Number(str[1]) - 1;
+            const date = Number(str[0]);
+            return new Date(year, month, date);
+        }
+        const timestamp = typeof value === 'number' ? value : Date.parse(value);
+        return isNaN(timestamp) ? null : new Date(timestamp);
+    }
+    format(date: Date, displayFormat: string): string {
+        if (displayFormat == "input") {
+            let day = date.getDate();
+            let month = date.getMonth() + 1;
+            let year = date.getFullYear();
+            return this._to2digit(day) + '/' + this._to2digit(month) + '/' + year;
+        } else if (displayFormat == "inputMonth") {
+            let month = date.getMonth() + 1;
+            let year = date.getFullYear();
+            return  this._to2digit(month) + '/' + year;
+        } else {
+            return date.toDateString();
+        }
+    }
+
+    _to2digit(n: number) {
+        return ('00' + n).slice(-2);
+    }
+}
+
+export const APP_DATE_FORMATS =
+    {
+        parse: {
+            dateInput: {month: 'short', year: 'numeric', day: 'numeric'}
+        },
+        display: {
+            // dateInput: { month: 'short', year: 'numeric', day: 'numeric' },
+            dateInput: 'input',
+            // monthYearLabel: { month: 'short', year: 'numeric', day: 'numeric' },
+            monthYearLabel: 'inputMonth',
+            dateA11yLabel: {year: 'numeric', month: 'long', day: 'numeric'},
+            monthYearA11yLabel: {year: 'numeric', month: 'long'},
+        }
+    };
+*/
+
 @Component({
     selector: 'app-command-reg',
     templateUrl: './commandReg.component.html',
@@ -98,6 +154,7 @@ export class CommandRegistrationComponent implements OnInit {
 
     public files;
     public requestFiles: [];
+    public memberForRequest;
 
     maxDate = new Date();
     email = new FormControl('', [Validators.required, Validators.email]);
@@ -242,11 +299,13 @@ export class CommandRegistrationComponent implements OnInit {
     ngOnInit() {
         this.requestFiles = [];
         this.command = new Command();
+        this.memberForRequest = [];
         this.registerCommandService.getCommandForCurrentUser().subscribe(
             response => {
                 this.command = response;
                 this.command.requests.forEach(request => {
                     this.requestFiles[request.id] = request.music;
+                    request.members.forEach(member => this.putNewMemberToArray(member));
                 });
 
                 console.log(response);
@@ -316,6 +375,24 @@ export class CommandRegistrationComponent implements OnInit {
         this.currentCommandRequest = new CommandRequest();
         this.currentCommandRequest.id = this.guid();
         this.flushCommand();
+        newRequest.members.forEach(member => this.putNewMemberToArray(member));
+    }
+
+    removeMemberFromRequest(requestIndex, member: CommandMember) {
+        const ind = this.command.requests[requestIndex].members.findIndex(mem => {
+            return JSON.stringify(mem) == JSON.stringify(member);
+        });
+
+        this.command.requests[requestIndex].members.splice(ind, 1);
+        this.flushCommand();
+    }
+
+    putNewMemberToArray(member: CommandMember) {
+        if (this.memberForRequest[JSON.stringify(member)]) {
+            this.memberForRequest[JSON.stringify(member)] += 1;
+        } else {
+            this.memberForRequest[JSON.stringify(member)] = 1;
+        }
     }
 
     guid() {
@@ -386,9 +463,19 @@ export class CommandRegistrationComponent implements OnInit {
     }
 
     removeRequest(index: number) {
-        this.requestFiles[this.command.requests[index].id] = null;
-        delete this.requestFiles[this.command.requests[index].id];
+        const req = this.command.requests[index];
+        req.members.forEach(member => {
+            const addedCount = this.memberForRequest[JSON.stringify(member)];
+            if (addedCount) {
+                this.memberForRequest[JSON.stringify(member)] -= 1;
+            }
+        });
+
+        this.requestFiles[req.id] = null;
+        delete this.requestFiles[req.id];
         this.command.requests.splice(index, 1);
+
+        this.flushCommand();
     }
 
     isOk: boolean;
@@ -476,7 +563,7 @@ export class CommandRegistrationComponent implements OnInit {
         if (addedMembers.length === 0 || this.command.requests.length < 3) {
             return true;
         }
-        console.log(addedMembers);
+
         return (
             addedMembers.filter(addedMember => {
                 return (
@@ -547,6 +634,22 @@ export class CommandRegistrationComponent implements OnInit {
 
     onSelectionCategoryReq(event: MatSelectionListChange) {
         this.currentCommandRequest.members = [];
+    }
+
+    isMemberCanBeAddToRequest(member: CommandMember, ageCategory: string) {
+        const countOfAdding = this.memberForRequest[JSON.stringify(member)];
+
+        if (!countOfAdding) {
+            return true;
+        }
+
+        if (ageCategory == '6—8' || ageCategory == '9—11') {
+            return countOfAdding < 4;
+        } else if (ageCategory == '12—14' || ageCategory == '15—17' || ageCategory == '18+') {
+            return countOfAdding < 3;
+        }
+
+        return true;
     }
 
     isMemsListEmpty(mems) {

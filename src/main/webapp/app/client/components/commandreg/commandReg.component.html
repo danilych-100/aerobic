@@ -90,12 +90,12 @@
                     <mat-error *ngIf="inpNameCoach.invalid">{{getInpNameCoachErrorMessage()}}</mat-error>
                 </mat-form-field>
                 <mat-form-field [color]="optionsCoach.value.color">
-                    <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly
-                           placeholder="Дата рождения"
-                           [max]="maxDate" [(ngModel)]="currentCoach.birthDate" [formControl]="inpDateCoach"
+                    <input matInput
+                           placeholder="Дата рождения" type="date" class="unstyled"
+                          [(ngModel)]="currentCoach.birthDate" [formControl]="inpDateCoach"
                            required>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker startView="multi-year"></mat-datepicker>
+                    <!--<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker startView="multi-year"></mat-datepicker>-->
                     <mat-error *ngIf="inpDateCoach.invalid">{{getInpDateCoachErrorMessage()}}</mat-error>
                 </mat-form-field>
                 <h5>Паспорт</h5>
@@ -198,12 +198,10 @@
                     </mat-radio-group>
                 </div>
                 <mat-form-field [color]="optionsMember.value.color">
-                    <input matInput [matDatepicker]="pickerMember" (focus)="pickerMember.open()" readonly
-                           placeholder="Дата рождения" [(ngModel)]="currentMember.birthDate" [max]="maxDate"
+                    <input matInput type="date" class="unstyled"
+                           placeholder="Дата рождения" [(ngModel)]="currentMember.birthDate"
                            [formControl]="inpDateMember"
                            required>
-                    <mat-datepicker-toggle matSuffix [for]="pickerMember"></mat-datepicker-toggle>
-                    <mat-datepicker #pickerMember startView="multi-year"></mat-datepicker>
                     <mat-error *ngIf="inpDateMember.invalid">{{getInpDateMemberErrorMessage()}}</mat-error>
                 </mat-form-field>
                 <mat-form-field [color]="optionsMember.value.color">
@@ -331,7 +329,7 @@
         </div>
 
         <!-------------------------------Создание заявок--------------------------------------------------------------->
-        <div id="tabContent_4" style="display: none">
+        <div id="tabContent_4" style="display: none; width: 82%;">
             <h3>Заявки
                 <div class="save-content-button" (click)="flushCommand()">
                     <span style="position: relative; float: left;">Сохранить внесенную информацию</span>
@@ -344,10 +342,7 @@
 
             <div class="container" style="margin-left: 12px; margin-bottom: 40px;">
                 <h4>Заполните поля и создайте заявку</h4>
-                <mat-form-field [color]="optionsMain.value.color">
-                    <input matInput placeholder="Название заявки" [(ngModel)]="currentCommandRequest.name" name="name" [ngModelOptions]="{standalone: true}">
-                </mat-form-field>
-                <br>
+
                 <mat-form-field [color]="optionsMain.value.color">
                     <mat-select placeholder="Выберите категорию" [(ngModel)]="currentCommandRequest.ageCategory" name="ageCategory"
                                 [ngModelOptions]="{standalone: true}"
@@ -359,7 +354,8 @@
                 </mat-form-field>
                 <br>
                 <mat-form-field [color]="optionsMain.value.color">
-                    <mat-select placeholder="Выберите номинацию" [(ngModel)]="currentCommandRequest.nomination" name="nomination" [ngModelOptions]="{standalone: true}">
+                    <mat-select placeholder="Выберите номинацию" [(ngModel)]="currentCommandRequest.nomination" name="nomination"
+                                [ngModelOptions]="{standalone: true}">
                         <mat-option *ngFor="let nom of nominations" [value]="nom">
                             {{nom}}
                         </mat-option>
@@ -384,12 +380,18 @@
                 <div class="row">
                     <div class="col-xl-6">
                         <h5>Выберите {{getCountOfMembersByNomination(currentCommandRequest.nomination)}}</h5>
-                        <mat-selection-list #mems (selectionChange)="onSelectionMember($event)">
-                            <mat-list-option *ngFor="let member of command.members | membersFilter:currentCommandRequest.ageCategory" [value]='member'>
+                        <mat-selection-list #mems (selectionChange)="onSelectionMember($event)" >
+                            <mat-list-option *ngFor="let member of command.members | membersFilter:currentCommandRequest.ageCategory"
+                                             [value]='member'
+                                             [disabled]="!isMemberCanBeAddToRequest(member, currentCommandRequest.ageCategory)">
                                 <h5 matLine> Имя: {{member.name}} </h5>
                                 <p matLine> Пол: <span>{{member.gender === 'male' ? 'мужской' : 'женский'}}</span></p>
                                 <p matLine> Дата рождения: <span>{{member.birthDate | date: 'dd.MM.yyyy'}} </span></p>
                                 <p matLine> <span>{{member.quality}} </span></p>
+                                <p matLine style="color: orangered" *ngIf="!isMemberCanBeAddToRequest(member, currentCommandRequest.ageCategory)">
+                                    Участник не может быть добавлен в заявку<br>
+                                    Достигнут лимит добавления участника.<br>
+                                </p>
                             </mat-list-option>
                         </mat-selection-list>
                         <mat-hint *ngIf="!command.members.length">Участники пока не добавлены</mat-hint>
@@ -440,9 +442,9 @@
                             <mat-expansion-panel style="height: auto">
                                 <mat-expansion-panel-header style="height: auto">
                                     <mat-panel-title style="align-self: center;">
-                                        <h5>{{request.name ? request.name : 'Без названия'}}</h5>
+                                        <h5>Заявка № {{ i + 1}}</h5>
                                     </mat-panel-title>
-                                    <mat-panel-description *ngIf="request.name && request.name.length < 24">
+                                    <mat-panel-description>
                                         Номинация: {{request.nomination}} <br>
                                         Категория: {{request.ageCategory}}
                                     </mat-panel-description>
@@ -466,16 +468,23 @@
                                 <div class="container">
                                     <h5>Участники</h5>
                                     <div *ngFor="let member of request.members" style="margin: 10px 0;">
-                                        <mat-card>
-                                            <mat-card-header>
-                                                <mat-card-title>{{member.name}}</mat-card-title>
-                                                <mat-card-subtitle>
-                                                    Пол: <span>{{member.gender === 'male' ? 'мужской' : 'женский'}}</span> <br>
-                                                    Дата рождения: <span>{{member.birthDate| date: 'dd.MM.yyyy'}}</span>  <br>
-                                                    Разряд: <span>{{member.quality}}</span>
-                                                </mat-card-subtitle>
-                                            </mat-card-header>
-                                        </mat-card>
+                                        <div class="row">
+                                            <div class="col-xl-11">
+                                                <mat-card>
+                                                    <mat-card-header>
+                                                        <mat-card-title>{{member.name}}</mat-card-title>
+                                                        <mat-card-subtitle>
+                                                            Пол: <span>{{member.gender === 'male' ? 'мужской' : 'женский'}}</span> <br>
+                                                            Дата рождения: <span>{{member.birthDate| date: 'dd.MM.yyyy'}}</span>  <br>
+                                                            Разряд: <span>{{member.quality}}</span>
+                                                        </mat-card-subtitle>
+                                                    </mat-card-header>
+                                                </mat-card>
+                                            </div>
+                                            <div class="col-xl-1" *ngIf="request.members.length > 4">
+                                                <mat-icon class="remove_button" (click)="removeMemberFromRequest(i, member)">delete</mat-icon>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </mat-expansion-panel>

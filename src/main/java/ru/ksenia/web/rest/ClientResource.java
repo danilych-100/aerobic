@@ -116,8 +116,8 @@ public class ClientResource {
         String[] splittedFileName = downloadRequest.getMusicFileName().split(".");
         String ext = splittedFileName.length == 2 ? splittedFileName[1] : "mp3";
 
-        String name = downloadRequest.getRequestName() != null && !downloadRequest.getRequestName().isEmpty()
-            ? downloadRequest.getRequestName()
+        String name = commandName != null && !commandName.isEmpty()
+            ? commandName
             : "Unnamed";
         headers.put("Content-Disposition", String.format("attachment; filename=%s.%s", transliterate(name), ext));
 
