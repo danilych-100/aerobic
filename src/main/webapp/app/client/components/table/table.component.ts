@@ -276,6 +276,15 @@ export class TableComponent implements OnInit {
             .join(',');
     }
 
+    downloadAllRequestsFilteredMusic() {
+        console.log(this.dataSource.filteredData);
+        this.dataSource.filteredData.forEach(row => {
+            if (row.musicFileName) {
+                this.downloadMusicFile(row, '_blank');
+            }
+        });
+    }
+
     private isOpen = false;
 
     public openRequestModal(requestId: number): void {
@@ -338,8 +347,9 @@ export class TableComponent implements OnInit {
         }
     }
 
-    downloadMusicFile(row) {
-        window.open(SERVER_API_URL + 'api/downloadMusicFile?id=' + row.id + '&commandName=' + row.commandName, '_blank');
+    downloadMusicFile(row, target) {
+        const targetRef = target ? target : '_blank';
+        window.open(SERVER_API_URL + 'api/downloadMusicFile?id=' + row.id + '&commandName=' + row.commandName, targetRef);
     }
 
     public ngOnInit(): void {

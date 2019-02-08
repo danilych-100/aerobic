@@ -55,8 +55,18 @@
             <mat-form-field style="float: right;">
                 <input matInput (keyup)="applyFilterByName($event, $event.target.value, 'commandName')" placeholder="Поиск заявки">
             </mat-form-field>
-        </div>
 
+        </div>
+        <div>
+            <button mat-stroked-button color="primary"
+                    (click)="downloadAllRequestsFilteredMusic()"
+                    style="float: right;width: 182px; margin-bottom: 10px;"
+                    matTooltip="Чтобы иземенить папку для скачивания, в браузере Google Chrome перейдите Настройки -> Дополнительные -> Скачанные Файлы.
+                    Измените папку, либо выберете опцию 'Всегда указывать место для скачивания'"
+                    [matTooltipDisabled] = "false"
+                    [matTooltipPosition]="'above'"
+                    matTooltipClass="tooltip-bigger">Скачать всю музыку</button>
+        </div>
 
         <div>
             <div *ngIf="isLoadingResults" class="example-loading-shade">
