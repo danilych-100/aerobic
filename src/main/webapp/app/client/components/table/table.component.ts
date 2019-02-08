@@ -289,6 +289,10 @@ export class TableComponent implements OnInit {
         window.open(SERVER_API_URL + 'api/createExcelFileForRequests?', '_blank');
     }
 
+    downloadUserExcelReport() {
+        window.open(SERVER_API_URL + 'api/createUsersExcelReport?', '_blank');
+    }
+
     private isOpen = false;
 
     public openRequestModal(requestId: number): void {

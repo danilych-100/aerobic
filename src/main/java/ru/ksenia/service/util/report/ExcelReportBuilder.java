@@ -235,7 +235,7 @@ public class ExcelReportBuilder implements IReportBuilder {
      * @param isBold flag whehter font is bold
      * @return cell style.
      */
-    private static CellStyle createColumnHeadersCellStyle(final Workbook workbook, final boolean isBold) {
+    public static CellStyle createColumnHeadersCellStyle(final Workbook workbook, final boolean isBold) {
         CellStyle cellStyle = workbook.createCellStyle();
 
         // Перенос текста
@@ -249,6 +249,41 @@ public class ExcelReportBuilder implements IReportBuilder {
         // Шрифт Arial - 12
         Font columnHeadersFont = workbook.createFont();
         columnHeadersFont.setFontHeightInPoints((short) 12);
+        columnHeadersFont.setBoldweight(BOLDWEIGHT_BOLD);
+        columnHeadersFont.setFontName("Arial");
+        cellStyle.setFont(columnHeadersFont);
+
+        // Границы
+        final IndexedColors color = IndexedColors.BLACK;
+        // top
+        cellStyle.setBorderTop(CellStyle.BORDER_THIN);
+        cellStyle.setTopBorderColor(color.getIndex());
+        // right
+        cellStyle.setBorderRight(CellStyle.BORDER_THIN);
+        cellStyle.setRightBorderColor(color.getIndex());
+        // left
+        cellStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        cellStyle.setLeftBorderColor(color.getIndex());
+
+        cellStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        cellStyle.setBottomBorderColor(color.getIndex());
+        return cellStyle;
+    }
+
+    public static CellStyle createColumnSimpleHeadersCellStyle(final Workbook workbook, final boolean isBold) {
+        CellStyle cellStyle = workbook.createCellStyle();
+
+        // Перенос текста
+        cellStyle.setWrapText(true);
+
+
+        // Позиционирование - центровка
+        cellStyle.setAlignment(CellStyle.ALIGN_CENTER);
+        cellStyle.setVerticalAlignment(CellStyle.ALIGN_CENTER);
+
+        // Шрифт Arial - 12
+        Font columnHeadersFont = workbook.createFont();
+        columnHeadersFont.setFontHeightInPoints((short) 10);
         columnHeadersFont.setBoldweight(BOLDWEIGHT_BOLD);
         columnHeadersFont.setFontName("Arial");
         cellStyle.setFont(columnHeadersFont);

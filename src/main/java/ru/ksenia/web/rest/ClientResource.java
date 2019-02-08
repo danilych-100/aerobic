@@ -132,7 +132,7 @@ public class ClientResource {
     }
 
     @GetMapping("/createExcelFileForRequests")
-    public void saveDownloadedMusicFile(final HttpServletResponse httpServletResponse) throws Exception {
+    public void createExcelFileForRequests(final HttpServletResponse httpServletResponse) throws Exception {
 
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("cache-control", "must-revalidate");
@@ -152,6 +152,30 @@ public class ClientResource {
             report.getContent()
         );
     }
+
+    @GetMapping("/createUsersExcelReport")
+    public void createUsersExcelReport(final HttpServletResponse httpServletResponse) throws Exception {
+
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("cache-control", "must-revalidate");
+
+        Report report = clientService.createUsersExcelReport();
+
+        DateTime now = DateTime.now();
+        DateTimeFormatter fmt = org.joda.time.format.DateTimeFormat.forPattern("dd.MM.YY-HHmm");
+
+        String fileName = URLEncoder.encode("Отчет по зарегистрированным заявкам", "UTF-8");
+        headers.put("Content-Disposition", String.format("attachment; filename=%s-%s.xlsx", fileName, fmt.print(now)));
+
+        writeDataToResponse(
+            httpServletResponse,
+            "application/octet-stream;",
+            headers,
+            report.getContent()
+        );
+    }
+
+
 
     private void writeDataToResponse(final HttpServletResponse response, final String contentType, final Map<String, String> headers, final byte[] data) throws IOException {
         response.setContentType(contentType);

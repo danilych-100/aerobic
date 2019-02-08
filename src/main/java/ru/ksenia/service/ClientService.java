@@ -246,10 +246,84 @@ public class ClientService {
         return commandRequestRepository.findById(id).get();
     }
 
+    public Report createUsersExcelReport() throws Exception {
+        Workbook workbook = new HSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Пользователи");
+        sheet.setDefaultColumnWidth(40);
+
+        CellStyle cellStyleHeader = workbook.createCellStyle();
+
+        // Перенос текста
+        cellStyleHeader.setWrapText(true);
+
+        // Позиционирование
+        cellStyleHeader.setAlignment(ALIGN_CENTER);
+        cellStyleHeader.setVerticalAlignment(ALIGN_CENTER);
+        cellStyleHeader.setIndention((short) 1);
+        Font font = workbook.createFont();
+        font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        cellStyleHeader.setFont(font);
+
+        CellStyle styleSimple = workbook.createCellStyle();
+        styleSimple.setAlignment(ALIGN_CENTER);
+        styleSimple.setVerticalAlignment(ALIGN_CENTER);
+
+        CellStyle cellStyle = ExcelReportBuilder.createColumnHeadersCellStyle(workbook, true);
+
+        List<CommandUserInfoDTO> commandUserInfos = getAllCommandUserInfo();
+        commandUserInfos.sort(new Comparator<CommandUserInfoDTO>() {
+            @Override
+            public int compare(CommandUserInfoDTO o1, CommandUserInfoDTO o2) {
+                return o1.getUserName().compareTo(o2.getUserName());
+            }
+        });
+
+        int rowCount = 0;
+        Row headerForNames = sheet.createRow(rowCount);
+        Cell cell1 = headerForNames.createCell(0);
+        cell1.setCellValue("ФИО пользователя");
+        cell1.setCellStyle(cellStyle);
+        Cell cell2 = headerForNames.createCell(1);
+        cell2.setCellValue("Название команды");
+        cell2.setCellStyle(cellStyle);
+        Cell cell3 = headerForNames.createCell(2);
+        cell3.setCellValue("Субъект РФ");
+        cell3.setCellStyle(cellStyle);
+        Cell cell4 = headerForNames.createCell(3);
+        cell4.setCellValue("Телефон");
+        cell4.setCellStyle(cellStyle);
+        Cell cell5 = headerForNames.createCell(4);
+        cell5.setCellValue("Почта");
+        cell5.setCellStyle(cellStyle);
+
+        rowCount++;
+
+        for (CommandUserInfoDTO commandUserInfoDTO : commandUserInfos) {
+            Row headerForRequest = sheet.createRow(rowCount);
+            headerForRequest.setRowStyle(styleSimple);
+            headerForRequest.createCell(0).setCellValue(commandUserInfoDTO.getUserName());
+            headerForRequest.createCell(1).setCellValue(commandUserInfoDTO.getCommandName());
+            headerForRequest.createCell(2).setCellValue(commandUserInfoDTO.getRegion());
+            headerForRequest.createCell(3).setCellValue(commandUserInfoDTO.getPhoneNumber());
+            headerForRequest.createCell(4).setCellValue(commandUserInfoDTO.getMail());
+
+            rowCount++;
+        }
+
+        try {
+            Report report = new Report();
+            report.setExtension("xlsx");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            workbook.write(baos);
+            report.setContent(baos.toByteArray());
+            return report;
+        } catch (IOException e) {
+            throw new Exception(e);
+        }
+    }
+
     public Report createExcelReportFile() throws Exception {
         Workbook workbook = new HSSFWorkbook();
-        Sheet sheet = workbook.createSheet("User Detail");
-        sheet.setDefaultColumnWidth(30);
 
         // create style for header cells
         CellStyle style = workbook.createCellStyle();
@@ -275,6 +349,10 @@ public class ClientService {
         styleSimple.setAlignment(ALIGN_CENTER);
         styleSimple.setVerticalAlignment(ALIGN_CENTER);
 
+        CellStyle cellStyleForMainHeader = ExcelReportBuilder.createColumnHeadersCellStyle(workbook, true);
+        CellStyle cellStyleForMainHeaderNonBold = ExcelReportBuilder.createColumnHeadersCellStyle(workbook, false);
+        CellStyle cellStyleForSimpleHeader = ExcelReportBuilder.createColumnSimpleHeadersCellStyle(workbook, false);
+
         List<CommandRequest> commandRequests = commandRequestRepository.findAll();
         commandRequests.sort(new Comparator<CommandRequest>() {
             @Override
@@ -298,12 +376,17 @@ public class ClientService {
         int rowCount = 0;
         String lastCategory = "";
         String lastNomenee = "";
+
+        Sheet sheet = null;
         for (CommandRequest commandRequest : commandRequests) {
+
             if(!lastCategory.equals(commandRequest.getAgeCategory())){
+                sheet = workbook.createSheet(commandRequest.getAgeCategory());
+                sheet.setDefaultColumnWidth(30);
                 Row header = sheet.createRow(rowCount);
                 Cell headerCell = header.createCell(0);
                 headerCell.setCellValue("Возрастная категория: " + commandRequest.getAgeCategory());
-                headerCell.setCellStyle(cellStyleHeader);
+                headerCell.setCellStyle(cellStyleForMainHeader);
                 header.createCell(1);
                 header.createCell(2);
                 header.createCell(3);
@@ -313,24 +396,35 @@ public class ClientService {
                 rowCount++;
             }
 
+            if(sheet == null){
+                sheet = workbook.createSheet(commandRequest.getAgeCategory());
+                sheet.setDefaultColumnWidth(40);
+            }
+
             if(!lastNomenee.equals(commandRequest.getNomination())){
                 Row header = sheet.createRow(rowCount);
                 Cell headerCell = header.createCell(0);
                 headerCell.setCellValue("Номинация: " + commandRequest.getNomination());
-                headerCell.setCellStyle(cellStyleHeader);
+                headerCell.setCellStyle(cellStyleForMainHeaderNonBold);
                 header.createCell(1);
                 header.createCell(2);
                 header.createCell(3);
                 sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 0, 3));
-                header.setRowStyle(cellStyleHeader);
 
                 rowCount++;
                 Row headerForNames = sheet.createRow(rowCount);
-                headerForNames.createCell(0).setCellValue("Регион");
-                headerForNames.createCell(1).setCellValue("Название команды");
-                headerForNames.createCell(2).setCellValue("ФИО участников");
-                headerForNames.createCell(3).setCellValue("ФИО тренеров");
-
+                Cell cell1 = headerForNames.createCell(0);
+                cell1.setCellValue("Субъект РФ");
+                cell1.setCellStyle(cellStyleForSimpleHeader);
+                Cell cell2 = headerForNames.createCell(1);
+                cell2.setCellValue("Название команды");
+                cell2.setCellStyle(cellStyleForSimpleHeader);
+                Cell cell3 = headerForNames.createCell(2);
+                cell3.setCellValue("ФИО участников");
+                cell3.setCellStyle(cellStyleForSimpleHeader);
+                Cell cell4 = headerForNames.createCell(3);
+                cell4.setCellValue("ФИО тренеров");
+                cell4.setCellStyle(cellStyleForSimpleHeader);
 
                 lastNomenee = commandRequest.getNomination();
                 rowCount++;
@@ -338,12 +432,13 @@ public class ClientService {
 
 
             Row headerForRequest = sheet.createRow(rowCount);
-            Cell reg = headerForRequest.createCell(1);
+            Cell reg = headerForRequest.createCell(0);
             reg.setCellValue(commandRequest.getCommand().getRegion());
             reg.setCellStyle(styleSimple);
             Cell commandName = headerForRequest.createCell(1);
             commandName.setCellValue(commandRequest.getCommand().getName());
             commandName.setCellStyle(styleSimple);
+
             int startReqRow = rowCount;
 
             if(commandRequest.getMembers().size() >= commandRequest.getCoaches().size()){
