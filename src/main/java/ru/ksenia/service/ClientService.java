@@ -383,6 +383,7 @@ public class ClientService {
             if(!lastCategory.equals(commandRequest.getAgeCategory())){
                 sheet = workbook.createSheet(commandRequest.getAgeCategory());
                 sheet.setDefaultColumnWidth(30);
+                rowCount = 0;
                 Row header = sheet.createRow(rowCount);
                 Cell headerCell = header.createCell(0);
                 headerCell.setCellValue("Возрастная категория: " + commandRequest.getAgeCategory());
