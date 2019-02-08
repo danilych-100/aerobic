@@ -23,6 +23,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -87,8 +89,7 @@ public class ClientResource {
         DateTime now = DateTime.now();
         DateTimeFormatter fmt = org.joda.time.format.DateTimeFormat.forPattern("dd.MM.YY-HHmm");
 
-        response.setHeader("Content-Disposition", String.format("attachment; filename=%s-%s.%s", transliterate
-            (donwloadFileReques.getCommandName()), fmt.print(now), ext));
+        response.setHeader("Content-Disposition", String.format("attachment; filename=%s", donwloadFileReques.getMusicFileName()));
         response.setContentType("audio/mpeg");
 
         return ResponseEntity.ok(donwloadFileReques.getMusicFile().getBytes());
@@ -113,13 +114,13 @@ public class ClientResource {
 
         DownloadRequest downloadRequest = downloadRequestRepository.getAllByRequestId(id).get(0);
 
-        String[] splittedFileName = downloadRequest.getMusicFileName().split(".");
-        String ext = splittedFileName.length == 2 ? splittedFileName[1] : "mp3";
+        String name = downloadRequest.getMusicFileName() != null && !downloadRequest.getMusicFileName().isEmpty()
+                      ? downloadRequest.getMusicFileName()
+                      : "Unnamed.mp3";
 
-        String name = commandName != null && !commandName.isEmpty()
-            ? commandName
-            : "Unnamed";
-        headers.put("Content-Disposition", String.format("attachment; filename=%s.%s", transliterate(name), ext));
+        String fileName = URLEncoder.encode(name, "UTF-8");
+        //fileName = URLDecoder.decode(fileName, "WINDOWS-1251");
+        headers.put("Content-Disposition", String.format("attachment; filename=%s", fileName));
 
         writeDataToResponse(
             httpServletResponse,
