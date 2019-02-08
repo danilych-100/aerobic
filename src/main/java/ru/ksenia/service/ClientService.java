@@ -399,7 +399,7 @@ public class ClientService {
 
             if(sheet == null){
                 sheet = workbook.createSheet(commandRequest.getAgeCategory());
-                sheet.setDefaultColumnWidth(40);
+                sheet.setDefaultColumnWidth(60);
             }
 
             if(!lastNomenee.equals(commandRequest.getNomination())){
@@ -448,10 +448,10 @@ public class ClientService {
 
                     CommandMember commandMember = commandRequest.getMembers().get(i);
                     Row reqRow = sheet.createRow(rowCount);
-                    reqRow.createCell(2).setCellValue(i + ") участник" + commandMember.getName() + " " + commandMember.getBirthDate());
+                    reqRow.createCell(2).setCellValue(commandMember.getName() + "  " + commandMember.getBirthDate());
                     if(commandRequest.getCoaches().size() > i){
                         CommandCoach commandCoach = commandRequest.getCoaches().get(i);
-                        reqRow.createCell(3).setCellValue(i + ") тренер" + commandCoach.getName() + " " + commandCoach
+                        reqRow.createCell(3).setCellValue(commandCoach.getName() + "  " + commandCoach
                             .getBirthDate());
                     }
                 }
@@ -460,20 +460,23 @@ public class ClientService {
                 for(int i = 0; i < commandRequest.getCoaches().size(); i++){
                     rowCount++;
 
-                    CommandCoach commandCoach = commandRequest.getCoaches().get(i);
                     Row reqRow = sheet.createRow(rowCount);
-                    reqRow.createCell(3).setCellValue(i + ") тренер" + commandCoach.getName() + " " + commandCoach.getBirthDate());
+
                     if(commandRequest.getMembers().size() > i){
                         CommandMember commandMember = commandRequest.getMembers().get(i);
-                        reqRow.createCell(2).setCellValue(i + ") участник" + commandMember.getName() + " " + commandMember.getBirthDate());
+                        reqRow.createCell(2).setCellValue(commandMember.getName() + "  " + commandMember.getBirthDate
+                            ());
                     }
+                    CommandCoach commandCoach = commandRequest.getCoaches().get(i);
+                    reqRow.createCell(3).setCellValue(commandCoach.getName() + "  " + commandCoach.getBirthDate());
+
                 }
             }
 
             sheet.addMergedRegion(new CellRangeAddress(startReqRow, rowCount, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(startReqRow, rowCount, 1, 1));
-            sheet.addMergedRegion(new CellRangeAddress(startReqRow, rowCount, 2, 2));
-            sheet.addMergedRegion(new CellRangeAddress(startReqRow, rowCount, 3, 3));
+           /* sheet.addMergedRegion(new CellRangeAddress(startReqRow, rowCount, 2, 2));
+            sheet.addMergedRegion(new CellRangeAddress(startReqRow, rowCount, 3, 3));*/
 
             rowCount++;
         }
