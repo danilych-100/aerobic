@@ -58,6 +58,8 @@
 
         </div>
         <div>
+            <button mat-stroked-button color="primary" (click)="downloadExcelReport()">Скачать отчет в excel</button>
+
             <button mat-stroked-button color="primary"
                     (click)="downloadAllRequestsFilteredMusic()"
                     style="float: right;width: 182px; margin-bottom: 10px;"
@@ -67,6 +69,8 @@
                     [matTooltipPosition]="'above'"
                     matTooltipClass="tooltip-bigger">Скачать всю музыку</button>
         </div>
+
+
 
         <div>
             <div *ngIf="isLoadingResults" class="example-loading-shade">

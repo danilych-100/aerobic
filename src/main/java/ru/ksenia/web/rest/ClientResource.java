@@ -12,6 +12,7 @@ import ru.ksenia.domain.CommandRequest;
 import ru.ksenia.domain.DownloadRequest;
 import ru.ksenia.repository.DownloadRequestRepository;
 import ru.ksenia.service.ClientService;
+import ru.ksenia.service.util.report.Report;
 import ru.ksenia.web.rest.dto.CommandCoachDTO;
 import ru.ksenia.web.rest.dto.CommandDTO;
 import ru.ksenia.web.rest.dto.CommandMemberDTO;
@@ -130,9 +131,32 @@ public class ClientResource {
         );
     }
 
+    @GetMapping("/createExcelFileForRequests")
+    public void saveDownloadedMusicFile(final HttpServletResponse httpServletResponse) throws Exception {
+
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("cache-control", "must-revalidate");
+
+        Report report = clientService.createExcelReportFile();
+
+        DateTime now = DateTime.now();
+        DateTimeFormatter fmt = org.joda.time.format.DateTimeFormat.forPattern("dd.MM.YY-HHmm");
+
+        String fileName = URLEncoder.encode("Отчет по зарегистрированным пользователям", "UTF-8");
+        headers.put("Content-Disposition", String.format("attachment; filename=%s-%s.xlsx", fileName, fmt.print(now)));
+
+        writeDataToResponse(
+            httpServletResponse,
+            "application/octet-stream;",
+            headers,
+            report.getContent()
+        );
+    }
+
     private void writeDataToResponse(final HttpServletResponse response, final String contentType, final Map<String, String> headers, final byte[] data) throws IOException {
         response.setContentType(contentType);
         response.setContentLength(data.length);
+
 
         for (String header : headers.keySet()) {
             response.setHeader(header, headers.get(header));
