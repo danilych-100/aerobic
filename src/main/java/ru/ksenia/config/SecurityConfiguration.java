@@ -112,6 +112,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/getCommands").permitAll()
             .antMatchers("/api/saveFileToDownloadRequest").permitAll()
             .antMatchers("/api/downloadMusicFile").permitAll()
+            .antMatchers("/api/downloadMultipleMusicFile").permitAll()
             .antMatchers("/api/createExcelFileForRequests").permitAll()
             .antMatchers("/api/createUsersExcelReport").permitAll()
             .antMatchers("/api/saveDownloadedMusicFile").permitAll()

@@ -1,11 +1,15 @@
 package ru.ksenia.web.rest;
 
+import org.apache.commons.compress.utils.IOUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.ksenia.domain.CommandRequest;
@@ -22,16 +26,19 @@ import ru.ksenia.web.rest.dto.admin.*;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @RestController
 @RequestMapping("/api")
 public class ClientResource {
+
+    private final Logger log = LoggerFactory.getLogger(ClientResource.class);
 
     @Autowired
     private ClientService clientService;
@@ -110,6 +117,8 @@ public class ClientResource {
                                         final @RequestParam(required = true)String commandName,
                                         final HttpServletResponse httpServletResponse) throws IOException {
 
+        log.debug("Request for downloadMusicFile. Command Request Id : " + id);
+
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("cache-control", "must-revalidate");
 
@@ -129,6 +138,44 @@ public class ClientResource {
             headers,
             downloadRequest.getMusicFile()
         );
+    }
+
+    @GetMapping("/downloadMultipleMusicFile")
+    public void saveDownloadedMusicFile(final @RequestParam(required = true) List<String> ids,
+                                        final HttpServletResponse httpServletResponse) throws IOException {
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("cache-control", "must-revalidate");
+
+        List<DownloadRequest> downloadRequests = downloadRequestRepository.getAllByRequestIds(ids);
+
+        DateTime now = DateTime.now();
+        DateTimeFormatter fmt = org.joda.time.format.DateTimeFormat.forPattern("dd.MM.YY-HHmm");
+        //fileName = URLDecoder.decode(fileName, "WINDOWS-1251");
+        headers.put("Content-Disposition", String.format("attachment; filename=music-%s.zip", fmt.print(now)));
+
+        httpServletResponse.setContentType("application/zip");
+
+        for (String header : headers.keySet()) {
+            httpServletResponse.setHeader(header, headers.get(header));
+        }
+
+        try (ZipOutputStream zippedOUt = new ZipOutputStream(httpServletResponse.getOutputStream())) {
+            for(DownloadRequest downloadRequest : downloadRequests){
+                ZipEntry e = new ZipEntry(transliterate(downloadRequest.getMusicFileName()));
+                // Configure the zip entry, the properties of the file
+                e.setSize(downloadRequest.getMusicFile().length);
+                e.setTime(System.currentTimeMillis());
+                // etc.
+                zippedOUt.putNextEntry(e);
+                // And the content of the resource:
+                StreamUtils.copy(new ByteArrayInputStream(downloadRequest.getMusicFile()), zippedOUt);
+                zippedOUt.closeEntry();
+            }
+
+            zippedOUt.finish();
+        } catch (Exception e) {
+            // Do something with Exception
+        }
     }
 
     @GetMapping("/createExcelFileForRequests")

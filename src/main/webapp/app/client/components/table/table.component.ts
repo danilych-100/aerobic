@@ -277,12 +277,22 @@ export class TableComponent implements OnInit {
     }
 
     downloadAllRequestsFilteredMusic() {
-        console.log(this.dataSource.filteredData);
+        let ids = '';
         this.dataSource.filteredData.forEach(row => {
             if (row.musicFileName) {
-                this.downloadMusicFile(row, '_blank');
+                if (ids == '') {
+                    ids = row.id;
+                } else {
+                    ids += ',' + row.id;
+                }
             }
         });
+
+        this.downloadMultipleMusicFile(ids);
+    }
+
+    downloadMultipleMusicFile(ids) {
+        window.open(SERVER_API_URL + 'api/downloadMultipleMusicFile?ids=' + ids, '_blank');
     }
 
     downloadExcelReport() {

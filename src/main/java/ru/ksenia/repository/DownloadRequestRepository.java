@@ -1,6 +1,7 @@
 package ru.ksenia.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.ksenia.domain.CommandCoach;
 import ru.ksenia.domain.DownloadRequest;
@@ -13,4 +14,7 @@ import java.util.List;
 public interface DownloadRequestRepository extends JpaRepository<DownloadRequest, String> {
 
     List<DownloadRequest> getAllByRequestId(@Param("requestId") String requestId);
+
+    @Query("select o from DownloadRequest o where o.requestId in :requestIds")
+    List<DownloadRequest> getAllByRequestIds(@Param("requestIds") List<String> requestIds);
 }
