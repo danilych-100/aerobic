@@ -143,7 +143,7 @@ public class ClientResource {
         DateTimeFormatter fmt = org.joda.time.format.DateTimeFormat.forPattern("dd.MM.YY-HHmm");
 
         String fileName = URLEncoder.encode("Отчет по зарегистрированным пользователям", "UTF-8");
-        headers.put("Content-Disposition", String.format("attachment; filename=%s-%s.xlsx", fileName, fmt.print(now)));
+        headers.put("Content-Disposition", String.format("attachment; filename=%s-%s.xls", fileName, fmt.print(now)));
 
         writeDataToResponse(
             httpServletResponse,
