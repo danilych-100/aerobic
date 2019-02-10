@@ -286,11 +286,11 @@ export class TableComponent implements OnInit {
     }
 
     downloadExcelReport() {
-        window.open(SERVER_API_URL + 'api/createExcelFileForRequests?', '_blank');
+        window.open(SERVER_API_URL + 'api/createExcelFileForRequests', '_blank');
     }
 
     downloadUserExcelReport() {
-        window.open(SERVER_API_URL + 'api/createUsersExcelReport?', '_blank');
+        window.open(SERVER_API_URL + 'api/createUsersExcelReport', '_blank');
     }
 
     private isOpen = false;
@@ -355,7 +355,7 @@ export class TableComponent implements OnInit {
         }
     }
 
-    downloadMusicFile(row, target) {
+    downloadMusicFile(row, target?) {
         const targetRef = target ? target : '_blank';
         window.open(SERVER_API_URL + 'api/downloadMusicFile?id=' + row.id + '&commandName=' + row.commandName, targetRef);
     }

@@ -31,7 +31,7 @@ To optimize the medic application for production, run:
 
 
 To ensure everything worked, run:
-
+table.component.html
 
 
 Refer to [Using JHipster in production][] for more details.

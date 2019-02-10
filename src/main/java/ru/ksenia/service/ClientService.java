@@ -305,7 +305,7 @@ public class ClientService {
             headerForRequest.createCell(0).setCellValue(commandUserInfoDTO.getUserName());
             headerForRequest.createCell(1).setCellValue(commandUserInfoDTO.getCommandName());
             headerForRequest.createCell(2).setCellValue(commandUserInfoDTO.getRegion());
-            headerForRequest.createCell(3).setCellValue(commandUserInfoDTO.getPhoneNumber());
+            headerForRequest.createCell(3).setCellValue("+7"+commandUserInfoDTO.getPhoneNumber());
             headerForRequest.createCell(4).setCellValue(commandUserInfoDTO.getMail());
 
             rowCount++;
@@ -350,6 +350,9 @@ public class ClientService {
         styleSimple.setAlignment(ALIGN_CENTER);
         styleSimple.setVerticalAlignment(ALIGN_CENTER);
 
+        CellStyle styleWrap = workbook.createCellStyle();
+        styleWrap.setWrapText(true);
+
         CellStyle cellStyleForMainHeader = ExcelReportBuilder.createColumnHeadersCellStyle(workbook, true);
         CellStyle cellStyleForMainHeaderNonBold = ExcelReportBuilder.createColumnHeadersCellStyle(workbook, false);
         CellStyle cellStyleForSimpleHeader = ExcelReportBuilder.createColumnSimpleHeadersCellStyle(workbook, false);
@@ -379,6 +382,8 @@ public class ClientService {
         String lastNomenee = "";
 
         Sheet sheet = null;
+
+        int requestCount = 1;
         for (CommandRequest commandRequest : commandRequests) {
 
             if(!lastCategory.equals(commandRequest.getAgeCategory())){
@@ -395,14 +400,8 @@ public class ClientService {
                 cellTemp2.setCellStyle(cellStyleForMainHeader);
                 Cell cellTemp3 = header.createCell(3);
                 cellTemp3.setCellStyle(cellStyleForMainHeader);
-                Cell cellTemp4 = header.createCell(4);
-                cellTemp4.setCellStyle(cellStyleForMainHeader);
-                Cell cellTemp5 = header.createCell(5);
-                cellTemp5.setCellStyle(cellStyleForMainHeader);
-                Cell cellTemp6 = header.createCell(6);
-                cellTemp6.setCellStyle(cellStyleForMainHeader);
 
-                sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 0, 6));
+                sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 0, 3));
 
                 lastCategory = commandRequest.getAgeCategory();
                 rowCount++;
@@ -424,14 +423,8 @@ public class ClientService {
                 cellTemp2.setCellStyle(cellStyleForMainHeaderNonBold);
                 Cell cellTemp3 = header.createCell(3);
                 cellTemp3.setCellStyle(cellStyleForMainHeaderNonBold);
-                Cell cellTemp4 = header.createCell(4);
-                cellTemp4.setCellStyle(cellStyleForMainHeaderNonBold);
-                Cell cellTemp5 = header.createCell(5);
-                cellTemp5.setCellStyle(cellStyleForMainHeaderNonBold);
-                Cell cellTemp6 = header.createCell(6);
-                cellTemp6.setCellStyle(cellStyleForMainHeaderNonBold);
 
-                sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 0, 6));
+                sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 0, 3));
 
                 rowCount++;
                 Row headerForNames = sheet.createRow(rowCount);
@@ -445,19 +438,10 @@ public class ClientService {
                 Cell cell3 = headerForNames.createCell(2);
                 cell3.setCellValue("Участники");
                 cell3.setCellStyle(cellStyleForSimpleHeader);
-                Cell cellTempMember1 = headerForNames.createCell(3);
-                cellTempMember1.setCellStyle(cellStyleForSimpleHeader);
-                Cell cellTempMember2 = headerForNames.createCell(4);
-                cellTempMember2.setCellStyle(cellStyleForSimpleHeader);
 
-                Cell cell4 = headerForNames.createCell(5);
+                Cell cell4 = headerForNames.createCell(3);
                 cell4.setCellValue("Тренеры");
                 cell4.setCellStyle(cellStyleForSimpleHeader);
-                Cell cellTempCoach1 = headerForNames.createCell(6);
-                cellTempCoach1.setCellStyle(cellStyleForSimpleHeader);
-
-                sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 4));
-                sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 5, 6));
 
                 lastNomenee = commandRequest.getNomination();
                 rowCount++;
@@ -472,66 +456,87 @@ public class ClientService {
             commandName.setCellValue(commandRequest.getCommand().getName());
             commandName.setCellStyle(styleSimple);
 
-            Cell memberName = headerForRequest.createCell(2);
-            memberName.setCellValue("ФИО");
-            memberName.setCellStyle(styleSimple);
-            Cell memberDate = headerForRequest.createCell(3);
-            memberDate.setCellValue("Дата рождения");
-            memberDate.setCellStyle(styleSimple);
-            Cell memberGrade = headerForRequest.createCell(4);
-            memberGrade.setCellValue("Разряд");
-            memberGrade.setCellStyle(styleSimple);
+            Cell reqName1 = headerForRequest.createCell(2);
+            reqName1.setCellValue("Заявка № " + requestCount);
+            reqName1.setCellStyle(cellStyleForSimpleHeader);
 
-            Cell coachName = headerForRequest.createCell(5);
-            coachName.setCellValue("ФИО");
-            coachName.setCellStyle(styleSimple);
-            Cell coachDate = headerForRequest.createCell(6);
-            coachDate.setCellValue("Дата рождения");
-            coachDate.setCellStyle(styleSimple);
+            Cell reqName2 = headerForRequest.createCell(3);
+            reqName2.setCellStyle(cellStyleForSimpleHeader);
+
+            sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 3));
 
             int startReqRow = rowCount;
 
             if(commandRequest.getMembers().size() >= commandRequest.getCoaches().size()){
-                for(int i = 0; i < commandRequest.getMembers().size(); i++){
-                    rowCount++;
+                rowCount++;
+                Row reqRow = sheet.createRow(rowCount);
 
+                reqRow.setHeightInPoints(commandRequest.getMembers().size() * sheet.getDefaultRowHeightInPoints());
+                sheet.autoSizeColumn(commandRequest.getMembers().size());
+
+                Cell cell2 = null;
+                Cell cell3 = null;
+                for(int i = 0; i < commandRequest.getMembers().size(); i++){
                     CommandMember commandMember = commandRequest.getMembers().get(i);
-                    Row reqRow = sheet.createRow(rowCount);
-                    reqRow.createCell(2).setCellValue(commandMember.getName());
-                    reqRow.createCell(3).setCellValue(formatBirthDate(Date.from(commandMember.getBirthDate())));
-                    reqRow.createCell(4).setCellValue(commandMember.getQuality());
+
+                    if(cell2 == null){
+                        cell2 = reqRow.createCell(2);
+                        cell2.setCellValue(commandMember.getName());
+                        cell2.setCellStyle(styleWrap);
+                    } else {
+                        cell2.setCellValue(cell2.getStringCellValue() + "\n" + " \r" + commandMember.getName());
+                    }
+
                     if(commandRequest.getCoaches().size() > i){
                         CommandCoach commandCoach = commandRequest.getCoaches().get(i);
-                        reqRow.createCell(5).setCellValue(commandCoach.getName());
-                        reqRow.createCell(6).setCellValue(formatBirthDate(Date.from(commandCoach.getBirthDate())));
+                        if(cell3 == null){
+                            cell3 = reqRow.createCell(3);
+                            cell3.setCellValue(commandCoach.getName());
+                            cell3.setCellStyle(styleWrap);
+                        } else {
+                            cell3.setCellValue(cell3.getStringCellValue() + "\n" + " \r" + commandCoach.getName());
+                        }
                     }
                 }
             }
             if(commandRequest.getMembers().size() < commandRequest.getCoaches().size()){
+                rowCount++;
+
+                Row reqRow = sheet.createRow(rowCount);
+
+                reqRow.setHeightInPoints(commandRequest.getMembers().size() * sheet.getDefaultRowHeightInPoints());
+                sheet.autoSizeColumn(commandRequest.getMembers().size());
+
+                Cell cell2 = null;
+                Cell cell3 = null;
                 for(int i = 0; i < commandRequest.getCoaches().size(); i++){
-                    rowCount++;
-
-                    Row reqRow = sheet.createRow(rowCount);
-
                     if(commandRequest.getMembers().size() > i){
                         CommandMember commandMember = commandRequest.getMembers().get(i);
-                        reqRow.createCell(2).setCellValue(commandMember.getName());
-                        reqRow.createCell(3).setCellValue(formatBirthDate(Date.from(commandMember.getBirthDate())));
-                        reqRow.createCell(4).setCellValue(commandMember.getQuality());
+
+                        if(cell2 == null){
+                            cell2 = reqRow.createCell(2);
+                            cell2.setCellValue(commandMember.getName());
+                            cell2.setCellStyle(styleWrap);
+                        } else {
+                            cell2.setCellValue(cell2.getStringCellValue() + "\n \r" + commandMember.getName());
+                        }
                     }
                     CommandCoach commandCoach = commandRequest.getCoaches().get(i);
-                    reqRow.createCell(5).setCellValue(commandCoach.getName());
-                    reqRow.createCell(6).setCellValue(formatBirthDate(Date.from(commandCoach.getBirthDate())));
-
+                    if(cell3 == null){
+                        cell3 = reqRow.createCell(3);
+                        cell3.setCellValue(commandCoach.getName());
+                        cell3.setCellStyle(styleWrap);
+                    } else {
+                        cell3.setCellValue(cell3.getStringCellValue() + "\n \r" + commandCoach.getName());
+                    }
                 }
             }
 
             sheet.addMergedRegion(new CellRangeAddress(startReqRow, rowCount, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(startReqRow, rowCount, 1, 1));
-           /* sheet.addMergedRegion(new CellRangeAddress(startReqRow, rowCount, 2, 2));
-            sheet.addMergedRegion(new CellRangeAddress(startReqRow, rowCount, 3, 3));*/
 
             rowCount++;
+            requestCount++;
         }
 
         try {
