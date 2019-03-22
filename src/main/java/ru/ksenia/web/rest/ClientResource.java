@@ -161,6 +161,7 @@ public class ClientResource {
 
         try (ZipOutputStream zippedOUt = new ZipOutputStream(httpServletResponse.getOutputStream())) {
             int counter = 0;
+            byte[] buffer = new byte[1024];
             for(DownloadRequest downloadRequest : downloadRequests){
                 ZipEntry e = new ZipEntry(transliterate(downloadRequest.getMusicFileName()));
                 // Configure the zip entry, the properties of the file
@@ -169,11 +170,17 @@ public class ClientResource {
                 // etc.
                 zippedOUt.putNextEntry(e);
                 // And the content of the resource:
-                StreamUtils.copy(new ByteArrayInputStream(downloadRequest.getMusicFile()), zippedOUt);
+                ByteArrayInputStream bais = new ByteArrayInputStream(downloadRequest.getMusicFile());
+                //StreamUtils.copy(bais, zippedOUt);
+                int length;
+
+                while ((length = bais.read(buffer)) > 0) {
+                    zippedOUt.write(buffer, 0, length);
+                }
                 zippedOUt.closeEntry();
 
                 counter++;
-                if(counter == 20){
+                if(counter == 10){
                     zippedOUt.flush();
                     counter = 0;
                 }

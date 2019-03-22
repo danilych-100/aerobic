@@ -278,17 +278,28 @@ export class TableComponent implements OnInit {
 
     downloadAllRequestsFilteredMusic() {
         let ids = '';
+        let idsMap = [];
+        let counter = 0;
         this.dataSource.filteredData.forEach(row => {
             if (row.musicFileName) {
+                counter++;
                 if (ids == '') {
                     ids = row.id;
                 } else {
                     ids += ',' + row.id;
                 }
+
+                if (counter == 20) {
+                    idsMap.push(ids);
+                    counter = 0;
+                    ids = '';
+                }
             }
         });
 
-        this.downloadMultipleMusicFile(ids);
+        idsMap.forEach(ids => {
+            this.downloadMultipleMusicFile(ids);
+        });
     }
 
     downloadMultipleMusicFile(ids) {
