@@ -185,7 +185,7 @@
             <form class="example-container" [formGroup]="optionsMember" [style.fontSize.px]="getFontSize()" style="margin-bottom: 40px"
                   #memberForm="ngForm">
                 <mat-form-field [color]="optionsMember.value.color">
-                    <input matInput placeholder="ФИО участника" [(ngModel)]="currentMember.name" name="name" required
+                    <input matInput placeholder="Фамилия и имя" [(ngModel)]="currentMember.name" name="name" required
                            [formControl]="inpNameMember"
                     >
                     <mat-error *ngIf="inpNameMember.invalid">{{getInpNameMemberErrorMessage()}}</mat-error>
