@@ -1,5 +1,7 @@
 package ru.ksenia.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -10,8 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ksenia.domain.*;
 import ru.ksenia.repository.*;
+import ru.ksenia.service.dto.ExportRequestDTO;
 import ru.ksenia.service.dto.MapperCommandDTO;
 import ru.ksenia.service.mapper.CommandMapper;
+import ru.ksenia.service.mapper.ExportMapper;
 import ru.ksenia.service.util.report.ExcelReportBuilder;
 import ru.ksenia.service.util.report.IReportBuilder;
 import ru.ksenia.service.util.report.Report;
@@ -26,11 +30,13 @@ import ru.ksenia.web.rest.dto.admin.RequestInfoDTO;
 import ru.ksenia.web.rest.errors.InternalServerErrorException;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.apache.poi.ss.usermodel.CellStyle.ALIGN_CENTER;
 import static org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD;
@@ -552,8 +558,21 @@ public class ClientService {
         //return reportBuilder.buildReport();
     }
 
+    public byte[] createRequestsToJson() throws JsonProcessingException {
+        List<CommandRequest> requestList = commandRequestRepository.findAll();
+
+        List<ExportRequestDTO> requests = requestList.parallelStream()
+            .map(ExportMapper::mapEntityToExportDTO)
+            .collect(Collectors.toList());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsBytes(requests);
+    }
+
     private String formatBirthDate(java.util.Date date){
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         return formatter.format(date);
     }
+
+
 }

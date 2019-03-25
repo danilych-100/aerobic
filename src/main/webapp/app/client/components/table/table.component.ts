@@ -314,6 +314,10 @@ export class TableComponent implements OnInit {
         window.open(SERVER_API_URL + 'api/createUsersExcelReport', '_blank');
     }
 
+    downloadRequestsToJson() {
+        window.open(SERVER_API_URL + 'api/downloadRequestsToJson', '_blank');
+    }
+
     private isOpen = false;
 
     public openRequestModal(requestId: number): void {

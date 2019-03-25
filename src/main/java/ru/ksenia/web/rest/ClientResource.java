@@ -236,6 +236,25 @@ public class ClientResource {
         );
     }
 
+    @GetMapping("/downloadRequestsToJson")
+    public void downloadRequestsToJson(final HttpServletResponse httpServletResponse) throws Exception {
+
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("cache-control", "must-revalidate");
+
+        byte[] data = clientService.createRequestsToJson();
+
+        String fileName = URLEncoder.encode("Отчет по зарегистрированным заявкам", "UTF-8");
+        headers.put("Content-Disposition", "attachment; filename=data.json");
+
+        writeDataToResponse(
+            httpServletResponse,
+            "application/octet-stream;",
+            headers,
+            data
+        );
+    }
+
 
 
     private void writeDataToResponse(final HttpServletResponse response, final String contentType, final Map<String, String> headers, final byte[] data) throws IOException {
