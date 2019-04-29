@@ -9,6 +9,9 @@
             <span style="display: block; margin-top: 10px"><span style="font-family: 'Yanone Kaffeesatz', sans-serif;">Субект РФ:</span>
                 {{requestInfo.generalInfo.region}}
             </span>
+            <span style="display: block; margin-top: 10px" *ngIf="requestInfo.generalInfo.categoryA">
+                 <span style="font-style: italic; font-weight: bold;">Категория А</span>
+            </span>
         </h5>
     </div>
 

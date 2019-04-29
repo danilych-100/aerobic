@@ -14,6 +14,7 @@ public class CommandRequestAdminInfoDTO {
     private String ageCategory;
     private String nomination;
     private String musicFileName;
+    private Boolean categoryA;
 
     public String getName() {
         return name;
@@ -69,5 +70,13 @@ public class CommandRequestAdminInfoDTO {
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public Boolean getCategoryA() {
+        return categoryA;
+    }
+
+    public void setCategoryA(Boolean categoryA) {
+        this.categoryA = categoryA;
     }
 }

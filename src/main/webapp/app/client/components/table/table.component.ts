@@ -38,6 +38,7 @@ export class CommandRequestAdmin {
     public ageCategory: string;
     public nomination: string;
     public musicFileName: string;
+    public categoryA: boolean;
 }
 
 export class CommandUserInfo {

@@ -157,6 +157,7 @@ public class CommandMapper {
         }
 
         commandRequest.setMusicFileName(commandRequestDTO.getMusicFileName());
+        commandRequest.setCategoryA(commandRequestDTO.getCategoryA());
         return commandRequest;
     }
 
@@ -172,6 +173,7 @@ public class CommandMapper {
         }
 
         commandRequestDTO.setMusicFileName(commandRequest.getMusicFileName());
+        commandRequestDTO.setCategoryA(commandRequest.getCategoryA());
         commandRequest.getCoaches().forEach(commandCoach -> {
             commandRequestDTO.getCoaches().add(mapCommandCoachEntityToDTO(commandCoach));
         });

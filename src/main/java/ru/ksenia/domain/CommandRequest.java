@@ -23,6 +23,9 @@ public class CommandRequest {
     @Column(name = "music_file_name")
     private String musicFileName;
 
+    @Column(name = "category_a")
+    private boolean categoryA;
+
     @Lob
     @Column(name = "music")
     private byte[] music;
@@ -115,5 +118,13 @@ public class CommandRequest {
 
     public void setMusicFileName(String musicFileName) {
         this.musicFileName = musicFileName;
+    }
+
+    public boolean getCategoryA() {
+        return categoryA;
+    }
+
+    public void setCategoryA(boolean categoryA) {
+        this.categoryA = categoryA;
     }
 }

@@ -186,6 +186,7 @@ public class ClientService {
         commandRequestAdminInfoDTO.setMusicFileName(commandRequest.getMusicFileName());
         commandRequestAdminInfoDTO.setCommandName(command.getName());
         commandRequestAdminInfoDTO.setRegion(command.getRegion());
+        commandRequestAdminInfoDTO.setCategoryA(commandRequest.getCategoryA());
         return commandRequestAdminInfoDTO;
     }
 
@@ -406,8 +407,10 @@ public class ClientService {
                 cellTemp2.setCellStyle(cellStyleForMainHeader);
                 Cell cellTemp3 = header.createCell(3);
                 cellTemp3.setCellStyle(cellStyleForMainHeader);
+                Cell cellTemp4 = header.createCell(4);
+                cellTemp4.setCellStyle(cellStyleForMainHeader);
 
-                sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 0, 3));
+                sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 0, 4));
 
                 lastCategory = commandRequest.getAgeCategory();
                 rowCount++;
@@ -429,8 +432,10 @@ public class ClientService {
                 cellTemp2.setCellStyle(cellStyleForMainHeaderNonBold);
                 Cell cellTemp3 = header.createCell(3);
                 cellTemp3.setCellStyle(cellStyleForMainHeaderNonBold);
+                Cell cellTemp4 = header.createCell(4);
+                cellTemp4.setCellStyle(cellStyleForMainHeaderNonBold);
 
-                sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 0, 3));
+                sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 0, 4));
 
                 rowCount++;
                 Row headerForNames = sheet.createRow(rowCount);
@@ -441,13 +446,19 @@ public class ClientService {
                 cell2.setCellValue("Название команды");
                 cell2.setCellStyle(cellStyleForSimpleHeader);
 
-                Cell cell3 = headerForNames.createCell(2);
+                Cell cell5 = headerForNames.createCell(2);
+                cell5.setCellValue("Категория А");
+                cell5.setCellStyle(cellStyleForSimpleHeader);
+
+                Cell cell3 = headerForNames.createCell(3);
                 cell3.setCellValue("Участники");
                 cell3.setCellStyle(cellStyleForSimpleHeader);
 
-                Cell cell4 = headerForNames.createCell(3);
+                Cell cell4 = headerForNames.createCell(4);
                 cell4.setCellValue("Тренеры");
                 cell4.setCellStyle(cellStyleForSimpleHeader);
+
+
 
                 lastNomenee = commandRequest.getNomination();
                 rowCount++;
@@ -462,14 +473,20 @@ public class ClientService {
             commandName.setCellValue(commandRequest.getCommand().getName());
             commandName.setCellStyle(styleSimple);
 
-            Cell reqName1 = headerForRequest.createCell(2);
+            Cell categoryAName = headerForRequest.createCell(2);
+            categoryAName.setCellValue(commandRequest.getCategoryA() ? "Да" : "Нет");
+            categoryAName.setCellStyle(styleSimple);
+
+            Cell reqName1 = headerForRequest.createCell(3);
             reqName1.setCellValue("Заявка № " + requestCount);
             reqName1.setCellStyle(cellStyleForSimpleHeader);
 
-            Cell reqName2 = headerForRequest.createCell(3);
+            Cell reqName2 = headerForRequest.createCell(4);
             reqName2.setCellStyle(cellStyleForSimpleHeader);
 
-            sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 3));
+
+
+            sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 4));
 
             int startReqRow = rowCount;
 
@@ -486,7 +503,7 @@ public class ClientService {
                     CommandMember commandMember = commandRequest.getMembers().get(i);
 
                     if(cell2 == null){
-                        cell2 = reqRow.createCell(2);
+                        cell2 = reqRow.createCell(3);
                         cell2.setCellValue(commandMember.getName());
                         cell2.setCellStyle(styleWrap);
                     } else {
@@ -496,7 +513,7 @@ public class ClientService {
                     if(commandRequest.getCoaches().size() > i){
                         CommandCoach commandCoach = commandRequest.getCoaches().get(i);
                         if(cell3 == null){
-                            cell3 = reqRow.createCell(3);
+                            cell3 = reqRow.createCell(4);
                             cell3.setCellValue(commandCoach.getName());
                             cell3.setCellStyle(styleWrap);
                         } else {
@@ -520,7 +537,7 @@ public class ClientService {
                         CommandMember commandMember = commandRequest.getMembers().get(i);
 
                         if(cell2 == null){
-                            cell2 = reqRow.createCell(2);
+                            cell2 = reqRow.createCell(3);
                             cell2.setCellValue(commandMember.getName());
                             cell2.setCellStyle(styleWrap);
                         } else {
@@ -529,7 +546,7 @@ public class ClientService {
                     }
                     CommandCoach commandCoach = commandRequest.getCoaches().get(i);
                     if(cell3 == null){
-                        cell3 = reqRow.createCell(3);
+                        cell3 = reqRow.createCell(4);
                         cell3.setCellValue(commandCoach.getName());
                         cell3.setCellStyle(styleWrap);
                     } else {
@@ -540,6 +557,7 @@ public class ClientService {
 
             sheet.addMergedRegion(new CellRangeAddress(startReqRow, rowCount, 0, 0));
             sheet.addMergedRegion(new CellRangeAddress(startReqRow, rowCount, 1, 1));
+            sheet.addMergedRegion(new CellRangeAddress(startReqRow, rowCount, 2, 2));
 
             rowCount++;
             requestCount++;

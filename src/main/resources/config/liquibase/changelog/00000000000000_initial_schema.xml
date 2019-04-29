@@ -152,6 +152,7 @@
             <column name="passport_desc" type="varchar(255)"/>
             <column name="command_coach_id" type="bigint"/>
         </createTable>
+
         <createTable tableName="command_member">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>

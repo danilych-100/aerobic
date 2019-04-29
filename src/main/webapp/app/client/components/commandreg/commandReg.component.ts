@@ -61,6 +61,7 @@ export class CommandRequest {
     public nomination: string;
     public music: string;
     public musicFileName: string;
+    public categoryA: boolean;
     public members: CommandMember[];
     public coaches: CommandCoach[];
 
@@ -371,6 +372,7 @@ export class CommandRegistrationComponent implements OnInit {
         newRequest.members = this.currentCommandRequest.members;
         //newRequest.music = this.currentCommandRequest.music;
         newRequest.musicFileName = this.currentCommandRequest.musicFileName;
+        newRequest.categoryA = this.currentCommandRequest.categoryA;
         this.command.requests.push(newRequest);
         this.currentCommandRequest = new CommandRequest();
         this.currentCommandRequest.id = this.guid();

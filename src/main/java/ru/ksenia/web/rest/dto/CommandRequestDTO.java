@@ -10,6 +10,7 @@ public class CommandRequestDTO {
     private String nomination;
     private String music;
     private String musicFileName;
+    private Boolean categoryA;
     private List<CommandMemberDTO> members = new ArrayList<>();
     private List<CommandCoachDTO> coaches = new ArrayList<>();
 
@@ -75,5 +76,13 @@ public class CommandRequestDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Boolean getCategoryA() {
+        return categoryA;
+    }
+
+    public void setCategoryA(Boolean categoryA) {
+        this.categoryA = categoryA;
     }
 }
