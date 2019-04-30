@@ -82,9 +82,12 @@ public class ClientResource {
         try {
             clientService.updateCommand(command);
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.noContent().build();
+        } catch (Exception e){
+            log.error(e.getMessage(), e);
+            System.err.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
     @PostMapping(value = "/downloadFileMusic")
